@@ -481,6 +481,4 @@ Este software es propietario y confidencial. Queda expresamente prohibido, sin a
 - Vender, sublicenciar, alquilar, transferir o distribuir este software o derivados del mismo.
 - Modificar, descompilar o crear obras derivadas con fines distintos al uso personal y académico autorizado.
 
-El uso en el marco del proyecto académico CONSTRUTECH-IA (Talent PIME Fase II · IES Eduardo Primo Marqués · Curso 2025-2026) está permitido exclusivamente para los fines educativos para los que fue desarrollado.
-
 Para cualquier otro uso, contactar con el autor.
