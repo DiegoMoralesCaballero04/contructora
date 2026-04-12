@@ -473,4 +473,14 @@ n8n 07:00 -- SplitInBatches --> Una licitacion a la vez --> Ollama --> Marcar re
 
 ## Licencia
 
-Proyecto académico — CONSTRUTECH-IA · Talent PIME Fase II · IES Eduardo Primo Marqués · Curso 2025-2026
+Copyright (c) 2025-2026 Diego Morales Caballero. Todos los derechos reservados.
+
+Este software es propietario y confidencial. Queda expresamente prohibido, sin autorización escrita previa del autor:
+
+- Usar este software o cualquier parte del mismo con fines laborales, comerciales o profesionales.
+- Vender, sublicenciar, alquilar, transferir o distribuir este software o derivados del mismo.
+- Modificar, descompilar o crear obras derivadas con fines distintos al uso personal y académico autorizado.
+
+El uso en el marco del proyecto académico CONSTRUTECH-IA (Talent PIME Fase II · IES Eduardo Primo Marqués · Curso 2025-2026) está permitido exclusivamente para los fines educativos para los que fue desarrollado.
+
+Para cualquier otro uso, contactar con el autor.
