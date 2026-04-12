@@ -1,0 +1,43 @@
+{% extends 'portal/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Accés" %} — CONSTRUTECH-IA{% endblock %}
+
+{% block body %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center" style="background: #f4f6f9;">
+  <div class="card shadow-sm" style="width: 380px; border-top: 4px solid #e8842a;">
+    <div class="card-body p-4">
+      <div class="text-center mb-4">
+        <h4 class="fw-bold" style="color: #1a3a5c;">CONSTRUTECH<span style="color:#e8842a;">-IA</span></h4>
+        <p class="text-muted small mb-0">{% trans "Portal de Licitacions" %}</p>
+      </div>
+      <form method="post">
+        {% csrf_token %}
+        {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
+        <div class="mb-3">
+          <label class="form-label fw-semibold">{% trans "Usuari" %}</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="text" name="username" class="form-control" value="{{ username|default:'' }}" autofocus required>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="form-label fw-semibold">{% trans "Contrasenya" %}</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+        </div>
+        {% if messages %}
+          {% for m in messages %}
+          <div class="alert alert-danger py-2 small">{{ m }}</div>
+          {% endfor %}
+        {% endif %}
+        <button type="submit" class="btn btn-primary w-100 fw-semibold" style="background:#1a3a5c;border-color:#1a3a5c;">
+          <i class="bi bi-box-arrow-in-right me-1"></i> {% trans "Accedir" %}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

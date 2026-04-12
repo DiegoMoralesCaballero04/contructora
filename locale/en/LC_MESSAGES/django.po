@@ -1,0 +1,667 @@
+# English translations for CONSTRUTECH-IA
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+
+# Sidebar
+msgid "Principal"
+msgstr "Main"
+msgid "Licitaciones"
+msgstr "Tenders"
+msgid "Personal"
+msgstr "Personal"
+msgid "Fichaje"
+msgstr "Timeclock"
+msgid "Administración"
+msgstr "Administration"
+msgid "Visión general"
+msgstr "Overview"
+msgid "RRHH / Fichajes"
+msgstr "HR / Timesheets"
+msgid "Gestión de usuarios"
+msgstr "User Management"
+
+# Dashboard
+msgid "Total licitaciones"
+msgstr "Total tenders"
+msgid "Nuevas"
+msgstr "New"
+msgid "En preparación"
+msgstr "In preparation"
+msgid "Presentadas"
+msgstr "Submitted"
+msgid "Nuevas esta semana"
+msgstr "New this week"
+msgid "Importe total relevante"
+msgstr "Total relevant amount"
+msgid "Últimas licitaciones"
+msgstr "Latest tenders"
+msgid "Ver todas"
+msgstr "View all"
+msgid "Expediente"
+msgstr "Reference"
+msgid "Título"
+msgstr "Title"
+msgid "Importe"
+msgstr "Amount"
+msgid "Estado"
+msgstr "Status"
+msgid "Aún no hay licitaciones."
+msgstr "No tenders yet."
+msgid "Próximas a vencer"
+msgstr "Expiring soon"
+msgid "días"
+msgstr "days"
+msgid "Ninguna licitación próxima a vencer."
+msgstr "No tenders expiring soon."
+
+# Tenders list
+msgid "Buscar por título, expediente..."
+msgstr "Search by title, reference..."
+msgid "Todos los estados"
+msgstr "All statuses"
+msgid "Provincia"
+msgstr "Province"
+msgid "Filtrar"
+msgstr "Filter"
+msgid "resultados"
+msgstr "results"
+msgid "Organismo"
+msgstr "Organization"
+msgid "Importe base"
+msgstr "Base amount"
+msgid "Plazo"
+msgstr "Deadline"
+msgid "No se han encontrado licitaciones con estos filtros."
+msgstr "No tenders found with these filters."
+
+# Timeclock
+msgid "Mi fichaje"
+msgstr "My timeclock"
+msgid "Hora actual"
+msgstr "Current time"
+msgid "Registrar entrada"
+msgstr "Clock in"
+msgid "Aún no has fichado hoy."
+msgstr "You haven't clocked in today."
+msgid "Entrada registrada a las"
+msgstr "Clocked in at"
+msgid "Registrar salida"
+msgstr "Clock out"
+msgid "Jornada completada:"
+msgstr "Day completed:"
+msgid "horas trabajadas"
+msgstr "hours worked"
+msgid "Últimos fichajes"
+msgstr "Recent entries"
+msgid "Fecha"
+msgstr "Date"
+msgid "Entrada"
+msgstr "Clock in"
+msgid "Salida"
+msgstr "Clock out"
+msgid "Horas"
+msgstr "Hours"
+msgid "Tipo"
+msgstr "Type"
+msgid "En curso"
+msgstr "In progress"
+msgid "Sin fichajes anteriores."
+msgstr "No previous entries."
+
+# Timesheet edit
+msgid "Editar fichaje"
+msgstr "Edit timesheet"
+msgid "Volver"
+msgstr "Back"
+msgid "dejar vacío si en curso"
+msgstr "leave empty if ongoing"
+msgid "Horas registradas:"
+msgstr "Hours registered:"
+msgid "Cancelar"
+msgstr "Cancel"
+msgid "Guardar"
+msgstr "Save"
+
+# Admin overview
+msgid "Usuarios activos"
+msgstr "Active users"
+msgid "En la oficina ahora"
+msgstr "In the office now"
+msgid "Licitaciones nuevas"
+msgstr "New tenders"
+msgid "Roles del sistema"
+msgstr "System roles"
+msgid "usuario"
+msgstr "user"
+msgid "Añadir usuario"
+msgstr "Add user"
+msgid "Fichajes de hoy"
+msgstr "Today's timesheets"
+msgid "Ver todo"
+msgstr "View all"
+msgid "Trabajador"
+msgstr "Worker"
+msgid "Completo"
+msgstr "Complete"
+msgid "Ausente"
+msgstr "Absent"
+msgid "Sin fichajes hoy."
+msgstr "No timesheets today."
+
+# HR timesheets
+msgid "RRHH"
+msgstr "HR"
+msgid "RRHH — Fichajes"
+msgstr "HR — Timesheets"
+msgid "Hoy"
+msgstr "Today"
+msgid "Semana:"
+msgstr "Week:"
+msgid "Fichajes"
+msgstr "Timesheets"
+msgid "Rol"
+msgstr "Role"
+msgid "Trabajando"
+msgstr "Working"
+msgid "Sin fichajes para esta fecha."
+msgstr "No timesheets for this date."
+msgid "Resumen semanal"
+msgstr "Weekly summary"
+msgid "Días"
+msgstr "Days"
+msgid "Total horas"
+msgstr "Total hours"
+msgid "Sin fichajes esta semana."
+msgstr "No timesheets this week."
+msgid "Personal activo"
+msgstr "Active staff"
+msgid "Gestionar"
+msgstr "Manage"
+
+# Users
+msgid "Nombre completo"
+msgstr "Full name"
+msgid "Departamento"
+msgstr "Department"
+msgid "Alta"
+msgstr "Start date"
+msgid "Activo"
+msgstr "Active"
+msgid "Inactivo"
+msgstr "Inactive"
+msgid "Ningún usuario en el sistema."
+msgstr "No users in the system."
+msgid "Nuevo usuario"
+msgstr "New user"
+msgid "en el sistema"
+msgstr "in the system"
+msgid "Usuario"
+msgstr "User"
+
+# Internal report — form
+msgid "Nou informe intern"
+msgstr "New internal report"
+
+msgid "Import N/D"
+msgstr "Amount N/A"
+
+msgid "Descriu els aspectes tècnics clau: requisits, classificació empresarial necessària, medis humans i materials..."
+msgstr "Describe the key technical aspects: requirements, required business classification, human and material resources..."
+
+msgid "Avantatges competitius, experiència prèvia, recursos disponibles..."
+msgstr "Competitive advantages, previous experience, available resources..."
+
+msgid "Limitacions, riscos, requisits que no es compleixen..."
+msgstr "Limitations, risks, requirements not met..."
+
+msgid "Qualsevol altre comentari rellevant, contactes, referències..."
+msgstr "Any other relevant comments, contacts, references..."
+
+msgid "Recomanació"
+msgstr "Recommendation"
+
+msgid "Puntuació interna"
+msgstr "Internal score"
+
+msgid "Molt baixa"
+msgstr "Very low"
+
+msgid "Excel·lent"
+msgstr "Excellent"
+
+msgid "Desar informe"
+msgstr "Save report"
+
+msgid "Cancel·lar"
+msgstr "Cancel"
+
+msgid "Anàlisi tècnica"
+msgstr "Technical analysis"
+
+msgid "Punts forts i febles"
+msgstr "Strengths and weaknesses"
+
+msgid "Punts forts"
+msgstr "Strengths"
+
+msgid "Punts febles"
+msgstr "Weaknesses"
+
+msgid "Observacions addicionals"
+msgstr "Additional observations"
+
+# Internal report — detail
+msgid "Informe intern"
+msgstr "Internal report"
+
+msgid "Tornar"
+msgstr "Back"
+
+msgid "Descargar PDF"
+msgstr "Download PDF"
+
+msgid "Nou informe"
+msgstr "New report"
+
+msgid "Autor"
+msgstr "Author"
+
+msgid "Creat el"
+msgstr "Created on"
+
+msgid "Puntuació"
+msgstr "Score"
+
+msgid "Observacions"
+msgstr "Observations"
+
+msgid "Detalls"
+msgstr "Details"
+
+msgid "Veure licitació"
+msgstr "View tender"
+
+msgid "Aquest informe no té contingut detallat."
+msgstr "This report has no detailed content."
+
+# Internal report — print
+msgid "Informe intern de licitació"
+msgstr "Internal tender report"
+
+msgid "Generat el"
+msgstr "Generated on"
+
+msgid "Autor:"
+msgstr "Author:"
+
+msgid "Data publicació"
+msgstr "Publication date"
+
+msgid "Límit presentació"
+msgstr "Submission deadline"
+
+msgid "Termini execució"
+msgstr "Execution period"
+
+msgid "dies"
+msgstr "days"
+
+msgid "Procediment"
+msgstr "Procedure"
+
+msgid "Elaborat per"
+msgstr "Prepared by"
+
+msgid "Vist i plau"
+msgstr "Approved by"
+
+msgid "Document generat automàticament"
+msgstr "Automatically generated document"
+
+msgid "Imprimir / Guardar PDF"
+msgstr "Print / Save as PDF"
+
+msgid "Obre el diàleg d'impressió. Tria 'Desar com a PDF' com a impressora."
+msgstr "Opens the print dialog. Select 'Save as PDF' as the printer."
+
+msgid "PDF arxivat a S3"
+msgstr "PDF archived in S3"
+
+msgid "PDF arxivat"
+msgstr "Archived PDF"
+
+# Tender detail
+msgid "Detall licitació"
+msgstr "Tender detail"
+
+msgid "Crear informe intern"
+msgstr "Create internal report"
+
+msgid "Organisme"
+msgstr "Organization"
+
+msgid "Província"
+msgstr "Province"
+
+msgid "Municipi"
+msgstr "Municipality"
+
+msgid "Veure a Google Maps"
+msgstr "View on Google Maps"
+
+msgid "Import base (sense IVA)"
+msgstr "Base amount (excl. VAT)"
+
+msgid "Import (amb IVA)"
+msgstr "Amount (incl. VAT)"
+
+msgid "Classificació empresarial"
+msgstr "Business classification"
+
+msgid "Grup"
+msgstr "Group"
+
+msgid "Subgrup"
+msgstr "Subgroup"
+
+msgid "Categoria"
+msgstr "Category"
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Criteris d'adjudicació"
+msgstr "Award criteria"
+
+msgid "Criteri"
+msgstr "Criterion"
+
+msgid "Punts"
+msgstr "Points"
+
+msgid "Fórmula"
+msgstr "Formula"
+
+msgid "Econòmic"
+msgstr "Economic"
+
+msgid "Plec de condicions"
+msgstr "Tender specifications"
+
+msgid "Amagar"
+msgstr "Hide"
+
+msgid "Veure inline"
+msgstr "View inline"
+
+msgid "Descarregar PDF"
+msgstr "Download PDF"
+
+msgid "PDF disponible a S3 però no es pot generar l'URL en aquest moment."
+msgstr "PDF available in S3 but the URL could not be generated at this time."
+
+msgid "Informes interns"
+msgstr "Internal reports"
+
+msgid "Nou"
+msgstr "New"
+
+msgid "Documenta la teva anàlisi interna d'aquesta licitació"
+msgstr "Document your internal analysis of this tender"
+
+msgid "Canviar estat"
+msgstr "Change status"
+
+msgid "Desar canvi"
+msgstr "Save change"
+
+msgid "Metadades"
+msgstr "Metadata"
+
+msgid "Actualitzat el"
+msgstr "Updated on"
+
+msgid "Rellevant"
+msgstr "Relevant"
+
+msgid "Origen"
+msgstr "Source"
+
+msgid "Veure a contratacionesdelestado.es"
+msgstr "View on contratacionesdelestado.es"
+
+# base.html
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Tancar sessió"
+msgstr "Log out"
+
+# login.html
+msgid "Accés"
+msgstr "Sign in"
+
+msgid "Portal de Licitacions"
+msgstr "Tender Portal"
+
+msgid "Usuari"
+msgstr "Username"
+
+msgid "Contrasenya"
+msgstr "Password"
+
+msgid "Accedir"
+msgstr "Sign in"
+
+# admin/user_form.html
+msgid "Contraseña"
+msgstr "Password"
+
+msgid "vacío = no cambiar"
+msgstr "leave blank to keep current"
+
+msgid "Nombre"
+msgstr "First name"
+
+msgid "Apellidos"
+msgstr "Last name"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Teléfono"
+msgstr "Phone"
+
+msgid "Fecha de alta"
+msgstr "Start date"
+
+msgid "Usuario activo"
+msgstr "Active user"
+
+msgid "Notas internas"
+msgstr "Internal notes"
+
+# Statuses
+msgid "Nueva"
+msgstr "New"
+
+msgid "Revisada"
+msgstr "Reviewed"
+
+msgid "Descartada"
+msgstr "Discarded"
+
+msgid "Presentada"
+msgstr "Submitted"
+
+msgid "Adjudicada"
+msgstr "Awarded"
+
+msgid "Desierta"
+msgstr "Unawarded"
+
+# Procedure
+msgid "Abierto"
+msgstr "Open"
+
+msgid "Restringido"
+msgstr "Restricted"
+
+msgid "Negociado"
+msgstr "Negotiated"
+
+msgid "Simplificado"
+msgstr "Simplified"
+
+msgid "Otro"
+msgstr "Other"
+
+# Recommendation
+msgid "Presentar oferta"
+msgstr "Submit offer"
+
+msgid "Descartar"
+msgstr "Discard"
+
+msgid "Estudiar más"
+msgstr "Study further"
+
+# Contact role
+msgid "Subcontratista"
+msgstr "Subcontractor"
+
+msgid "Proveedor"
+msgstr "Supplier"
+
+msgid "Delegado local"
+msgstr "Local representative"
+
+msgid "Técnico / Arquitecto"
+msgstr "Technician / Architect"
+
+# User role
+msgid "Jefe"
+msgstr "Manager"
+
+# Timeclock type
+msgid "Teletrabajo"
+msgstr "Remote work"
+
+msgid "Guardia"
+msgstr "On-call"
+
+# Territories — cities
+msgid "Ciutats / Municipis preferits"
+msgstr "Favourite cities / municipalities"
+
+msgid "Licitaciones d'aquests municipis apareixeran als teus territoris"
+msgstr "Tenders from these municipalities will appear in your territories"
+
+msgid "Escriu un municipi..."
+msgstr "Type a municipality..."
+
+msgid "Desar ciutats"
+msgstr "Save cities"
+
+msgid "Encara no hi ha municipis. Escriu un nom i fes clic a Afegir."
+msgstr "No municipalities yet. Type a name and click Add."
+
+# Territories
+msgid "Territoris"
+msgstr "Territories"
+
+msgid "Territoris preferents"
+msgstr "Preferred territories"
+
+msgid "Selecció de territoris"
+msgstr "Territory selection"
+
+msgid "Marca la principal (⭐) i les preferides (♥)"
+msgstr "Mark the main (⭐) and favourites (♥)"
+
+msgid "Fes clic a ⭐ per marcar com a principal, ♥ per afegir a preferits."
+msgstr "Click ⭐ to set as main province, ♥ to add to favourites."
+
+msgid "Província principal"
+msgstr "Main province"
+
+msgid "Preferida"
+msgstr "Favourite"
+
+msgid "Marcar com a principal"
+msgstr "Set as main province"
+
+msgid "Marcar com a preferida"
+msgstr "Add to favourites"
+
+msgid "Desar preferències"
+msgstr "Save preferences"
+
+msgid "Contactes provincials"
+msgstr "Provincial contacts"
+
+msgid "Nou contacte"
+msgstr "New contact"
+
+msgid "Nou contacte provincial"
+msgstr "New provincial contact"
+
+msgid "Filtrar per província:"
+msgstr "Filter by province:"
+
+msgid "Totes"
+msgstr "All"
+
+msgid "Nom"
+msgstr "Name"
+
+msgid "Empresa"
+msgstr "Company"
+
+msgid "Telèfon"
+msgstr "Phone"
+
+msgid "Afegir"
+msgstr "Add"
+
+msgid "Editar contacte"
+msgstr "Edit contact"
+
+msgid "Editar"
+msgstr "Edit"
+
+msgid "Eliminar"
+msgstr "Delete"
+
+msgid "Desar canvis"
+msgstr "Save changes"
+
+msgid "Encara no hi ha contactes. Afegeix el primer contacte provincial."
+msgstr "No contacts yet. Add the first provincial contact."
+
+msgid "Contactes locals"
+msgstr "Local contacts"
+
+msgid "Cap contacte per a aquesta província."
+msgstr "No contacts for this province."
+
+msgid "Els meus territoris"
+msgstr "My territories"
+
+msgid "licitacions"
+msgstr "tenders"
+
+msgid "noves"
+msgstr "new"
+
+msgid "Veure totes"
+msgstr "View all"
+
+msgid "Encara no hi ha licitacions en els teus territoris."
+msgstr "No tenders in your territories yet."
+
+msgid "Territoris:"
+msgstr "Territories:"

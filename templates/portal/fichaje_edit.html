@@ -1,0 +1,51 @@
+{% extends 'portal/base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Editar fichaje" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{% trans "Editar fichaje" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold">
+          <i class="bi bi-pencil me-1"></i>
+          {{ fichaje.user.get_full_name|default:fichaje.user.username }}
+          — {{ fichaje.data|date:"d/m/Y" }}
+        </h6>
+        <a href="{% if is_admin_edit %}{% url 'portal:admin_rrhh' %}{% else %}{% url 'portal:fichar' %}{% endif %}"
+           class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-arrow-left me-1"></i>{% trans "Volver" %}
+        </a>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Entrada" %}</label>
+            <input type="datetime-local" name="entrada" class="form-control"
+              value="{{ fichaje.entrada|date:'Y-m-d\TH:i'|default:'' }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Salida" %} <small class="text-muted">({% trans "dejar vacío si en curso" %})</small></label>
+            <input type="datetime-local" name="sortida" class="form-control"
+              value="{{ fichaje.sortida|date:'Y-m-d\TH:i'|default:'' }}">
+          </div>
+          {% if fichaje.hores_treballades is not None %}
+          <p class="text-muted small mb-3">
+            <i class="bi bi-clock me-1"></i>{% trans "Horas registradas:" %} <strong>{{ fichaje.hores_treballades|floatformat:1 }}h</strong>
+          </p>
+          {% endif %}
+          <div class="d-flex gap-2 justify-content-end">
+            <a href="{% if is_admin_edit %}{% url 'portal:admin_rrhh' %}{% else %}{% url 'portal:fichar' %}{% endif %}"
+               class="btn btn-outline-secondary">{% trans "Cancelar" %}</a>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-lg me-1"></i>{% trans "Guardar" %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

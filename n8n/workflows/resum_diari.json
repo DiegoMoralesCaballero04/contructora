@@ -1,0 +1,63 @@
+{
+  "name": "CONSTRUTECH-IA — Resum Diari 08:00",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "schedule-8am",
+      "name": "Schedule (L-V 08:00)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://django:8000/api/v1/licitacions/?estado=NUEVA&ordering=-importe_base&page_size=50",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "fetch-licitacions",
+      "name": "GET Noves Licitacions",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst licitacions = data.results || [];\n\nif (licitacions.length === 0) {\n  return [{ json: { missatge: 'Cap licitació nova avui.', total: 0 } }];\n}\n\nconst lines = licitacions.slice(0, 10).map(l => {\n  const import_ = l.importe_base ? parseFloat(l.importe_base).toLocaleString('ca-ES') : 'N/D';\n  return `• ${l.titulo.substring(0, 60)}... (${import_} EUR)`;\n});\n\nconst missatge = `📊 RESUM DIARI CONSTRUTECH-IA\\n` +\n  `📅 ${new Date().toLocaleDateString('ca-ES')}\\n` +\n  `✅ ${licitacions.length} licitacions noves\\n\\n` +\n  lines.join('\\n');\n\nreturn [{ json: { missatge, total: licitacions.length } }];"
+      },
+      "id": "format-resum",
+      "name": "Formata Resum",
+      "type": "n8n-nodes-base.code",
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "message": "={{ $json.missatge }}",
+        "additionalFields": {}
+      },
+      "id": "telegram-resum",
+      "name": "Telegram — Envia Resum",
+      "type": "n8n-nodes-base.telegram",
+      "position": [1000, 300]
+    }
+  ],
+  "connections": {
+    "Schedule (L-V 08:00)": {
+      "main": [[{"node": "GET Noves Licitacions", "type": "main", "index": 0}]]
+    },
+    "GET Noves Licitacions": {
+      "main": [[{"node": "Formata Resum", "type": "main", "index": 0}]]
+    },
+    "Formata Resum": {
+      "main": [[{"node": "Telegram — Envia Resum", "type": "main", "index": 0}]]
+    }
+  }
+}

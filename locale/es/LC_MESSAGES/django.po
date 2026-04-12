@@ -1,0 +1,445 @@
+# Spanish translations for CONSTRUTECH-IA
+# Spanish is the base language — strings here pass through as-is.
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+
+msgid "Principal"
+msgstr "Principal"
+
+msgid "Licitaciones"
+msgstr "Licitaciones"
+
+msgid "Personal"
+msgstr "Personal"
+
+msgid "Fichaje"
+msgstr "Fichaje"
+
+msgid "Administración"
+msgstr "Administración"
+
+msgid "Visión general"
+msgstr "Visión general"
+
+msgid "RRHH / Fichajes"
+msgstr "RRHH / Fichajes"
+
+msgid "Gestión de usuarios"
+msgstr "Gestión de usuarios"
+
+# Informe intern — form
+msgid "Nou informe intern"
+msgstr "Nuevo informe interno"
+
+msgid "Import N/D"
+msgstr "Importe N/D"
+
+msgid "Descriu els aspectes tècnics clau: requisits, classificació empresarial necessària, medis humans i materials..."
+msgstr "Describe los aspectos técnicos clave: requisitos, clasificación empresarial necesaria, medios humanos y materiales..."
+
+msgid "Avantatges competitius, experiència prèvia, recursos disponibles..."
+msgstr "Ventajas competitivas, experiencia previa, recursos disponibles..."
+
+msgid "Limitacions, riscos, requisits que no es compleixen..."
+msgstr "Limitaciones, riesgos, requisitos que no se cumplen..."
+
+msgid "Qualsevol altre comentari rellevant, contactes, referències..."
+msgstr "Cualquier otro comentario relevante, contactos, referencias..."
+
+msgid "Recomanació"
+msgstr "Recomendación"
+
+msgid "Puntuació interna"
+msgstr "Puntuación interna"
+
+msgid "Molt baixa"
+msgstr "Muy baja"
+
+msgid "Excel·lent"
+msgstr "Excelente"
+
+msgid "Desar informe"
+msgstr "Guardar informe"
+
+msgid "Cancel·lar"
+msgstr "Cancelar"
+
+msgid "Anàlisi tècnica"
+msgstr "Análisis técnico"
+
+msgid "Punts forts i febles"
+msgstr "Puntos fuertes y débiles"
+
+msgid "Punts forts"
+msgstr "Puntos fuertes"
+
+msgid "Punts febles"
+msgstr "Puntos débiles"
+
+msgid "Observacions addicionals"
+msgstr "Observaciones adicionales"
+
+# Informe intern — detail
+msgid "Informe intern"
+msgstr "Informe interno"
+
+msgid "Tornar"
+msgstr "Volver"
+
+msgid "Descargar PDF"
+msgstr "Descargar PDF"
+
+msgid "Nou informe"
+msgstr "Nuevo informe"
+
+msgid "Autor"
+msgstr "Autor"
+
+msgid "Creat el"
+msgstr "Creado el"
+
+msgid "Puntuació"
+msgstr "Puntuación"
+
+msgid "Observacions"
+msgstr "Observaciones"
+
+msgid "Detalls"
+msgstr "Detalles"
+
+msgid "Veure licitació"
+msgstr "Ver licitación"
+
+msgid "Aquest informe no té contingut detallat."
+msgstr "Este informe no tiene contenido detallado."
+
+# Informe print
+msgid "Informe intern de licitació"
+msgstr "Informe interno de licitación"
+
+msgid "Generat el"
+msgstr "Generado el"
+
+msgid "Autor:"
+msgstr "Autor:"
+
+msgid "Data publicació"
+msgstr "Fecha publicación"
+
+msgid "Límit presentació"
+msgstr "Límite presentación"
+
+msgid "Termini execució"
+msgstr "Plazo ejecución"
+
+msgid "dies"
+msgstr "días"
+
+msgid "Procediment"
+msgstr "Procedimiento"
+
+msgid "Elaborat per"
+msgstr "Elaborado por"
+
+msgid "Vist i plau"
+msgstr "Visto bueno"
+
+msgid "Document generat automàticament"
+msgstr "Documento generado automáticamente"
+
+msgid "Imprimir / Guardar PDF"
+msgstr "Imprimir / Guardar PDF"
+
+msgid "Obre el diàleg d'impressió. Tria 'Desar com a PDF' com a impressora."
+msgstr "Abre el diálogo de impresión. Elige 'Guardar como PDF' como impresora."
+
+msgid "PDF arxivat a S3"
+msgstr "PDF archivado en S3"
+
+msgid "PDF arxivat"
+msgstr "PDF archivado"
+
+# Licitació detail
+msgid "Detall licitació"
+msgstr "Detalle licitación"
+
+msgid "Crear informe intern"
+msgstr "Crear informe interno"
+
+msgid "Organisme"
+msgstr "Organismo"
+
+msgid "Província"
+msgstr "Provincia"
+
+msgid "Municipi"
+msgstr "Municipio"
+
+msgid "Veure a Google Maps"
+msgstr "Ver en Google Maps"
+
+msgid "Import base (sense IVA)"
+msgstr "Importe base (sin IVA)"
+
+msgid "Import (amb IVA)"
+msgstr "Importe (con IVA)"
+
+msgid "Classificació empresarial"
+msgstr "Clasificación empresarial"
+
+msgid "Grup"
+msgstr "Grupo"
+
+msgid "Subgrup"
+msgstr "Subgrupo"
+
+msgid "Categoria"
+msgstr "Categoría"
+
+msgid "Notes"
+msgstr "Notas"
+
+msgid "Criteris d'adjudicació"
+msgstr "Criterios de adjudicación"
+
+msgid "Criteri"
+msgstr "Criterio"
+
+msgid "Punts"
+msgstr "Puntos"
+
+msgid "Fórmula"
+msgstr "Fórmula"
+
+msgid "Econòmic"
+msgstr "Económico"
+
+msgid "Plec de condicions"
+msgstr "Pliego de condiciones"
+
+msgid "Amagar"
+msgstr "Ocultar"
+
+msgid "Veure inline"
+msgstr "Ver inline"
+
+msgid "Descarregar PDF"
+msgstr "Descargar PDF"
+
+msgid "PDF disponible a S3 però no es pot generar l'URL en aquest moment."
+msgstr "PDF disponible en S3 pero no se puede generar la URL en este momento."
+
+msgid "Informes interns"
+msgstr "Informes internos"
+
+msgid "Nou"
+msgstr "Nuevo"
+
+msgid "Documenta la teva anàlisi interna d'aquesta licitació"
+msgstr "Documenta tu análisis interno de esta licitación"
+
+msgid "Canviar estat"
+msgstr "Cambiar estado"
+
+msgid "Desar canvi"
+msgstr "Guardar cambio"
+
+msgid "Metadades"
+msgstr "Metadatos"
+
+msgid "Actualitzat el"
+msgstr "Actualizado el"
+
+msgid "Rellevant"
+msgstr "Relevante"
+
+msgid "Origen"
+msgstr "Origen"
+
+msgid "Veure a contratacionesdelestado.es"
+msgstr "Ver en contratacionesdelestado.es"
+
+# base.html
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Tancar sessió"
+msgstr "Cerrar sesión"
+
+# login.html
+msgid "Accés"
+msgstr "Acceso"
+
+msgid "Portal de Licitacions"
+msgstr "Portal de Licitaciones"
+
+msgid "Usuari"
+msgstr "Usuario"
+
+msgid "Contrasenya"
+msgstr "Contraseña"
+
+msgid "Accedir"
+msgstr "Acceder"
+
+# admin/user_form.html
+msgid "Volver"
+msgstr "Volver"
+
+msgid "Usuario"
+msgstr "Usuario"
+
+msgid "Contraseña"
+msgstr "Contraseña"
+
+msgid "vacío = no cambiar"
+msgstr "vacío = no cambiar"
+
+msgid "Nombre"
+msgstr "Nombre"
+
+msgid "Apellidos"
+msgstr "Apellidos"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Teléfono"
+msgstr "Teléfono"
+
+msgid "Rol"
+msgstr "Rol"
+
+msgid "Departamento"
+msgstr "Departamento"
+
+msgid "Fecha de alta"
+msgstr "Fecha de alta"
+
+msgid "Usuario activo"
+msgstr "Usuario activo"
+
+msgid "Notas internas"
+msgstr "Notas internas"
+
+msgid "Cancelar"
+msgstr "Cancelar"
+
+msgid "Guardar"
+msgstr "Guardar"
+
+# Territorios — ciudades
+msgid "Ciutats / Municipis preferits"
+msgstr "Ciudades / Municipios favoritos"
+
+msgid "Licitaciones d'aquests municipis apareixeran als teus territoris"
+msgstr "Las licitaciones de estos municipios aparecerán en tus territorios"
+
+msgid "Escriu un municipi..."
+msgstr "Escribe un municipio..."
+
+msgid "Desar ciutats"
+msgstr "Guardar ciudades"
+
+msgid "Encara no hi ha municipis. Escriu un nom i fes clic a Afegir."
+msgstr "Aún no hay municipios. Escribe un nombre y haz clic en Añadir."
+
+# Territories
+msgid "Territoris"
+msgstr "Territorios"
+
+msgid "Territoris preferents"
+msgstr "Territorios preferidos"
+
+msgid "Selecció de territoris"
+msgstr "Selección de territorios"
+
+msgid "Marca la principal (⭐) i les preferides (♥)"
+msgstr "Marca la principal (⭐) y las preferidas (♥)"
+
+msgid "Fes clic a ⭐ per marcar com a principal, ♥ per afegir a preferits."
+msgstr "Haz clic en ⭐ para marcar como principal, ♥ para añadir a favoritos."
+
+msgid "Província principal"
+msgstr "Provincia principal"
+
+msgid "Preferida"
+msgstr "Favorita"
+
+msgid "Marcar com a principal"
+msgstr "Marcar como principal"
+
+msgid "Marcar com a preferida"
+msgstr "Marcar como favorita"
+
+msgid "Desar preferències"
+msgstr "Guardar preferencias"
+
+msgid "Contactes provincials"
+msgstr "Contactos provinciales"
+
+msgid "Nou contacte"
+msgstr "Nuevo contacto"
+
+msgid "Nou contacte provincial"
+msgstr "Nuevo contacto provincial"
+
+msgid "Filtrar per província:"
+msgstr "Filtrar por provincia:"
+
+msgid "Totes"
+msgstr "Todas"
+
+msgid "Nom"
+msgstr "Nombre"
+
+msgid "Empresa"
+msgstr "Empresa"
+
+msgid "Telèfon"
+msgstr "Teléfono"
+
+msgid "Afegir"
+msgstr "Añadir"
+
+msgid "Editar contacte"
+msgstr "Editar contacto"
+
+msgid "Editar"
+msgstr "Editar"
+
+msgid "Eliminar"
+msgstr "Eliminar"
+
+msgid "Desar canvis"
+msgstr "Guardar cambios"
+
+msgid "Encara no hi ha contactes. Afegeix el primer contacte provincial."
+msgstr "Aún no hay contactos. Añade el primer contacto provincial."
+
+msgid "Contactes locals"
+msgstr "Contactos locales"
+
+msgid "Cap contacte per a aquesta província."
+msgstr "Sin contactos para esta provincia."
+
+msgid "Els meus territoris"
+msgstr "Mis territorios"
+
+msgid "licitacions"
+msgstr "licitaciones"
+
+msgid "noves"
+msgstr "nuevas"
+
+msgid "Veure totes"
+msgstr "Ver todas"
+
+msgid "Encara no hi ha licitacions en els teus territoris."
+msgstr "Aún no hay licitaciones en tus territorios."
+
+msgid "Territoris:"
+msgstr "Territorios:"

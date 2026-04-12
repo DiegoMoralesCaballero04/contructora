@@ -1,0 +1,165 @@
+{
+  "name": "CONSTRUTECH-IA — TEST Pipeline (sin scraping)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "n1-manual",
+      "name": "▶️ Trigger Manual",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://django:8000/api/v1/licitacions/?estado=NUEVA&ordering=-importe_base&page_size=5",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "X-API-Key", "value": "={{ $env.CONSTRUTECH_API_KEY }}" }]
+        },
+        "options": {}
+      },
+      "id": "n4-fetch-noves",
+      "name": "📋 Obtener licitaciones (TEST)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [340, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst licitaciones = data.results || [];\n\nif (licitaciones.length === 0) {\n  return [{ json: { continuar: false, total: 0, mensaje: 'No hay licitaciones en la BD para testear.' } }];\n}\n\nreturn licitaciones.map(l => ({\n  json: {\n    continuar: true,\n    id: l.id,\n    expediente_id: l.expediente_id,\n    titulo: l.titulo,\n    importe_base: l.importe_base,\n    provincia: l.provincia,\n    organismo: l.organismo_nombre,\n    fecha_limite: l.fecha_limite_oferta,\n    dias_restantes: l.dias_restantes,\n    url: `http://django:8000/api/v1/licitacions/${l.id}/`,\n    pdf_disponible: l.pdf_descargado,\n    total_licitaciones: licitaciones.length\n  }\n}));"
+      },
+      "id": "n5-split",
+      "name": "📊 Dividir por licitación",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [580, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.continuar }}",
+              "rightValue": "",
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ]
+        }
+      },
+      "id": "n6-if",
+      "name": "❓ ¿Hay licitaciones?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [820, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const l = $json;\n\nconst importe_fmt = l.importe_base\n  ? parseFloat(l.importe_base).toLocaleString('es-ES', { minimumFractionDigits: 0 })\n  : 'N/D';\n\nconst plazo_txt = l.dias_restantes !== null && l.dias_restantes !== undefined\n  ? `${l.dias_restantes} días`\n  : 'sin fecha';\n\nconst prompt = `Analiza la siguiente licitación pública española y genera un resumen ejecutivo de UNA sola frase (máximo 80 palabras) destacando el aspecto más relevante para una empresa constructora.\\n\\nLicitación:\\n- Título: ${l.titulo}\\n- Organismo: ${l.organismo || 'Desconocido'}\\n- Provincia: ${l.provincia || 'N/D'}\\n- Importe base: ${importe_fmt} EUR\\n- Plazo de presentación: ${plazo_txt}\\n\\nResponde ÚNICAMENTE con el resumen, sin introducción ni explicación adicional.`;\n\nreturn [{ json: { ...l, prompt, importe_fmt, plazo_txt } }];"
+      },
+      "id": "n7-prompt",
+      "name": "✏️ Preparar prompt Ollama",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1060, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'llama3.2:3b', prompt: $json.prompt, stream: false, options: { temperature: 0.3, num_predict: 150 } }) }}",
+        "options": { "timeout": 60000 }
+      },
+      "id": "n8-ollama",
+      "name": "🤖 Ollama — Resumen IA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1300, 180]
+    },
+    {
+      "parameters": {
+        "jsCode": "const prev = $('✏️ Preparar prompt Ollama').item.json;\nconst ollamaResp = $input.item.json;\n\nif (!prev.id) return [];\n\nconst resumen_ia = (ollamaResp.response || '').trim();\n\nreturn [{\n  json: {\n    ...prev,\n    resumen_ia,\n    ok: resumen_ia.length > 0\n  }\n}];"
+      },
+      "id": "n9-combina",
+      "name": "🔗 Combinar datos + resumen IA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1540, 180]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nif (items.length === 0) {\n  return [{ json: { mensaje: 'Ninguna licitación procesada.', total: 0 } }];\n}\n\nconst lines = items.slice(0, 10).map((item, i) => {\n  const l = item.json;\n  const importe_txt = l.importe_fmt ? `${l.importe_fmt} EUR` : 'N/D';\n  return `${i + 1}. *${l.titulo?.substring(0, 70) || 'N/D'}*\\n   📍 ${l.provincia || 'N/D'} | 💶 ${importe_txt} | ⏰ ${l.plazo_txt || 'N/D'}\\n   _${l.resumen_ia?.substring(0, 100) || '—'}_`;\n});\n\nconst resto = items.length > 10 ? `\\n... y ${items.length - 10} licitaciones más.` : '';\n\nconst mensaje = `🧪 *[TEST] CONSTRUTECH-IA*\\n📅 ${new Date().toLocaleDateString('es-ES')}\\n✅ ${items.length} licitaciones analizadas (sin marcar como revisadas)\\n\\n${lines.join('\\n\\n')}${resto}`;\n\nreturn [{ json: { mensaje, total: items.length } }];"
+      },
+      "id": "n11-informe",
+      "name": "📝 Generar informe final",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1780, 180]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "n12-telegram",
+      "name": "📱 Telegram — Informe TEST",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [2020, 180],
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram CONSTRUTECH" } }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "={{ `🧪 *[TEST] CONSTRUTECH-IA*\\n📅 ${$now.format('dd/MM/yyyy')}\\n\\n⚠️ No hay licitaciones con estado NUEVA en la base de datos.\\n_Comprueba que existen registros en estado NUEVA para poder testear._` }}",
+        "additionalFields": { "parse_mode": "Markdown" }
+      },
+      "id": "n13-telegram-vacio",
+      "name": "📱 Telegram — Sin datos TEST",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1060, 420],
+      "credentials": { "telegramApi": { "id": "1", "name": "Telegram CONSTRUTECH" } }
+    }
+  ],
+  "connections": {
+    "▶️ Trigger Manual": {
+      "main": [[{ "node": "📋 Obtener licitaciones (TEST)", "type": "main", "index": 0 }]]
+    },
+    "📋 Obtener licitaciones (TEST)": {
+      "main": [[{ "node": "📊 Dividir por licitación", "type": "main", "index": 0 }]]
+    },
+    "📊 Dividir por licitación": {
+      "main": [[{ "node": "❓ ¿Hay licitaciones?", "type": "main", "index": 0 }]]
+    },
+    "❓ ¿Hay licitaciones?": {
+      "main": [
+        [{ "node": "✏️ Preparar prompt Ollama", "type": "main", "index": 0 }],
+        [{ "node": "📱 Telegram — Sin datos TEST", "type": "main", "index": 0 }]
+      ]
+    },
+    "✏️ Preparar prompt Ollama": {
+      "main": [[{ "node": "🤖 Ollama — Resumen IA", "type": "main", "index": 0 }]]
+    },
+    "🤖 Ollama — Resumen IA": {
+      "main": [[{ "node": "🔗 Combinar datos + resumen IA", "type": "main", "index": 0 }]]
+    },
+    "🔗 Combinar datos + resumen IA": {
+      "main": [[{ "node": "📝 Generar informe final", "type": "main", "index": 0 }]]
+    },
+    "📝 Generar informe final": {
+      "main": [[{ "node": "📱 Telegram — Informe TEST", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "tags": ["construtech", "licitaciones", "test"]
+}

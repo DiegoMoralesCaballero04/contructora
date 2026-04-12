@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; }
+  .header { background: #1a4b8c; color: white; padding: 20px; }
+  .badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+  .import { font-size: 24px; font-weight: bold; color: #1a4b8c; }
+  .field { margin: 10px 0; padding: 8px; border-left: 3px solid #1a4b8c; }
+  .footer { background: #f5f5f5; padding: 15px; font-size: 12px; color: #666; margin-top: 20px; }
+  .btn { display: inline-block; padding: 10px 20px; background: #1a4b8c; color: white; text-decoration: none; border-radius: 4px; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1 style="margin:0">🏗 CONSTRUTECH-IA</h1>
+    <p style="margin:5px 0 0">Nova licitació detectada</p>
+  </div>
+
+  <div style="padding: 20px">
+    <h2 style="color:#1a4b8c">{{ licitacio.titulo }}</h2>
+
+    <div class="import">{{ licitacio.importe_base|floatformat:0 }} EUR</div>
+
+    <div class="field">
+      <strong>Organisme:</strong> {{ licitacio.organismo.nombre|default:"N/D" }}
+    </div>
+    <div class="field">
+      <strong>Província:</strong> {{ licitacio.provincia|default:"N/D" }}
+    </div>
+    <div class="field">
+      <strong>Termini presentació:</strong> {{ licitacio.fecha_limite_oferta|default:"N/D" }}
+    </div>
+    <div class="field">
+      <strong>Procediment:</strong> {{ licitacio.get_procedimiento_display }}
+    </div>
+    {% if licitacio.clasificacion_grupo %}
+    <div class="field">
+      <strong>Classificació:</strong>
+      Grup {{ licitacio.clasificacion_grupo }}
+      {% if licitacio.clasificacion_subgrupo %}, Subgrup {{ licitacio.clasificacion_subgrupo }}{% endif %}
+      {% if licitacio.clasificacion_categoria %}, Cat. {{ licitacio.clasificacion_categoria }}{% endif %}
+    </div>
+    {% endif %}
+
+    {% if licitacio.tiene_extraccion and licitacio.extraccion.resum_executiu %}
+    <div style="background:#f0f7ff; padding:15px; border-radius:6px; margin-top:15px">
+      <strong>Resum IA:</strong><br>
+      {{ licitacio.extraccion.resum_executiu }}
+    </div>
+    {% endif %}
+
+    <div style="margin-top: 20px">
+      <a href="{{ url }}" class="btn">Veure al panell</a>
+      {% if licitacio.url_origen %}
+      &nbsp;&nbsp;
+      <a href="{{ licitacio.url_origen }}" style="color:#1a4b8c">Veure a PLACE →</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="footer">
+    CONSTRUTECH-IA · Sistema automàtic de vigilància de licitacions<br>
+    Per desactivar les alertes, accedeix al panell de configuració.
+  </div>
+</body>
+</html>

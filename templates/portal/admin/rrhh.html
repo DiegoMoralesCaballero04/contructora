@@ -1,0 +1,130 @@
+{% extends 'portal/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "RRHH" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{% trans "RRHH — Fichajes" %}{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm mb-3">
+  <div class="card-body py-2">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-auto">
+        <label class="form-label small mb-0">{% trans "Fecha" %}</label>
+        <input type="date" name="data" class="form-control form-control-sm" value="{{ data_filtre|date:'Y-m-d' }}">
+      </div>
+      <div class="col-auto d-flex gap-1">
+        <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-search"></i></button>
+        <a href="?data={{ avui|date:'Y-m-d' }}" class="btn btn-sm btn-outline-secondary">{% trans "Hoy" %}</a>
+      </div>
+      <div class="col-auto ms-auto">
+        <span class="text-muted small">
+          {% trans "Semana:" %} {{ dilluns|date:"d/m" }} – {{ diumenge|date:"d/m/Y" }}
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-semibold">
+          <i class="bi bi-calendar-day me-1"></i>
+          {% trans "Fichajes" %} — {{ data_filtre|date:"l d/m/Y" }}
+        </h6>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm mb-0 small">
+          <thead class="table-light">
+            <tr>
+              <th>{% trans "Trabajador" %}</th>
+              <th>{% trans "Rol" %}</th>
+              <th>{% trans "Entrada" %}</th>
+              <th>{% trans "Salida" %}</th>
+              <th>{% trans "Horas" %}</th>
+              <th>{% trans "Estado" %}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for f in fitxatges %}
+            <tr>
+              <td>{{ f.user.get_full_name|default:f.user.username }}</td>
+              <td>
+                {% if f.user.profile %}
+                <span class="badge badge-{{ f.user.profile.role }}" style="font-size:.65rem;">{{ f.user.profile.get_role_display }}</span>
+                {% endif %}
+              </td>
+              <td>{{ f.entrada|time:"H:i"|default:"—" }}</td>
+              <td>{% if f.sortida %}{{ f.sortida|time:"H:i" }}{% elif f.entrada %}<span class="text-warning fw-bold">{% trans "En curso" %}</span>{% else %}—{% endif %}</td>
+              <td>{% if f.hores_treballades %}<strong>{{ f.hores_treballades }}h</strong>{% else %}—{% endif %}</td>
+              <td>
+                {% if f.sortida %}<span class="badge bg-success">{% trans "Completo" %}</span>
+                {% elif f.entrada %}<span class="badge bg-warning text-dark">{% trans "Trabajando" %}</span>
+                {% else %}<span class="badge bg-secondary">{% trans "Ausente" %}</span>{% endif %}
+              </td>
+              <td><a href="{% url 'portal:admin_fichaje_edit' f.pk %}" class="btn btn-xs btn-outline-secondary py-0 px-1" style="font-size:.75rem;"><i class="bi bi-pencil"></i></a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="text-center text-muted py-3">{% trans "Sin fichajes para esta fecha." %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-bar-chart me-1"></i>{% trans "Resumen semanal" %}</h6>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm mb-0 small">
+          <thead class="table-light">
+            <tr>
+              <th>{% trans "Trabajador" %}</th>
+              <th class="text-end">{% trans "Días" %}</th>
+              <th class="text-end">{% trans "Total horas" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in resum_setmana %}
+            <tr>
+              <td>{{ row.user.get_full_name|default:row.user.username }}</td>
+              <td class="text-end">{{ row.dies }}</td>
+              <td class="text-end"><strong>{{ row.hores|floatformat:2 }}h</strong></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" class="text-center text-muted py-3">{% trans "Sin fichajes esta semana." %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mt-3">
+      <div class="card-header bg-white d-flex justify-content-between">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-people me-1"></i>{% trans "Personal activo" %}</h6>
+        {% if profile.can_manage_users %}
+        <a href="{% url 'portal:admin_users' %}" class="btn btn-sm btn-outline-primary py-0">{% trans "Gestionar" %}</a>
+        {% endif %}
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for u in users_actius %}
+        <li class="list-group-item d-flex justify-content-between align-items-center py-2 small">
+          <div>
+            <span class="fw-semibold">{{ u.get_full_name|default:u.username }}</span>
+            {% if u.profile.departament %}<span class="text-muted ms-1">· {{ u.profile.departament }}</span>{% endif %}
+          </div>
+          {% if u.profile %}
+          <span class="badge badge-{{ u.profile.role }}" style="font-size:.65rem;">{{ u.profile.get_role_display }}</span>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% load i18n %}
+{% get_current_language as CURRENT_LANG %}
+<!DOCTYPE html>
+<html lang="{{ CURRENT_LANG|default:'es' }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}CONSTRUTECH-IA{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    :root { --sidebar-w: 230px; --primary: #1a3a5c; --accent: #e8842a; }
+    body { background: #f0f2f5; font-size: .91rem; }
+    .sidebar {
+      width: var(--sidebar-w); min-height: 100vh; background: var(--primary);
+      position: fixed; top: 0; left: 0; display: flex; flex-direction: column; z-index: 100;
+    }
+    .sidebar-brand { padding: 1.1rem 1rem; color:#fff; font-weight:700; font-size:1.05rem; border-bottom:1px solid rgba(255,255,255,.1); }
+    .sidebar-brand span { color: var(--accent); }
+    .sidebar-section { padding: .35rem 1rem .1rem; font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.35); }
+    .sidebar-nav { flex:1; padding:.5rem 0; overflow-y:auto; }
+    .sidebar-nav .nav-link {
+      color:rgba(255,255,255,.7); padding:.5rem 1rem; display:flex; align-items:center; gap:.6rem;
+      transition:all .12s; font-size:.88rem;
+    }
+    .sidebar-nav .nav-link:hover, .sidebar-nav .nav-link.active {
+      color:#fff; background:rgba(255,255,255,.1); border-left:3px solid var(--accent); padding-left:calc(1rem - 3px);
+    }
+    .sidebar-footer { padding:.85rem 1rem; border-top:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.45); font-size:.78rem; }
+    .role-badge { font-size:.65rem; padding:.15rem .45rem; border-radius:20px; background:rgba(255,255,255,.15); color:rgba(255,255,255,.8); }
+    .main-content { margin-left:var(--sidebar-w); min-height:100vh; display:flex; flex-direction:column; }
+    .topbar { background:#fff; border-bottom:1px solid #e0e0e0; padding:.7rem 1.5rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+    .page-content { padding:1.25rem 1.5rem; flex:1; }
+    .stat-card { background:#fff; border-radius:8px; padding:1.1rem 1.25rem; box-shadow:0 1px 3px rgba(0,0,0,.06); border-left:4px solid var(--accent); }
+    .stat-card .val { font-size:1.9rem; font-weight:700; color:var(--primary); line-height:1.1; }
+    .stat-card .lbl { color:#6c757d; font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; margin-top:.2rem; }
+    .badge-NUEVA { background:#17a2b8!important; }
+    .badge-REVISADA { background:#28a745!important; }
+    .badge-DESCARTADA { background:#6c757d!important; }
+    .badge-EN_PREPARACION { background:#fd7e14!important; }
+    .badge-PRESENTADA { background:#007bff!important; }
+    .badge-ADJUDICADA { background:#20c997!important; }
+    .badge-DESIERTA { background:#dc3545!important; }
+    .badge-ADMIN { background:#6f42c1!important; }
+    .badge-JEFE { background:#1a3a5c!important; }
+    .badge-SUPERVISOR { background:#fd7e14!important; }
+    .badge-TRABAJADOR { background:#28a745!important; }
+    @media(max-width:768px){ .sidebar{display:none;} .main-content{margin-left:0;} }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+{% if user.is_authenticated %}
+<div class="sidebar">
+  <div class="sidebar-brand">CONSTRUTECH<span>-IA</span></div>
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">{% trans "Principal" %}</div>
+    <a href="{% url 'portal:dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+      <i class="bi bi-speedometer2"></i> {% trans "Dashboard" %}
+    </a>
+    <a href="{% url 'portal:licitacions_list' %}" class="nav-link {% if 'licitaci' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-file-earmark-text"></i> {% trans "Licitaciones" %}
+    </a>
+    <div class="sidebar-section mt-2">{% trans "Personal" %}</div>
+    <a href="{% url 'portal:fichar' %}" class="nav-link {% if request.resolver_match.url_name == 'fichar' %}active{% endif %}">
+      <i class="bi bi-clock-history"></i> {% trans "Fichaje" %}
+    </a>
+    {% if profile.can_see_rrhh %}
+    <div class="sidebar-section mt-2">{% trans "Administración" %}</div>
+    <a href="{% url 'portal:admin_overview' %}" class="nav-link {% if request.resolver_match.url_name == 'admin_overview' %}active{% endif %}">
+      <i class="bi bi-grid-3x3-gap"></i> {% trans "Visión general" %}
+    </a>
+    <a href="{% url 'portal:admin_rrhh' %}" class="nav-link {% if request.resolver_match.url_name == 'admin_rrhh' %}active{% endif %}">
+      <i class="bi bi-people"></i> {% trans "RRHH / Fichajes" %}
+    </a>
+    {% if profile.can_manage_users %}
+    <a href="{% url 'portal:admin_users' %}" class="nav-link {% if 'admin_user' in request.resolver_match.url_name %}active{% endif %}">
+      <i class="bi bi-person-gear"></i> {% trans "Gestión de usuarios" %}
+    </a>
+    <a href="{% url 'portal:territoris' %}" class="nav-link {% if request.resolver_match.url_name == 'territoris' %}active{% endif %}">
+      <i class="bi bi-geo-alt"></i> {% trans "Territoris" %}
+    </a>
+    {% endif %}
+    {% endif %}
+  </nav>
+  <div class="sidebar-footer">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <div>
+        <i class="bi bi-person-circle me-1"></i>{{ user.get_full_name|default:user.username }}
+        {% if profile %}<span class="role-badge ms-1">{{ profile.get_role_display }}</span>{% endif %}
+      </div>
+      <form method="post" action="{% url 'portal:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link btn-sm p-0" style="color:rgba(255,255,255,.5)" title="{% trans 'Tancar sessió' %}">
+          <i class="bi bi-box-arrow-right fs-5"></i>
+        </button>
+      </form>
+    </div>
+    <form method="post" action="{% url 'portal:set_language' %}" class="d-flex gap-1">
+      {% csrf_token %}
+      <select name="language" class="form-select form-select-sm" style="background:#2a4a6c;color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.2);font-size:.75rem;" onchange="this.form.submit()">
+        <option value="es" {% if CURRENT_LANG == 'es' %}selected{% endif %}>ES</option>
+        <option value="ca" {% if CURRENT_LANG == 'ca' %}selected{% endif %}>CA</option>
+        <option value="en" {% if CURRENT_LANG == 'en' %}selected{% endif %}>EN</option>
+      </select>
+    </form>
+  </div>
+</div>
+
+<div class="main-content">
+  <div class="topbar">
+    <h6 class="mb-0 fw-semibold text-secondary">{% block page_title %}{% endblock %}</h6>
+    <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>{% now "d/m/Y H:i" %}</small>
+  </div>
+  <div class="page-content">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show py-2" role="alert">
+      {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+{% else %}
+{% block body %}{% endblock %}
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

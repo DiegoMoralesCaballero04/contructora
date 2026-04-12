@@ -1,0 +1,21 @@
+CONSTRUTECH-IA — Nova licitació detectada
+==========================================
+
+{{ licitacio.titulo }}
+
+Import: {{ licitacio.importe_base }} EUR
+Organisme: {{ licitacio.organismo.nombre|default:"N/D" }}
+Província: {{ licitacio.provincia|default:"N/D" }}
+Termini: {{ licitacio.fecha_limite_oferta|default:"N/D" }}
+Procediment: {{ licitacio.get_procedimiento_display }}
+
+{% if licitacio.tiene_extraccion and licitacio.extraccion.resum_executiu %}
+RESUM IA:
+{{ licitacio.extraccion.resum_executiu }}
+{% endif %}
+
+Veure al panell: {{ url }}
+Veure a PLACE: {{ licitacio.url_origen }}
+
+---
+CONSTRUTECH-IA · Sistema automàtic de vigilància de licitacions

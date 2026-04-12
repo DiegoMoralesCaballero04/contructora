@@ -1,0 +1,193 @@
+{% load i18n humanize %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'es' }}">
+<head>
+  <meta charset="UTF-8">
+  <title>{% trans "Informe intern" %} — {{ informe.licitacion.expediente_id }}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #111; background: #fff; }
+
+    /* ── Print page setup ── */
+    @page { size: A4; margin: 20mm 18mm 20mm 18mm; }
+    @media print {
+      .no-print { display: none !important; }
+      body { font-size: 10pt; }
+      .page-break { page-break-before: always; }
+    }
+
+    /* ── Screen preview ── */
+    @media screen {
+      body { background: #e8e8e8; padding: 20px; }
+      .page { background: #fff; max-width: 210mm; margin: 0 auto 20px; padding: 20mm 18mm; box-shadow: 0 2px 12px rgba(0,0,0,.2); }
+    }
+
+    /* ── Header ── */
+    .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #1a3a5c; padding-bottom: 10px; margin-bottom: 14px; }
+    .header-brand { font-size: 18pt; font-weight: 700; color: #1a3a5c; letter-spacing: -0.5px; }
+    .header-brand span { color: #e07b00; }
+    .header-meta { text-align: right; font-size: 9pt; color: #555; }
+    .header-meta strong { display: block; font-size: 11pt; color: #1a3a5c; }
+
+    /* ── Titles ── */
+    h1 { font-size: 14pt; color: #1a3a5c; margin-bottom: 4px; }
+    h2 { font-size: 11pt; color: #1a3a5c; margin: 14px 0 6px; border-left: 3px solid #e07b00; padding-left: 8px; }
+
+    /* ── Info block ── */
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; margin-bottom: 14px; }
+    .info-item { border-bottom: 1px dotted #ddd; padding-bottom: 4px; }
+    .info-label { font-size: 8pt; text-transform: uppercase; letter-spacing: .04em; color: #888; }
+    .info-value { font-size: 10pt; font-weight: 600; color: #111; }
+
+    /* ── Badges ── */
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 9pt; font-weight: 700; }
+    .badge-PRESENTAR { background: #d4edda; color: #155724; }
+    .badge-DESCARTAR { background: #f8d7da; color: #721c24; }
+    .badge-ESTUDIAR  { background: #fff3cd; color: #856404; }
+
+    /* ── Content sections ── */
+    .section { margin-bottom: 12px; }
+    .section p { font-size: 10pt; line-height: 1.6; white-space: pre-wrap; color: #222; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .col-label { font-size: 8pt; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+    .col-forts { color: #155724; }
+    .col-febles { color: #721c24; }
+
+    /* ── Signature ── */
+    .signature { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .sig-box { border-top: 1px solid #aaa; padding-top: 6px; font-size: 9pt; color: #555; }
+
+    /* ── Footer ── */
+    .footer { margin-top: 16px; border-top: 1px solid #ddd; padding-top: 8px; font-size: 8pt; color: #999; display: flex; justify-content: space-between; }
+
+    /* ── Print button bar ── */
+    .print-bar { background: #1a3a5c; color: #fff; padding: 10px 20px; display: flex; gap: 12px; align-items: center; }
+    .print-bar button { padding: 6px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 10pt; }
+    .btn-print { background: #e07b00; color: #fff; }
+    .btn-back  { background: #fff; color: #1a3a5c; }
+  </style>
+</head>
+<body>
+
+<!-- Barra de control (no s'imprimeix) -->
+<div class="print-bar no-print">
+  <button class="btn-back" onclick="window.close()">&#8592; {% trans "Tornar" %}</button>
+  <button class="btn-print" onclick="window.print()">&#128438; {% trans "Imprimir / Guardar PDF" %}</button>
+  <span style="margin-left:auto; font-size:9pt; opacity:.7;">{% trans "Obre el diàleg d'impressió. Tria 'Desar com a PDF' com a impressora." %}</span>
+</div>
+
+<div class="page">
+  <!-- Capçalera -->
+  <div class="header">
+    <div>
+      <div class="header-brand">CONSTRUTECH<span>·IA</span></div>
+      <div style="font-size:9pt; color:#555; margin-top:2px;">{% trans "Informe intern de licitació" %}</div>
+    </div>
+    <div class="header-meta">
+      <strong>{{ informe.licitacion.expediente_id }}</strong>
+      {% trans "Generat el" %} {{ informe.creado_en|date:"d/m/Y" }}<br>
+      {% trans "Autor:" %} {{ informe.autor.get_full_name|default:informe.autor.username }}
+    </div>
+  </div>
+
+  <!-- Títol licitació -->
+  <h1>{{ informe.licitacion.titulo }}</h1>
+  <div style="font-size:9pt; color:#555; margin-bottom:12px;">
+    {{ informe.licitacion.organismo.nombre|default:"—" }} ·
+    {{ informe.licitacion.provincia|default:"—" }} ·
+    {% if informe.licitacion.importe_base %}{{ informe.licitacion.importe_base|floatformat:0|intcomma }} €{% else %}{% trans "Import N/D" %}{% endif %}
+  </div>
+
+  <!-- Info resum -->
+  <div class="info-grid">
+    <div class="info-item">
+      <div class="info-label">{% trans "Recomanació" %}</div>
+      <div class="info-value">
+        <span class="badge badge-{{ informe.recomendacio }}">{{ informe.get_recomendacio_display }}</span>
+      </div>
+    </div>
+    {% if informe.puntuacio %}
+    <div class="info-item">
+      <div class="info-label">{% trans "Puntuació interna" %}</div>
+      <div class="info-value">{{ informe.puntuacio }}/10</div>
+    </div>
+    {% endif %}
+    <div class="info-item">
+      <div class="info-label">{% trans "Data publicació" %}</div>
+      <div class="info-value">{{ informe.licitacion.fecha_publicacion|date:"d/m/Y"|default:"—" }}</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">{% trans "Límit presentació" %}</div>
+      <div class="info-value">{{ informe.licitacion.fecha_limite_oferta|date:"d/m/Y H:i"|default:"—" }}</div>
+    </div>
+    {% if informe.licitacion.plazo_ejecucion_dias %}
+    <div class="info-item">
+      <div class="info-label">{% trans "Termini execució" %}</div>
+      <div class="info-value">{{ informe.licitacion.plazo_ejecucion_dias }} {% trans "dies" %}</div>
+    </div>
+    {% endif %}
+    <div class="info-item">
+      <div class="info-label">{% trans "Procediment" %}</div>
+      <div class="info-value">{{ informe.licitacion.get_procedimiento_display }}</div>
+    </div>
+  </div>
+
+  <!-- Anàlisi tècnica -->
+  {% if informe.analisi_tecnica %}
+  <div class="section">
+    <h2>{% trans "Anàlisi tècnica" %}</h2>
+    <p>{{ informe.analisi_tecnica }}</p>
+  </div>
+  {% endif %}
+
+  <!-- Punts forts / febles -->
+  {% if informe.punts_forts or informe.punts_febles %}
+  <div class="section">
+    <h2>{% trans "Punts forts i febles" %}</h2>
+    <div class="two-col">
+      <div>
+        <div class="col-label col-forts">&#43; {% trans "Punts forts" %}</div>
+        <p>{{ informe.punts_forts|default:"—" }}</p>
+      </div>
+      <div>
+        <div class="col-label col-febles">&#8722; {% trans "Punts febles" %}</div>
+        <p>{{ informe.punts_febles|default:"—" }}</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Observacions -->
+  {% if informe.observacions %}
+  <div class="section">
+    <h2>{% trans "Observacions" %}</h2>
+    <p>{{ informe.observacions }}</p>
+  </div>
+  {% endif %}
+
+  <!-- Firma -->
+  <div class="signature">
+    <div class="sig-box">
+      <strong>{% trans "Elaborat per" %}</strong><br>
+      {{ informe.autor.get_full_name|default:informe.autor.username }}<br>
+      <span style="color:#aaa;">{{ informe.creado_en|date:"d/m/Y" }}</span>
+    </div>
+    <div class="sig-box">
+      <strong>{% trans "Vist i plau" %}</strong><br><br>
+      <span style="color:#aaa;">____________________________</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>CONSTRUTECH-IA &mdash; {% trans "Document generat automàticament" %}</span>
+    <span>{{ informe.licitacion.expediente_id }} &mdash; {{ informe.creado_en|date:"d/m/Y H:i" }}</span>
+  </div>
+</div>
+
+<script>
+  // Auto-print only when opened as popup (window.opener exists)
+  // so that direct URL visits don't auto-print
+  if (window.opener) { window.print(); }
+</script>
+</body>
+</html>

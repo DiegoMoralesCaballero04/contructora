@@ -1,0 +1,149 @@
+{% extends 'portal/base.html' %}
+{% load humanize i18n %}
+
+{% block title %}{% trans "Informe intern" %} — {{ informe.licitacion.expediente_id }}{% endblock %}
+{% block page_title %}{% trans "Informe intern" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <a href="#" onclick="if(history.length>1){history.back();}else{window.location='{% url 'portal:licitacio_detail' informe.licitacion.pk %}';}return false;"
+     class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> {% trans "Tornar" %}
+  </a>
+  <div class="d-flex gap-2">
+    <a href="{% url 'portal:informe_print' informe.pk %}"
+       target="_blank"
+       onclick="window.open(this.href,'_blank','width=900,height=700,scrollbars=yes');return false;"
+       class="btn btn-sm btn-danger">
+      <i class="bi bi-file-pdf me-1"></i> {% trans "Descargar PDF" %}
+    </a>
+    {% if informe_pdf_url %}
+    <a href="{{ informe_pdf_url }}" target="_blank" class="btn btn-sm btn-outline-danger" title="{% trans 'PDF arxivat a S3' %}">
+      <i class="bi bi-cloud-download me-1"></i> {% trans "PDF arxivat" %}
+    </a>
+    {% endif %}
+    <a href="{% url 'portal:informe_create' informe.licitacion.pk %}" class="btn btn-sm btn-outline-primary">
+      <i class="bi bi-plus me-1"></i> {% trans "Nou informe" %}
+    </a>
+  </div>
+</div>
+
+<!-- Capçalera -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+      <div>
+        <h5 class="mb-1 fw-semibold">
+          <a href="{% url 'portal:licitacio_detail' informe.licitacion.pk %}" class="text-decoration-none text-dark">
+            {{ informe.licitacion.titulo|truncatechars:100 }}
+          </a>
+        </h5>
+        <small class="text-muted font-monospace">{{ informe.licitacion.expediente_id }}</small>
+        <div class="mt-1 small text-muted">
+          {{ informe.licitacion.organismo.nombre|default:"—" }} ·
+          {{ informe.licitacion.provincia|default:"—" }} ·
+          {% if informe.licitacion.importe_base %}{{ informe.licitacion.importe_base|floatformat:0|intcomma }} €{% else %}{% trans "Import N/D" %}{% endif %}
+        </div>
+      </div>
+      <div class="text-end">
+        <span class="badge bg-{{ informe.recomendacio_color }} fs-6 mb-1 d-block">
+          {% if informe.recomendacio == 'PRESENTAR' %}✅{% elif informe.recomendacio == 'DESCARTAR' %}❌{% else %}🔍{% endif %}
+          {{ informe.get_recomendacio_display }}
+        </span>
+        {% if informe.puntuacio %}
+        <span class="badge bg-primary">{{ informe.puntuacio }}/10</span>
+        {% endif %}
+      </div>
+    </div>
+    <hr class="my-2">
+    <div class="d-flex gap-3 small text-muted">
+      <span><i class="bi bi-person me-1"></i>{{ informe.autor.get_full_name|default:informe.autor.username }}</span>
+      <span><i class="bi bi-calendar me-1"></i>{{ informe.creado_en|date:"d/m/Y H:i" }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-8">
+
+    {% if informe.analisi_tecnica %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-clipboard-data me-1"></i> {% trans "Anàlisi tècnica" %}</h6>
+      </div>
+      <div class="card-body small" style="white-space:pre-wrap;">{{ informe.analisi_tecnica }}</div>
+    </div>
+    {% endif %}
+
+    {% if informe.punts_forts or informe.punts_febles %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-bar-chart me-1"></i> {% trans "Punts forts i febles" %}</h6>
+      </div>
+      <div class="card-body row g-3">
+        <div class="col-md-6">
+          <p class="text-success fw-semibold small mb-1"><i class="bi bi-plus-circle me-1"></i>{% trans "Punts forts" %}</p>
+          {% if informe.punts_forts %}
+          <p class="small mb-0" style="white-space:pre-wrap;">{{ informe.punts_forts }}</p>
+          {% else %}<p class="text-muted small mb-0">—</p>{% endif %}
+        </div>
+        <div class="col-md-6">
+          <p class="text-danger fw-semibold small mb-1"><i class="bi bi-dash-circle me-1"></i>{% trans "Punts febles" %}</p>
+          {% if informe.punts_febles %}
+          <p class="small mb-0" style="white-space:pre-wrap;">{{ informe.punts_febles }}</p>
+          {% else %}<p class="text-muted small mb-0">—</p>{% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if informe.observacions %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-chat-left-text me-1"></i> {% trans "Observacions" %}</h6>
+      </div>
+      <div class="card-body small" style="white-space:pre-wrap;">{{ informe.observacions }}</div>
+    </div>
+    {% endif %}
+
+    {% if not informe.analisi_tecnica and not informe.punts_forts and not informe.punts_febles and not informe.observacions %}
+    <div class="text-center text-muted py-4">
+      <i class="bi bi-file-earmark fs-2"></i>
+      <p class="mt-2">{% trans "Aquest informe no té contingut detallat." %}</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-info-circle me-1"></i> {% trans "Detalls" %}</h6>
+      </div>
+      <ul class="list-group list-group-flush small">
+        <li class="list-group-item d-flex justify-content-between py-2">
+          <span class="text-muted">{% trans "Autor" %}</span>
+          <span>{{ informe.autor.get_full_name|default:informe.autor.username }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between py-2">
+          <span class="text-muted">{% trans "Creat el" %}</span>
+          <span>{{ informe.creado_en|date:"d/m/Y H:i" }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between py-2">
+          <span class="text-muted">{% trans "Recomanació" %}</span>
+          <span class="badge bg-{{ informe.recomendacio_color }}">{{ informe.get_recomendacio_display }}</span>
+        </li>
+        {% if informe.puntuacio %}
+        <li class="list-group-item d-flex justify-content-between py-2">
+          <span class="text-muted">{% trans "Puntuació" %}</span>
+          <span class="badge bg-primary">{{ informe.puntuacio }}/10</span>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+    <a href="{% url 'portal:licitacio_detail' informe.licitacion.pk %}"
+       class="btn btn-outline-secondary w-100">
+      <i class="bi bi-arrow-left me-1"></i> {% trans "Veure licitació" %}
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,512 @@
+{% extends 'portal/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Territoris preferents" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{% trans "Territoris preferents" %}{% endblock %}
+
+{% block extra_head %}
+<style>
+  .prov-card {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: .35rem .65rem;
+    cursor: pointer;
+    user-select: none;
+    transition: all .15s;
+    position: relative;
+    background: #fff;
+    min-width: 85px;
+    text-align: center;
+    font-size: .82rem;
+  }
+  .prov-card:hover { border-color: #adb5bd; background: #f8f9fa; }
+  .prov-card.is-fav {
+    border-color: #1a3a5c; background: #eaf0f7;
+    color: #1a3a5c; font-weight: 600;
+  }
+  .prov-card.is-principal {
+    border-color: #e8842a; background: #fff4e8;
+    color: #b36510; font-weight: 700;
+  }
+  .prov-actions { display: flex; justify-content: center; gap: .3rem; margin-top: .25rem; }
+  .btn-prov { border: none; background: none; padding: 0; font-size: .78rem; line-height: 1; opacity: .4; transition: opacity .1s; }
+  .btn-prov:hover, .btn-prov.active { opacity: 1; }
+  .btn-star { color: #e8842a; }
+  .btn-heart { color: #1a3a5c; }
+  .contact-badge {
+    position: absolute; top: -6px; right: -6px;
+    font-size: .6rem; background: #e8842a; color: #fff;
+    border-radius: 10px; padding: 1px 5px; font-weight: 700;
+  }
+  .comunitat-label {
+    font-size: .68rem; text-transform: uppercase; letter-spacing: .07em;
+    color: #6c757d; font-weight: 600; margin-bottom: .4rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Province selection -->
+<form method="post" id="form-territoris">
+  {% csrf_token %}
+  <input type="hidden" name="provincia_principal" id="input-principal" value="{{ config.provincia_principal }}">
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+      <div>
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-map me-2 text-primary"></i>{% trans "Selecció de territoris" %}</h6>
+        <small class="text-muted">{% trans "Marca la principal (⭐) i les preferides (♥)" %}</small>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm">
+        <i class="bi bi-check-lg me-1"></i>{% trans "Desar preferències" %}
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="d-flex gap-4 mb-3 small flex-wrap">
+        <span><i class="bi bi-star-fill text-warning me-1"></i>{% trans "Província principal" %}</span>
+        <span><i class="bi bi-heart-fill me-1" style="color:#1a3a5c;"></i>{% trans "Preferida" %}</span>
+        <span class="text-muted">{% trans "Fes clic a ⭐ per marcar com a principal, ♥ per afegir a preferits." %}</span>
+      </div>
+
+      {% for comunitat, provs in provincies_data.items %}
+      <div class="mb-3">
+        <div class="comunitat-label">{{ comunitat }}</div>
+        <div class="d-flex flex-wrap gap-2">
+          {% for p in provs %}
+          <div class="prov-card {% if p.is_principal %}is-principal{% elif p.is_fav %}is-fav{% endif %}"
+               data-prov="{{ p.nom }}" id="card-{{ p.nom|slugify }}">
+            {% if p.contact_count > 0 %}
+            <span class="contact-badge">{{ p.contact_count }}</span>
+            {% endif %}
+            <div class="prov-name">{{ p.nom }}</div>
+            <div class="prov-actions">
+              <button type="button" class="btn-prov btn-star {% if p.is_principal %}active{% endif %}"
+                      onclick="togglePrincipal('{{ p.nom|escapejs }}')" title="{% trans 'Marcar com a principal' %}">
+                <i class="bi {% if p.is_principal %}bi-star-fill{% else %}bi-star{% endif %}"></i>
+              </button>
+              <button type="button" class="btn-prov btn-heart {% if p.is_fav or p.is_principal %}active{% endif %}"
+                      onclick="toggleFavorit('{{ p.nom|escapejs }}')" title="{% trans 'Marcar com a preferida' %}">
+                <i class="bi {% if p.is_fav or p.is_principal %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+              </button>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="card-footer bg-white d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary btn-sm">
+        <i class="bi bi-check-lg me-1"></i>{% trans "Desar preferències" %}
+      </button>
+    </div>
+  </div>
+</form>
+
+<!-- Cities / municipalities -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-white d-flex justify-content-between align-items-center">
+    <div>
+      <h6 class="mb-0 fw-semibold"><i class="bi bi-building me-2 text-primary"></i>{% trans "Ciutats / Municipis preferits" %}</h6>
+      <small class="text-muted">{% trans "Licitaciones d'aquests municipis apareixeran als teus territoris" %}</small>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="d-flex gap-2 align-items-center mb-3">
+      <input type="text" id="muni-input" class="form-control form-control-sm" style="max-width:280px;"
+             placeholder="{% trans 'Escriu un municipi...' %}" onkeydown="if(event.key==='Enter'){event.preventDefault();addMuni();}">
+      <button type="button" class="btn btn-sm btn-outline-primary" onclick="addMuni()">
+        <i class="bi bi-plus-circle me-1"></i>{% trans "Afegir" %}
+      </button>
+    </div>
+    <div id="muni-tags" class="d-flex flex-wrap gap-2 mb-3">
+      {% for m in config.municipis_favorites %}
+      <span class="badge d-flex align-items-center gap-1 py-2 px-3"
+            style="background:#eaf0f7;color:#1a3a5c;border:1.5px solid #1a3a5c;font-size:.82rem;font-weight:600;">
+        <i class="bi bi-building" style="font-size:.7rem;"></i>
+        {{ m }}
+        <button type="button" onclick="removeMuni('{{ m|escapejs }}')"
+                style="border:none;background:none;padding:0;color:#1a3a5c;line-height:1;opacity:.6;" title="{% trans 'Eliminar' %}">
+          <i class="bi bi-x fs-6"></i>
+        </button>
+      </span>
+      {% empty %}
+      <span class="text-muted small" id="muni-empty">{% trans "Encara no hi ha municipis. Escriu un nom i fes clic a Afegir." %}</span>
+      {% endfor %}
+    </div>
+    <form method="post" id="form-munis">
+      {% csrf_token %}
+      <input type="hidden" name="provincia_principal" id="sync-principal" value="{{ config.provincia_principal }}">
+      <input type="hidden" name="municipis_favorites_raw" id="munis-raw" value="{{ config.municipis_favorites|join:',' }}">
+      <!-- Province favorites will be injected by JS before submit -->
+      <button type="button" class="btn btn-primary btn-sm" onclick="saveMunis()">
+        <i class="bi bi-check-lg me-1"></i>{% trans "Desar ciutats" %}
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Contacts management -->
+<div class="card shadow-sm">
+  <div class="card-header bg-white d-flex justify-content-between align-items-center">
+    <h6 class="mb-0 fw-semibold"><i class="bi bi-person-lines-fill me-2 text-primary"></i>{% trans "Contactes provincials" %}</h6>
+    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal-add-contacte">
+      <i class="bi bi-plus-circle me-1"></i>{% trans "Nou contacte" %}
+    </button>
+  </div>
+
+  <!-- Province filter -->
+  <div class="card-body pb-1 pt-2 border-bottom">
+    <div class="d-flex align-items-center gap-2">
+      <label class="text-muted small fw-semibold mb-0">{% trans "Filtrar per província:" %}</label>
+      <select id="filter-prov" class="form-select form-select-sm" style="max-width:220px;" onchange="filterContacts(this.value)">
+        <option value="">{% trans "Totes" %}</option>
+        {% for prov in all_provs %}
+        <option value="{{ prov }}">{{ prov }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  {% if contacts %}
+  <div class="table-responsive">
+    <table class="table table-sm table-hover mb-0 small" id="contacts-table">
+      <thead class="table-light">
+        <tr>
+          <th>{% trans "Província" %}</th>
+          <th>{% trans "Nom" %}</th>
+          <th>{% trans "Empresa" %}</th>
+          <th>{% trans "Rol" %}</th>
+          <th>{% trans "Telèfon" %}</th>
+          <th>{% trans "Email" %}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in contacts %}
+        <tr class="contact-row" data-prov="{{ c.provincia }}">
+          <td><span class="badge bg-light text-dark border">{{ c.provincia }}</span></td>
+          <td class="fw-semibold">{{ c.nom }}</td>
+          <td class="text-muted">{{ c.empresa|default:"—" }}</td>
+          <td>{{ c.get_rol_display }}</td>
+          <td>
+            {% if c.telefon %}
+            <a href="tel:{{ c.telefon }}" class="text-decoration-none">{{ c.telefon }}</a>
+            {% else %}—{% endif %}
+          </td>
+          <td>
+            {% if c.email %}
+            <a href="mailto:{{ c.email }}" class="text-decoration-none">{{ c.email }}</a>
+            {% else %}—{% endif %}
+          </td>
+          <td class="text-end">
+            <button type="button" class="btn btn-xs btn-outline-secondary btn-sm py-0 px-1 me-1"
+                    data-pk="{{ c.pk }}"
+                    data-url="{% url 'portal:contacte_edit' pk=c.pk %}"
+                    data-nom="{{ c.nom|escapejs }}"
+                    data-provincia="{{ c.provincia|escapejs }}"
+                    data-empresa="{{ c.empresa|escapejs }}"
+                    data-rol="{{ c.rol }}"
+                    data-telefon="{{ c.telefon|escapejs }}"
+                    data-email="{{ c.email|escapejs }}"
+                    data-notes="{{ c.notes|escapejs }}"
+                    onclick="openEditModal(this)"
+                    data-bs-toggle="modal" data-bs-target="#modal-edit-contacte"
+                    title="{% trans 'Editar' %}">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <form method="post" action="{% url 'portal:contacte_delete' pk=c.pk %}" class="d-inline"
+                  onsubmit="return confirm('{% trans "Eliminar" %} {{ c.nom|escapejs }}?')">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-xs btn-outline-danger btn-sm py-0 px-1" title="{% trans 'Eliminar' %}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="text-center text-muted py-4 small">
+    <i class="bi bi-people fs-3 d-block mb-2 opacity-25"></i>
+    {% trans "Encara no hi ha contactes. Afegeix el primer contacte provincial." %}
+  </div>
+  {% endif %}
+</div>
+
+<!-- Add contact modal -->
+<div class="modal fade" id="modal-add-contacte" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{% url 'portal:contacte_create' %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h6 class="modal-title fw-semibold"><i class="bi bi-person-plus me-2"></i>{% trans "Nou contacte provincial" %}</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Província" %} <span class="text-danger">*</span></label>
+              <select name="provincia" class="form-select form-select-sm" required id="add-provincia">
+                <option value="">—</option>
+                {% for prov in all_provs %}
+                <option value="{{ prov }}">{{ prov }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Rol" %}</label>
+              <select name="rol" class="form-select form-select-sm">
+                {% for val, lbl in rols %}
+                <option value="{{ val }}">{{ lbl }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">{% trans "Nom" %} <span class="text-danger">*</span></label>
+              <input type="text" name="nom" class="form-control form-control-sm" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">{% trans "Empresa" %}</label>
+              <input type="text" name="empresa" class="form-control form-control-sm">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Telèfon" %}</label>
+              <input type="text" name="telefon" class="form-control form-control-sm">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Email" %}</label>
+              <input type="email" name="email" class="form-control form-control-sm">
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">{% trans "Notes" %}</label>
+              <textarea name="notes" class="form-control form-control-sm" rows="2"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">{% trans "Cancel·lar" %}</button>
+          <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-lg me-1"></i>{% trans "Afegir" %}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit contact modal -->
+<div class="modal fade" id="modal-edit-contacte" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" id="form-edit-contacte">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h6 class="modal-title fw-semibold"><i class="bi bi-pencil me-2"></i>{% trans "Editar contacte" %}</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Província" %} <span class="text-danger">*</span></label>
+              <select name="provincia" class="form-select form-select-sm" required id="edit-provincia">
+                <option value="">—</option>
+                {% for prov in all_provs %}
+                <option value="{{ prov }}">{{ prov }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Rol" %}</label>
+              <select name="rol" class="form-select form-select-sm" id="edit-rol">
+                {% for val, lbl in rols %}
+                <option value="{{ val }}">{{ lbl }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">{% trans "Nom" %} <span class="text-danger">*</span></label>
+              <input type="text" name="nom" class="form-control form-control-sm" required id="edit-nom">
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">{% trans "Empresa" %}</label>
+              <input type="text" name="empresa" class="form-control form-control-sm" id="edit-empresa">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Telèfon" %}</label>
+              <input type="text" name="telefon" class="form-control form-control-sm" id="edit-telefon">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Email" %}</label>
+              <input type="email" name="email" class="form-control form-control-sm" id="edit-email">
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">{% trans "Notes" %}</label>
+              <textarea name="notes" class="form-control form-control-sm" rows="2" id="edit-notes"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">{% trans "Cancel·lar" %}</button>
+          <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check-lg me-1"></i>{% trans "Desar canvis" %}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ── Province selection state ──────────────────────────────────────────────────
+let principal = '{{ config.provincia_principal|escapejs }}';
+let favorites = new Set([{% for p in config.provincies_favorites %}'{{ p|escapejs }}',{% endfor %}]);
+
+function togglePrincipal(prov) {
+  if (principal === prov) {
+    principal = '';
+  } else {
+    principal = prov;
+    favorites.add(prov);
+  }
+  updateUI();
+}
+
+function toggleFavorit(prov) {
+  if (prov === principal) {
+    // Unset principal too
+    principal = '';
+    favorites.delete(prov);
+  } else if (favorites.has(prov)) {
+    favorites.delete(prov);
+  } else {
+    favorites.add(prov);
+  }
+  updateUI();
+}
+
+function updateUI() {
+  document.querySelectorAll('.prov-card').forEach(card => {
+    const prov = card.dataset.prov;
+    const isPrincipal = prov === principal;
+    const isFav = favorites.has(prov);
+
+    card.classList.toggle('is-principal', isPrincipal);
+    card.classList.toggle('is-fav', isFav && !isPrincipal);
+
+    const star = card.querySelector('.btn-star');
+    const heart = card.querySelector('.btn-heart');
+    const starIcon = star.querySelector('i');
+    const heartIcon = heart.querySelector('i');
+
+    starIcon.className = `bi ${isPrincipal ? 'bi-star-fill' : 'bi-star'}`;
+    star.classList.toggle('active', isPrincipal);
+
+    heartIcon.className = `bi ${(isFav || isPrincipal) ? 'bi-heart-fill' : 'bi-heart'}`;
+    heart.classList.toggle('active', isFav || isPrincipal);
+  });
+
+  // Sync hidden form inputs
+  document.getElementById('input-principal').value = principal;
+  document.querySelectorAll('.input-fav').forEach(el => el.remove());
+  const form = document.getElementById('form-territoris');
+  favorites.forEach(prov => {
+    const inp = document.createElement('input');
+    inp.type = 'hidden';
+    inp.name = 'provincies_favorites';
+    inp.value = prov;
+    inp.className = 'input-fav';
+    form.appendChild(inp);
+  });
+}
+
+// ── Contact table filter ──────────────────────────────────────────────────────
+function filterContacts(prov) {
+  const lower = prov.toLowerCase();
+  document.querySelectorAll('.contact-row').forEach(row => {
+    row.style.display = (!prov || row.dataset.prov.toLowerCase() === lower) ? '' : 'none';
+  });
+}
+
+// Pre-filter if URL has ?prov= query param
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+  const prov = params.get('prov');
+  if (prov) {
+    const sel = document.getElementById('filter-prov');
+    if (sel) { sel.value = prov; filterContacts(prov); }
+  }
+});
+
+// ── Edit contact modal ────────────────────────────────────────────────────────
+function openEditModal(btn) {
+  document.getElementById('form-edit-contacte').action = btn.dataset.url;
+  document.getElementById('edit-nom').value      = btn.dataset.nom;
+  document.getElementById('edit-empresa').value  = btn.dataset.empresa;
+  document.getElementById('edit-telefon').value  = btn.dataset.telefon;
+  document.getElementById('edit-email').value    = btn.dataset.email;
+  document.getElementById('edit-notes').value    = btn.dataset.notes;
+  document.getElementById('edit-provincia').value = btn.dataset.provincia;
+  document.getElementById('edit-rol').value      = btn.dataset.rol;
+}
+
+// ── Open add modal pre-filled if coming from a province card ─────────────────
+function openAddForProv(prov) {
+  document.getElementById('add-provincia').value = prov;
+  new bootstrap.Modal(document.getElementById('modal-add-contacte')).show();
+}
+
+// ── City / municipality management ───────────────────────────────────────────
+let munis = new Set([{% for m in config.municipis_favorites %}'{{ m|escapejs }}',{% endfor %}]);
+
+function muniTagHTML(m) {
+  return `<span class="badge d-flex align-items-center gap-1 py-2 px-3 muni-tag"
+     style="background:#eaf0f7;color:#1a3a5c;border:1.5px solid #1a3a5c;font-size:.82rem;font-weight:600;">
+    <i class="bi bi-building" style="font-size:.7rem;"></i>
+    ${m}
+    <button type="button" onclick="removeMuni('${m.replace(/'/g, "\\'")}');"
+      style="border:none;background:none;padding:0;color:#1a3a5c;line-height:1;opacity:.6;">
+      <i class="bi bi-x fs-6"></i>
+    </button>
+  </span>`;
+}
+
+function renderMunis() {
+  const container = document.getElementById('muni-tags');
+  if (munis.size === 0) {
+    container.innerHTML = '<span class="text-muted small" id="muni-empty">{% trans "Encara no hi ha municipis. Escriu un nom i fes clic a Afegir." %}</span>';
+  } else {
+    container.innerHTML = [...munis].map(muniTagHTML).join('');
+  }
+  document.getElementById('munis-raw').value = [...munis].join(',');
+}
+
+function addMuni() {
+  const inp = document.getElementById('muni-input');
+  const val = inp.value.trim();
+  if (val && !munis.has(val)) {
+    munis.add(val);
+    renderMunis();
+    inp.value = '';
+  }
+  inp.focus();
+}
+
+function removeMuni(m) {
+  munis.delete(m);
+  renderMunis();
+}
+
+function saveMunis() {
+  // Sync the province principal into this form too
+  document.getElementById('sync-principal').value = document.getElementById('input-principal').value;
+  // Inject province favorites into this form
+  document.querySelectorAll('.input-fav').forEach(el => {
+    const clone = el.cloneNode();
+    document.getElementById('form-munis').appendChild(clone);
+  });
+  document.getElementById('form-munis').submit();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'portal/base.html' %}
+{% load humanize i18n %}
+
+{% block title %}{% trans "Licitaciones" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{% trans "Licitaciones" %}{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm mb-3">
+  <div class="card-body py-2">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-sm-4">
+        <input type="text" name="q" class="form-control form-control-sm"
+          placeholder="{% trans 'Buscar por título, expediente...' %}" value="{{ filtres.q|default:'' }}">
+      </div>
+      <div class="col-sm-2">
+        <select name="estat" class="form-select form-select-sm">
+          <option value="">{% trans "Todos los estados" %}</option>
+          {% for val, label in estats %}
+          <option value="{{ val }}" {% if filtres.estat == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <input type="text" name="provincia" class="form-control form-control-sm"
+          placeholder="{% trans 'Provincia' %}" value="{{ filtres.provincia|default:'' }}">
+      </div>
+      <div class="col-sm-1">
+        <input type="number" name="import_min" class="form-control form-control-sm"
+          placeholder="Min €" value="{{ filtres.import_min|default:'' }}">
+      </div>
+      <div class="col-sm-1">
+        <input type="number" name="import_max" class="form-control form-control-sm"
+          placeholder="Max €" value="{{ filtres.import_max|default:'' }}">
+      </div>
+      <div class="col-sm-2 d-flex gap-1">
+        <button type="submit" class="btn btn-sm btn-primary flex-grow-1">
+          <i class="bi bi-search"></i> {% trans "Filtrar" %}
+        </button>
+        <a href="{% url 'portal:licitacions_list' %}" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-x"></i>
+        </a>
+      </div>
+    </form>
+    {% if fav_provs %}
+    <div class="mt-2 d-flex gap-2 align-items-center flex-wrap">
+      <small class="text-muted"><i class="bi bi-geo-alt me-1"></i>{% trans "Territoris:" %}</small>
+      {% for prov in fav_provs %}
+      <a href="?provincia={{ prov }}" class="badge text-decoration-none {% if filtres.provincia == prov %}bg-primary{% else %}bg-light text-dark border{% endif %}">
+        {% if config.provincia_principal == prov %}<i class="bi bi-star-fill me-1" style="color:#e8842a;font-size:.65rem;"></i>{% endif %}
+        {{ prov }}
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header bg-white d-flex justify-content-between align-items-center">
+    <span class="fw-semibold small">{{ paginator.count }} {% trans "resultados" %}</span>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 small">
+      <thead class="table-light">
+        <tr>
+          <th>{% trans "Expediente" %}</th>
+          <th>{% trans "Título" %}</th>
+          <th>{% trans "Organismo" %}</th>
+          <th>{% trans "Provincia" %}</th>
+          <th class="text-end">{% trans "Importe base" %}</th>
+          <th>{% trans "Plazo" %}</th>
+          <th>{% trans "Estado" %}</th>
+          <th>PDF</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for l in licitacions %}
+        <tr style="cursor:pointer;" onclick="window.location='{% url 'portal:licitacio_detail' l.pk %}'">
+          <td class="text-muted font-monospace small">{{ l.expediente_id|truncatechars:22 }}</td>
+          <td>{{ l.titulo|truncatechars:60 }}</td>
+          <td class="text-muted">{{ l.organismo.nombre|default:"—"|truncatechars:30 }}</td>
+          <td>{{ l.provincia|default:"—" }}</td>
+          <td class="text-end">
+            {% if l.importe_base %}{{ l.importe_base|floatformat:0|intcomma }} €
+            {% else %}<span class="text-muted">—</span>{% endif %}
+          </td>
+          <td>
+            {% if l.fecha_limite_oferta %}
+              <span class="{% if l.dias_restantes is not None and l.dias_restantes <= 3 %}text-danger fw-bold{% elif l.dias_restantes is not None and l.dias_restantes <= 7 %}text-warning{% endif %}">
+                {{ l.fecha_limite_oferta|date:"d/m/Y" }}
+                {% if l.dias_restantes is not None %}
+                  <small>({{ l.dias_restantes }}d)</small>
+                {% endif %}
+              </span>
+            {% else %}<span class="text-muted">—</span>{% endif %}
+          </td>
+          <td>
+            <span class="badge badge-{{ l.estado }}">{{ l.get_estado_display }}</span>
+          </td>
+          <td>
+            {% if l.pdf_descargado %}
+              <i class="bi bi-file-pdf text-danger"></i>
+            {% else %}
+              <i class="bi bi-dash text-muted"></i>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="8" class="text-center text-muted py-4">{% trans "No se han encontrado licitaciones con estos filtros." %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if is_paginated %}
+  <div class="card-footer bg-white d-flex justify-content-center py-2">
+    <nav>
+      <ul class="pagination pagination-sm mb-0">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?{% for k,v in filtres.items %}{% if k != 'page' %}{{ k }}={{ v }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        </li>
+        {% endif %}
+        <li class="page-item disabled">
+          <span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        </li>
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?{% for k,v in filtres.items %}{% if k != 'page' %}{{ k }}={{ v }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

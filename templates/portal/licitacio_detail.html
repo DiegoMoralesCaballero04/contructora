@@ -1,0 +1,291 @@
+{% extends 'portal/base.html' %}
+{% load humanize i18n %}
+
+{% block title %}{{ licitacio.titulo|truncatechars:60 }} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{% trans "Detall licitació" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-start mb-3">
+  <a href="#" onclick="if(history.length>1){history.back();}else{window.location='{% url 'portal:licitacions_list' %}';}return false;"
+     class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> {% trans "Tornar" %}
+  </a>
+  <div class="d-flex align-items-center gap-2">
+    <a href="{% url 'portal:informe_create' licitacio.pk %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-file-earmark-text me-1"></i> {% trans "Crear informe intern" %}
+    </a>
+    <span class="badge badge-{{ licitacio.estado }} fs-6">{{ licitacio.get_estado_display }}</span>
+  </div>
+</div>
+
+<div class="row g-3">
+  <!-- Dades principals -->
+  <div class="col-lg-8">
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white">
+        <h5 class="mb-0 fw-semibold">{{ licitacio.titulo }}</h5>
+        <small class="text-muted font-monospace">{{ licitacio.expediente_id }}</small>
+      </div>
+      <div class="card-body">
+        <div class="row g-3 small">
+          <div class="col-sm-6">
+            <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Organisme" %}</label>
+            <p class="mb-0 fw-semibold">{{ licitacio.organismo.nombre|default:"—" }}</p>
+          </div>
+          <div class="col-sm-3">
+            <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Província" %}</label>
+            <p class="mb-0">{{ licitacio.provincia|default:"—" }}</p>
+          </div>
+          <div class="col-sm-3">
+            <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Municipi" %}</label>
+            <p class="mb-0">
+              {{ licitacio.municipio|default:"—" }}
+              {% if licitacio.municipio or licitacio.provincia %}
+              <a href="https://maps.google.com/?q={{ licitacio.municipio|default:'' }}+{{ licitacio.provincia|default:'' }}+España"
+                 target="_blank" class="ms-1 text-muted" title="{% trans 'Veure a Google Maps' %}">
+                <i class="bi bi-geo-alt"></i>
+              </a>
+              {% endif %}
+            </p>
+          </div>
+          <div class="col-sm-4">
+            <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Import base (sense IVA)" %}</label>
+            <p class="mb-0 fw-bold fs-5" style="color:#1a3a5c;">
+              {% if licitacio.importe_base %}{{ licitacio.importe_base|floatformat:2|intcomma }} €{% else %}—{% endif %}
+            </p>
+          </div>
+          <div class="col-sm-4">
+            <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Import (amb IVA)" %}</label>
+            <p class="mb-0">{% if licitacio.importe_iva %}{{ licitacio.importe_iva|floatformat:2|intcomma }} €{% else %}—{% endif %}</p>
+          </div>
+          <div class="col-sm-4">
+            <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Termini execució" %}</label>
+            <p class="mb-0">{% if licitacio.plazo_ejecucion_dias %}{{ licitacio.plazo_ejecucion_dias }} {% trans "dies" %}{% else %}—{% endif %}</p>
+          </div>
+          <div class="col-sm-4">
+            <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Procediment" %}</label>
+            <p class="mb-0">{{ licitacio.get_procedimiento_display }}</p>
+          </div>
+          <div class="col-sm-4">
+            <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Data publicació" %}</label>
+            <p class="mb-0">{{ licitacio.fecha_publicacion|date:"d/m/Y"|default:"—" }}</p>
+          </div>
+          <div class="col-sm-4">
+            <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Límit presentació" %}</label>
+            <p class="mb-0 {% if licitacio.dias_restantes is not None and licitacio.dias_restantes <= 3 %}text-danger fw-bold{% endif %}">
+              {{ licitacio.fecha_limite_oferta|date:"d/m/Y H:i"|default:"—" }}
+              {% if licitacio.dias_restantes is not None %}
+                <span class="badge bg-{% if licitacio.dias_restantes <= 3 %}danger{% elif licitacio.dias_restantes <= 7 %}warning text-dark{% else %}secondary{% endif %}">
+                  {{ licitacio.dias_restantes }} {% trans "dies" %}
+                </span>
+              {% endif %}
+            </p>
+          </div>
+        </div>
+
+        {% if licitacio.clasificacion_grupo %}
+        <hr>
+        <div class="row g-2 small">
+          <div class="col-12">
+            <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Classificació empresarial" %}</label>
+            <p class="mb-0">
+              {% trans "Grup" %} <strong>{{ licitacio.clasificacion_grupo }}</strong> —
+              {% trans "Subgrup" %} <strong>{{ licitacio.clasificacion_subgrupo }}</strong> —
+              {% trans "Categoria" %} <strong>{{ licitacio.clasificacion_categoria }}</strong>
+            </p>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if licitacio.notas %}
+        <hr>
+        <label class="text-muted text-uppercase" style="font-size:0.75rem; letter-spacing:.05em;">{% trans "Notes" %}</label>
+        <p class="mb-0 small">{{ licitacio.notas }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Criteris d'adjudicació -->
+    {% if licitacio.criterios.all %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-list-check me-1"></i> {% trans "Criteris d'adjudicació" %}</h6>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm mb-0 small">
+          <thead class="table-light">
+            <tr>
+              <th>{% trans "Criteri" %}</th>
+              <th class="text-end">{% trans "Punts" %}</th>
+              <th>{% trans "Fórmula" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in licitacio.criterios.all %}
+            <tr>
+              <td>
+                {{ c.nombre }}
+                {% if c.es_economico %}<span class="badge bg-success ms-1">{% trans "Econòmic" %}</span>{% endif %}
+              </td>
+              <td class="text-end fw-bold">{{ c.puntuacion_maxima }}</td>
+              <td class="text-muted">{{ c.formula|default:"—" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- PDF plec -->
+    {% if licitacio.pdf_descargado %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-file-pdf text-danger me-1"></i> {% trans "Plec de condicions" %}</h6>
+        {% if pdf_url %}
+        <button class="btn btn-outline-secondary btn-sm" type="button" id="btn-toggle-pdf"
+                onclick="var v=document.getElementById('pdf-inline');var show=v.style.display==='none';v.style.display=show?'block':'none';this.innerHTML=show?'<i class=\'bi bi-eye-slash me-1\'></i>{% trans "Amagar" %}':'<i class=\'bi bi-eye me-1\'></i>{% trans "Veure inline" %}';">
+          <i class="bi bi-eye me-1"></i> {% trans "Veure inline" %}
+        </button>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        {% if pdf_url %}
+        <a href="{{ pdf_url }}" target="_blank" class="btn btn-outline-danger btn-sm">
+          <i class="bi bi-download me-1"></i> {% trans "Descarregar PDF" %} <small class="text-muted">(30 min)</small>
+        </a>
+        <div id="pdf-inline" style="display:none; margin-top:1rem;">
+          <embed src="{{ pdf_url }}" type="application/pdf" width="100%" height="650px"
+                 class="rounded border" style="min-height:400px;" />
+        </div>
+        {% else %}
+        <span class="text-muted small">{% trans "PDF disponible a S3 però no es pot generar l'URL en aquest moment." %}</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Informes interns -->
+    {% if informes %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-file-earmark-text me-1"></i> {% trans "Informes interns" %} ({{ informes|length }})</h6>
+        <a href="{% url 'portal:informe_create' licitacio.pk %}" class="btn btn-sm btn-outline-primary">
+          <i class="bi bi-plus"></i> {% trans "Nou" %}
+        </a>
+      </div>
+      <div class="list-group list-group-flush">
+        {% for inf in informes %}
+        <a href="{% url 'portal:informe_detail' inf.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2">
+          <div>
+            <span class="badge bg-{{ inf.recomendacio_color }} me-2">{{ inf.get_recomendacio_display }}</span>
+            <small class="text-muted">{{ inf.autor.get_full_name|default:inf.autor.username }} · {{ inf.creado_en|date:"d/m/Y H:i" }}</small>
+            {% if inf.puntuacio %}<span class="ms-2 badge bg-light text-dark border">{{ inf.puntuacio }}/10</span>{% endif %}
+          </div>
+          <i class="bi bi-chevron-right text-muted"></i>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Sidebar dret -->
+  <div class="col-lg-4">
+    <!-- Crear informe -->
+    <div class="card shadow-sm mb-3 border-primary">
+      <div class="card-body text-center py-3">
+        <i class="bi bi-file-earmark-text fs-3 text-primary"></i>
+        <p class="mb-2 mt-1 small text-muted">{% trans "Documenta la teva anàlisi interna d'aquesta licitació" %}</p>
+        <a href="{% url 'portal:informe_create' licitacio.pk %}" class="btn btn-primary btn-sm w-100">
+          <i class="bi bi-plus-circle me-1"></i> {% trans "Crear informe intern" %}
+        </a>
+      </div>
+    </div>
+
+    <!-- Canviar estat -->
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-arrow-repeat me-1"></i> {% trans "Canviar estat" %}</h6>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <select name="estat" class="form-select form-select-sm mb-2">
+            {% for val, label in licitacio.Estado.choices %}
+            <option value="{{ val }}" {% if licitacio.estado == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn btn-primary btn-sm w-100">{% trans "Desar canvi" %}</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Contactes locals -->
+    {% if is_prov_favorite %}
+    <div class="card shadow-sm mb-3 border-0" style="border-left: 3px solid #1a3a5c !important;">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-person-lines-fill me-1" style="color:#1a3a5c;"></i>
+          {% trans "Contactes locals" %}
+          {% if licitacio.provincia %}<small class="text-muted fw-normal ms-1">· {{ licitacio.provincia }}</small>{% endif %}
+        </h6>
+        <a href="{% url 'portal:territoris' %}?prov={{ licitacio.provincia|urlencode }}"
+           class="btn btn-xs btn-outline-secondary btn-sm py-0" style="font-size:.7rem;">
+          <i class="bi bi-pencil"></i>
+        </a>
+      </div>
+      {% if contactes_provincia %}
+      <ul class="list-group list-group-flush small">
+        {% for c in contactes_provincia %}
+        <li class="list-group-item py-2 px-3">
+          <div class="fw-semibold">{{ c.nom }}</div>
+          <div class="text-muted" style="font-size:.78rem;">{{ c.get_rol_display }}{% if c.empresa %} · {{ c.empresa }}{% endif %}</div>
+          {% if c.telefon %}
+          <a href="tel:{{ c.telefon }}" class="text-decoration-none small me-2"><i class="bi bi-telephone me-1"></i>{{ c.telefon }}</a>
+          {% endif %}
+          {% if c.email %}
+          <a href="mailto:{{ c.email }}" class="text-decoration-none small"><i class="bi bi-envelope me-1"></i>{{ c.email }}</a>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="card-body py-2 text-muted small">
+        {% trans "Cap contacte per a aquesta província." %}
+        <a href="{% url 'portal:territoris' %}" class="ms-1">{% trans "Afegir" %} →</a>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Metadades -->
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-info-circle me-1"></i> {% trans "Metadades" %}</h6>
+      </div>
+      <ul class="list-group list-group-flush small">
+        <li class="list-group-item d-flex justify-content-between py-2">
+          <span class="text-muted">{% trans "Creat el" %}</span>
+          <span>{{ licitacio.creado_en|date:"d/m/Y H:i" }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between py-2">
+          <span class="text-muted">{% trans "Actualitzat el" %}</span>
+          <span>{{ licitacio.actualizado_en|date:"d/m/Y H:i" }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between py-2">
+          <span class="text-muted">{% trans "Rellevant" %}</span>
+          <span>{% if licitacio.es_relevante %}<i class="bi bi-check-circle text-success"></i>{% else %}<i class="bi bi-x-circle text-danger"></i>{% endif %}</span>
+        </li>
+        {% if licitacio.url_origen %}
+        <li class="list-group-item py-2">
+          <span class="text-muted d-block">{% trans "Origen" %}</span>
+          <a href="{{ licitacio.url_origen }}" target="_blank" class="small text-break">
+            <i class="bi bi-box-arrow-up-right me-1"></i>{% trans "Veure a contratacionesdelestado.es" %}
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
