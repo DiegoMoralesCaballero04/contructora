@@ -1,6 +1,3 @@
-"""
-Celery tasks for scraping contratacionesdelestado.es and downloading PDFs.
-"""
 import logging
 from datetime import datetime
 
@@ -63,8 +60,8 @@ def download_pdf_licitacio(self, licitacio_pk: int):
     Download the PDF plec for a licitacion and upload it to S3.
     Triggered automatically after a new licitacio is created.
     """
-    from apps.licitaciones.models import Licitacion
-    from storage.utils import upload_pdf_to_s3, generate_s3_key
+    from modules.licitaciones.licitaciones.models import Licitacion
+    from core.storage.utils import upload_pdf_to_s3, generate_s3_key
     import httpx
 
     try:
@@ -95,9 +92,11 @@ def download_pdf_licitacio(self, licitacio_pk: int):
 
         logger.info('PDF uploaded to S3: %s', s3_key)
 
-        # Trigger LLM extraction
-        from apps.extraccion.tasks import extreure_dades_pdf
-        extreure_dades_pdf.delay(licitacio_pk)
+        try:
+            from modules.licitaciones.extraccion.tasks import extreure_dades_pdf
+            extreure_dades_pdf.delay(licitacio_pk)
+        except ImportError:
+            pass
 
     except Exception as exc:
         logger.error('PDF download failed for licitacio %d: %s', licitacio_pk, exc)
@@ -109,28 +108,25 @@ def _persist_licitacio(item: dict) -> int:
     Persist a scraped item to PostgreSQL and MongoDB.
     Returns 1 if new record created, 0 if already existed.
     """
-    from apps.licitaciones.models import Licitacion, Organismo
-    from mongo.collections import raw_licitaciones
+    from modules.licitaciones.licitaciones.models import Licitacion, Organismo
+    from core.mongo.collections import raw_licitaciones
 
     expediente_id = item.get('expediente_id', '').strip()
     if not expediente_id:
         logger.warning('Item without expediente_id, skipping')
         return 0
 
-    # Save raw data to MongoDB
     raw_doc = {**item, 'scraped_at': datetime.utcnow()}
-    raw_doc.pop('raw_data', None)  # Avoid double nesting
+    raw_doc.pop('raw_data', None)
     mongo_result = raw_licitaciones().replace_one(
         {'expediente_id': expediente_id},
         raw_doc,
         upsert=True,
     )
 
-    # Skip if already in PostgreSQL
     if Licitacion.objects.filter(expediente_id=expediente_id).exists():
         return 0
 
-    # Get or create organismo
     organismo = None
     if item.get('organismo_nombre'):
         organismo, _ = Organismo.objects.get_or_create(
@@ -138,7 +134,6 @@ def _persist_licitacio(item: dict) -> int:
             defaults={'provincia': item.get('provincia', '')},
         )
 
-    # Create licitacion
     Licitacion.objects.create(
         expediente_id=expediente_id,
         url_origen=item.get('url_origen', ''),

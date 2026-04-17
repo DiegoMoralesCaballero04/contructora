@@ -3,8 +3,9 @@ from django.apps import AppConfig
 
 class LicitacionesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.licitaciones'
+    name = 'modules.licitaciones.licitaciones'
+    label = 'licitaciones'
     verbose_name = 'Licitacions'
 
     def ready(self):
-        import apps.licitaciones.signals  # noqa
+        import modules.licitaciones.licitaciones.signals  # noqa

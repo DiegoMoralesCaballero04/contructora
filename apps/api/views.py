@@ -10,7 +10,13 @@ class ScrapingTriggerView(APIView):
 
     def post(self, request):
         import json
-        from apps.scraping.tasks import scrape_licitaciones
+        try:
+            from modules.licitaciones.scraping.tasks import scrape_licitaciones
+        except ImportError:
+            return Response(
+                {'error': 'scraping module not available'},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
         filtres = request.data.get('filtres', {})
         if isinstance(filtres, str):
             try:
@@ -28,21 +34,29 @@ class HealthView(APIView):
     permission_classes = []
 
     def get(self, request):
-        from storage.utils import check_s3_health, debug_s3
-        from apps.extraccion.ollama.client import OllamaClient
-
-        s3_ok = check_s3_health()
-        checks = {
-            'django': True,
-            's3': s3_ok,
-            's3_debug': debug_s3() if not s3_ok else None,
-            'ollama': OllamaClient().is_available(),
-        }
+        checks = {'django': True}
 
         try:
-            from mongo.client import get_mongo_client
+            from core.storage.utils import check_s3_health, debug_s3
+            s3_ok = check_s3_health()
+            checks['s3'] = s3_ok
+            if not s3_ok:
+                checks['s3_debug'] = debug_s3()
+        except ImportError:
+            pass
+
+        try:
+            from modules.licitaciones.extraccion.ollama.client import OllamaClient
+            checks['ollama'] = OllamaClient().is_available()
+        except ImportError:
+            pass
+
+        try:
+            from core.mongo.client import get_mongo_client
             get_mongo_client().admin.command('ping')
             checks['mongodb'] = True
+        except ImportError:
+            pass
         except Exception:
             checks['mongodb'] = False
 

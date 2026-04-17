@@ -1,13 +1,9 @@
-"""
-Celery tasks for licitaciones: PDF generation and S3 upload for InformeIntern.
-"""
 import logging
 
 from celery import shared_task
 
 logger = logging.getLogger(__name__)
 
-# States that require a traceable PDF copy in S3
 PDF_TRACEABILITY_STATES = {'PRESENTADA', 'ADJUDICADA', 'DESIERTA'}
 
 
@@ -20,8 +16,8 @@ def generar_pdf_informe(self, informe_pk: int):
     Only runs when the related licitación is in a traceability state
     (PRESENTADA, ADJUDICADA, DESIERTA).
     """
-    from apps.licitaciones.models import InformeIntern
-    from storage.utils import generate_informe_s3_key, upload_pdf_to_s3, get_presigned_url
+    from .models import InformeIntern
+    from core.storage.utils import generate_informe_s3_key, upload_pdf_to_s3, get_presigned_url
 
     try:
         informe = InformeIntern.objects.select_related(
@@ -49,7 +45,7 @@ def generar_pdf_informe(self, informe_pk: int):
     try:
         s3_key = generate_informe_s3_key(informe.licitacion.expediente_id, informe_pk)
         upload_pdf_to_s3(pdf_bytes, s3_key)
-        presigned_url = get_presigned_url(s3_key, expiry_seconds=365 * 24 * 3600)  # 1 year
+        presigned_url = get_presigned_url(s3_key, expiry_seconds=365 * 24 * 3600)
 
         informe.pdf_s3_key = s3_key
         informe.pdf_s3_url = presigned_url

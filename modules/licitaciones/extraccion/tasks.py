@@ -1,6 +1,3 @@
-"""
-Celery tasks for LLM-based PDF data extraction.
-"""
 import logging
 from datetime import date
 
@@ -21,14 +18,14 @@ def extreure_dades_pdf(self, licitacio_pk: int):
     5. Save to PostgreSQL + MongoDB
     6. Generate executive summary
     """
-    from apps.licitaciones.models import Licitacion
-    from apps.extraccion.models import Extraccion
-    from apps.extraccion.ollama.client import OllamaClient
-    from apps.extraccion.ollama.prompts import ACTIVE_EXTRACTION_PROMPT, SUMMARY_PROMPT
-    from apps.extraccion.ollama.response_parser import parse_extraction_response
-    from apps.extraccion.pdf.reader import extract_text_from_s3_pdf
-    from apps.extraccion.pdf.chunker import get_relevant_chunk
-    from mongo.collections import llm_responses, pdf_chunks
+    from modules.licitaciones.licitaciones.models import Licitacion
+    from .models import Extraccion
+    from .ollama.client import OllamaClient
+    from .ollama.prompts import ACTIVE_EXTRACTION_PROMPT, SUMMARY_PROMPT
+    from .ollama.response_parser import parse_extraction_response
+    from .pdf.reader import extract_text_from_s3_pdf
+    from .pdf.chunker import get_relevant_chunk
+    from core.mongo.collections import llm_responses, pdf_chunks
     from django.conf import settings
 
     try:
@@ -44,7 +41,6 @@ def extreure_dades_pdf(self, licitacio_pk: int):
     extraccion.save(update_fields=['estat', 'intents', 'model_usat'])
 
     try:
-        # 1. Extract PDF text
         if not licitacio.pdf_pliego_s3_key:
             raise ValueError('No S3 key for PDF')
 
@@ -52,7 +48,6 @@ def extreure_dades_pdf(self, licitacio_pk: int):
         if not pdf_text.strip():
             raise ValueError('PDF text is empty after extraction')
 
-        # Save chunks to MongoDB
         pdf_chunks().insert_one({
             'licitacio_pk': licitacio_pk,
             'expediente_id': licitacio.expediente_id,
@@ -60,15 +55,12 @@ def extreure_dades_pdf(self, licitacio_pk: int):
             'extracted_at': timezone.now(),
         })
 
-        # 2. Find the most relevant text chunk for extraction
         relevant_chunk = get_relevant_chunk(pdf_text)
 
-        # 3. Build prompt and call Ollama
         client = OllamaClient()
         prompt = ACTIVE_EXTRACTION_PROMPT.format(text=relevant_chunk)
         raw_response = client.generate(prompt)
 
-        # Save raw LLM response to MongoDB
         llm_doc = {
             'licitacio_pk': licitacio_pk,
             'expediente_id': licitacio.expediente_id,
@@ -80,7 +72,6 @@ def extreure_dades_pdf(self, licitacio_pk: int):
         }
         mongo_result = llm_responses().insert_one(llm_doc)
 
-        # 4. Parse the response
         parsed = parse_extraction_response(raw_response)
         if not parsed['success']:
             extraccion.estat = Extraccion.Estado.ERROR
@@ -91,11 +82,9 @@ def extreure_dades_pdf(self, licitacio_pk: int):
 
         data = parsed['data']
 
-        # 5. Generate executive summary
         summary_prompt = SUMMARY_PROMPT.format(text=relevant_chunk[:3000])
         resum = client.generate(summary_prompt, timeout=60)
 
-        # 6. Save to PostgreSQL
         _update_licitacio_from_extraction(licitacio, data)
 
         extraccion.objecte_extret = data.get('objecte', '')
@@ -134,8 +123,8 @@ def extreure_dades_pdf(self, licitacio_pk: int):
 @shared_task
 def reextreure_pendents():
     """Retry extraction for all licitaciones without a successful extraction."""
-    from apps.licitaciones.models import Licitacion
-    from apps.extraccion.models import Extraccion
+    from modules.licitaciones.licitaciones.models import Licitacion
+    from .models import Extraccion
 
     sense_extraccion = Licitacion.objects.filter(
         pdf_descargado=True,

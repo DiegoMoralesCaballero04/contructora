@@ -26,16 +26,27 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'django_celery_beat',
     'django_celery_results',
-    # Local apps
-    'apps.licitaciones',
-    'apps.scraping',
-    'apps.extraccion',
-    'apps.alertas',
-    'apps.audit',
-    'apps.rrhh',
+    # Core (always present)
+    'core.audit',
+    # UI layers (always present)
     'apps.portal',
     'apps.api',
 ]
+
+# Optional modules — included only when the directory is present.
+# To disable a module, remove its directory from modules/.
+_OPTIONAL_MODULES = [
+    'modules.licitaciones.licitaciones',
+    'modules.licitaciones.scraping',
+    'modules.licitaciones.extraccion',
+    'modules.licitaciones.alertas',
+    'modules.rrhh.rrhh',
+]
+
+for _mod in _OPTIONAL_MODULES:
+    _mod_path = BASE_DIR / _mod.replace('.', '/')
+    if _mod_path.is_dir():
+        INSTALLED_APPS.append(_mod)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -199,5 +210,7 @@ LOGGING = {
     'root': {'handlers': ['console'], 'level': 'INFO'},
     'loggers': {
         'apps': {'handlers': ['console'], 'level': 'DEBUG', 'propagate': False},
+        'modules': {'handlers': ['console'], 'level': 'DEBUG', 'propagate': False},
+        'core': {'handlers': ['console'], 'level': 'DEBUG', 'propagate': False},
     },
 }

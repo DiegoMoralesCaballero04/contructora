@@ -10,7 +10,7 @@ Usage:
     python manage.py fix_municipios --apply   # apply the fix
 """
 from django.core.management.base import BaseCommand
-from apps.licitaciones.models import Licitacion
+from modules.licitaciones.licitaciones.models import Licitacion
 
 MADRID_REGIONS = {'madrid', 'comunidad de madrid', 'madrid (comunidad de)'}
 

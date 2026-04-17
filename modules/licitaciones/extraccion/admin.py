@@ -45,7 +45,7 @@ class ExtraccionAdmin(admin.ModelAdmin):
     actions = ['retry_extraction']
 
     def retry_extraction(self, request, queryset):
-        from apps.extraccion.tasks import extreure_dades_pdf
+        from modules.licitaciones.extraccion.tasks import extreure_dades_pdf
         count = 0
         for extraccion in queryset:
             extreure_dades_pdf.delay(extraccion.licitacio_id)

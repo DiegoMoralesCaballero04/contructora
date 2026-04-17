@@ -3,8 +3,9 @@ from django.apps import AppConfig
 
 class RrhhConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.rrhh'
+    name = 'modules.rrhh.rrhh'
+    label = 'rrhh'
     verbose_name = 'Recursos Humans'
 
     def ready(self):
-        import apps.rrhh.signals  # noqa: F401
+        import modules.rrhh.rrhh.signals  # noqa: F401

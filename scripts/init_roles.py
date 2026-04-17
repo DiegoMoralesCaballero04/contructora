@@ -16,7 +16,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.development')
 django.setup()
 
 from django.contrib.auth.models import User
-from apps.rrhh.models import UserProfile
+from modules.rrhh.rrhh.models import UserProfile
 
 
 def init_roles():

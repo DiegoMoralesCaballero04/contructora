@@ -4,7 +4,7 @@ Download a PDF from S3 and extract its text content using pdfplumber.
 import io
 import logging
 import pdfplumber
-from storage.utils import download_pdf_from_s3
+from core.storage.utils import download_pdf_from_s3
 
 logger = logging.getLogger(__name__)
 

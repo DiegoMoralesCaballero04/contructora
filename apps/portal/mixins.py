@@ -4,10 +4,13 @@ from django.shortcuts import redirect
 
 
 def get_profile(user):
-    """Return UserProfile, creating it if missing."""
-    from apps.rrhh.models import UserProfile
-    profile, _ = UserProfile.objects.get_or_create(user=user)
-    return profile
+    """Return UserProfile if rrhh module is available, else None."""
+    try:
+        from modules.rrhh.rrhh.models import UserProfile
+        profile, _ = UserProfile.objects.get_or_create(user=user)
+        return profile
+    except ImportError:
+        return None
 
 
 class PortalLoginMixin(LoginRequiredMixin):
@@ -15,24 +18,24 @@ class PortalLoginMixin(LoginRequiredMixin):
 
 
 class RrhhAccessMixin(PortalLoginMixin):
-    """Allows ADMIN, JEFE and SUPERVISOR."""
+    """Allows ADMIN, JEFE and SUPERVISOR. Denies if rrhh module is absent."""
     def dispatch(self, request, *args, **kwargs):
         response = super().dispatch(request, *args, **kwargs)
         if not request.user.is_authenticated:
             return response
         profile = get_profile(request.user)
-        if not profile.can_see_rrhh:
+        if profile is None or not profile.can_see_rrhh:
             raise PermissionDenied
         return response
 
 
 class AdminAccessMixin(PortalLoginMixin):
-    """Only ADMIN."""
+    """Only ADMIN. Denies if rrhh module is absent."""
     def dispatch(self, request, *args, **kwargs):
         response = super().dispatch(request, *args, **kwargs)
         if not request.user.is_authenticated:
             return response
         profile = get_profile(request.user)
-        if not profile.can_manage_users:
+        if profile is None or not profile.can_manage_users:
             raise PermissionDenied
         return response
