@@ -27,8 +27,8 @@
         "bodyParameters": {
           "parameters": [
             {
-              "name": "filtres",
-              "value": "{\"provincia\": \"Valencia\", \"importe_max\": 4000000}"
+              "name": "template_id",
+              "value": "1"
             },
             {
               "name": "max_pagines",

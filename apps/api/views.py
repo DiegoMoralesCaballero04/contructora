@@ -17,15 +17,28 @@ class ScrapingTriggerView(APIView):
                 {'error': 'scraping module not available'},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
-        filtres = request.data.get('filtres', {})
+        filtres = request.data.get('filtres') or {}
         if isinstance(filtres, str):
             try:
                 filtres = json.loads(filtres)
             except (json.JSONDecodeError, TypeError):
                 filtres = {}
-        max_pagines = int(request.data.get('max_pagines', 10))
 
-        task = scrape_licitaciones.delay(filtres=filtres, max_pagines=max_pagines)
+        raw_max = request.data.get('max_pagines')
+        max_pagines = int(raw_max) if raw_max is not None else None
+
+        template_id = request.data.get('template_id')
+        if template_id is not None:
+            try:
+                template_id = int(template_id)
+            except (TypeError, ValueError):
+                template_id = None
+
+        task = scrape_licitaciones.delay(
+            filtres=filtres or None,
+            max_pagines=max_pagines,
+            template_id=template_id,
+        )
         return Response({'task_id': task.id, 'estat': 'encuat'}, status=status.HTTP_202_ACCEPTED)
 
 

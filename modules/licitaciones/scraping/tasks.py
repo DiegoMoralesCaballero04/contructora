@@ -4,27 +4,59 @@ from datetime import datetime
 from celery import shared_task
 from django.utils import timezone
 
-from .models import ScrapingJob
+from .models import ScrapingJob, ScrapingTemplate
 from .scrapers.contrataciones_scraper import ContratacionesScraper
 
 logger = logging.getLogger(__name__)
 
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=300)
-def scrape_licitaciones(self, filtres: dict | None = None, max_pagines: int = 10):
+def scrape_licitaciones(self, filtres: dict | None = None, max_pagines: int | None = None, template_id: int | None = None):
     """
     Main daily scraping task. Creates a ScrapingJob record, runs the scraper,
     persists results to PostgreSQL and raw data to MongoDB.
+
+    Priority for filters: explicit filtres > template filters.
+    Priority for template: template_id > first active template.
     """
+    template = None
+
+    if template_id is not None:
+        try:
+            template = ScrapingTemplate.objects.get(pk=template_id)
+        except ScrapingTemplate.DoesNotExist:
+            logger.warning('ScrapingTemplate #%d not found, ignoring template_id', template_id)
+
+    if template is None and not filtres:
+        template = ScrapingTemplate.objects.filter(activa=True).first()
+
+    effective_filters = {}
+    effective_max_pagines = max_pagines
+
+    if template is not None:
+        effective_filters = template.to_filters()
+        if effective_max_pagines is None:
+            effective_max_pagines = template.max_pagines
+
+    if filtres:
+        # Support legacy single-string 'provincia' key
+        if 'provincia' in filtres and 'provincies' not in filtres:
+            filtres = {**filtres, 'provincies': [filtres.pop('provincia')]}
+        effective_filters.update(filtres)
+
+    if effective_max_pagines is None:
+        effective_max_pagines = 10
+
     job = ScrapingJob.objects.create(
+        template=template,
         estat=ScrapingJob.Estado.EN_CURS,
-        filtres_aplicats=filtres or {},
+        filtres_aplicats=effective_filters,
     )
-    logger.info('ScrapingJob #%d started', job.pk)
+    logger.info('ScrapingJob #%d started (template=%s)', job.pk, template_id or (template.pk if template else None))
 
     try:
-        scraper = ContratacionesScraper(filters=filtres)
-        resultats = scraper.scrape(max_pages=max_pagines)
+        scraper = ContratacionesScraper(filters=effective_filters)
+        resultats = scraper.scrape(max_pages=effective_max_pagines)
 
         job.total_trobades = len(resultats)
         noves = 0

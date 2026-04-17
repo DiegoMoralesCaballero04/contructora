@@ -12,24 +12,10 @@ from .base import BaseScraper
 
 logger = logging.getLogger(__name__)
 
-# PLACE Atom feed — public, no auth, no JS required
 PLACE_ATOM_URL = 'https://contrataciondelestado.es/sindicacion/sindicacion_1143/licitacionesPerfilesContratanteCompleto3.atom'
 
-# PLACE HTML search URL (Playwright fallback)
-PLACE_SEARCH_URL = (
-    'https://contrataciondelestado.es/wps/portal/plataforma/busqueda'
-    '?tipoBusqueda=4&estadoLicitacion=ADM&tipoContrato=1&procedimiento=1'
-)
+PLACE_SEARCH_BASE_URL = 'https://contrataciondelestado.es/wps/portal/plataforma/busqueda'
 
-DEFAULT_FILTERS = {
-    'provincia': 'Valencia',
-    'tipo_contrato': '1',     # 1 = Obras
-    'procedimiento': '1',     # 1 = Abierto
-    'importe_min': 0,
-    'importe_max': 4_000_000,
-}
-
-# XML namespaces used in PLACE Atom feed
 NS = {
     'atom': 'http://www.w3.org/2005/Atom',
     'cac':  'urn:dgpe:names:draft:codice-place-ext:schema:xsd:CommonAggregateComponents-2',
@@ -51,7 +37,7 @@ class ContratacionesScraper(BaseScraper):
 
     def __init__(self, filters: dict | None = None, **kwargs):
         super().__init__(**kwargs)
-        self.filters = {**DEFAULT_FILTERS, **(filters or {})}
+        self.filters = filters or {}
 
     def scrape(self, max_pages: int = 10) -> list[dict]:
         results = self.run(self._async_scrape(max_pages))
@@ -59,7 +45,6 @@ class ContratacionesScraper(BaseScraper):
         return results
 
     async def _async_scrape(self, max_pages: int) -> list[dict]:
-        # Primary: Atom feed
         try:
             results = await self._scrape_via_atom(max_pages)
             if results:
@@ -69,7 +54,6 @@ class ContratacionesScraper(BaseScraper):
         except Exception as e:
             logger.warning('Atom feed failed, falling back to Playwright: %s', e)
 
-        # Fallback: Playwright
         await self._start_browser()
         try:
             return await self._scrape_via_playwright(max_pages)
@@ -81,7 +65,7 @@ class ContratacionesScraper(BaseScraper):
     async def _scrape_via_atom(self, max_pages: int) -> list[dict]:
         """Parse the PLACE Atom syndication feed — no JS, reliable."""
         results = []
-        max_items = max_pages * 25  # ~25 items per "page"
+        max_items = max_pages * 25
 
         browser_headers = {
             'User-Agent': (
@@ -94,7 +78,6 @@ class ContratacionesScraper(BaseScraper):
             'Cache-Control': 'no-cache',
         }
 
-        # Try multiple known feed URLs
         feed_urls = [
             PLACE_ATOM_URL,
             'https://contrataciondelestado.es/sindicacion/sindicacion_643/licitacionesPerfilesContratanteCompleto3.atom',
@@ -140,19 +123,16 @@ class ContratacionesScraper(BaseScraper):
                 return (el.text or '').strip() if el is not None else ''
 
             def find_tag(el, tag):
-                """Find first element by local tag name in subtree."""
                 for child in el.iter():
                     if child.tag.split('}')[-1] == tag:
                         return (child.text or '').strip()
                 return ''
 
             def find_all_tags(el, tag):
-                """Find all elements by local tag name."""
                 return [(child.text or '').strip()
                         for child in el.iter()
                         if child.tag.split('}')[-1] == tag and child.text]
 
-            # URL: take first link element
             url_origen = ''
             for link_el in entry.findall('{%s}link' % ATOM):
                 href = link_el.get('href', '')
@@ -162,27 +142,18 @@ class ContratacionesScraper(BaseScraper):
 
             expediente_id = find_tag(entry, 'ContractFolderID')
             if not expediente_id:
-                # Fallback: parse from id URL
                 id_url = atom('id')
                 expediente_id = id_url.split('/')[-1]
 
             titulo = atom('title') or find_tag(entry, 'Name')
 
-            # Organismo: Party/PartyName/Name (first occurrence)
             organismo = ''
             names = find_all_tags(entry, 'Name')
-            # The organismo name is usually the first Name after PartyName
             organismo = names[0] if names else ''
 
-            # Provincia: CountrySubentity (community/province label)
             provincia = find_tag(entry, 'CountrySubentity') or 'N/D'
 
-            # City for municipio — CityName is the organism's address (often Madrid for
-            # national bodies), so only use it when it matches the province/region.
-            # We try DeliveryAddress CityName first; fall back to empty to avoid misleading data.
             city_raw = find_tag(entry, 'CityName') or ''
-            # If the city is Madrid but the province is not a Madrid region, discard it
-            # (it's the organism headquarters, not the execution location)
             madrid_regions = {'madrid', 'comunidad de madrid', 'madrid (comunidad de)'}
             province_lower = provincia.lower()
             city_lower = city_raw.lower()
@@ -191,11 +162,9 @@ class ContratacionesScraper(BaseScraper):
             else:
                 municipio = city_raw
 
-            # Importe: TaxExclusiveAmount = presupuesto base sin IVA
             importe_base_raw = find_tag(entry, 'TaxExclusiveAmount')
             if not importe_base_raw:
                 importe_base_raw = find_tag(entry, 'EstimatedOverallContractAmount')
-            # Last resort: parse from summary "Importe: XXXX EUR"
             if not importe_base_raw:
                 import re
                 summary = atom('summary')
@@ -205,22 +174,20 @@ class ContratacionesScraper(BaseScraper):
 
             importe_iva_raw = find_tag(entry, 'TotalAmount')
 
-            # Dates
             fecha_pub = atom('updated') or atom('published')
-            fecha_limite_date = find_tag(entry, 'EndDate')  # TenderingProcess EndDate
-            fecha_limite_time = find_tag(entry, 'EndTime')  # TenderingProcess EndTime
+            fecha_limite_date = find_tag(entry, 'EndDate')
+            fecha_limite_time = find_tag(entry, 'EndTime')
             if fecha_limite_date and fecha_limite_time:
-                # Combine date + time: "YYYY-MM-DD" + "HH:MM:SS" → "YYYY-MM-DDTHH:MM:SS"
                 fecha_limite = f"{fecha_limite_date}T{fecha_limite_time}"
             else:
                 fecha_limite = fecha_limite_date or ''
 
-            # Estado PLACE: EV=En Vigor, PU=Publicada, ADJ=Adjudicada, RE=Resuelta...
             estado_place = find_tag(entry, 'ContractFolderStatusCode')
 
-            # CPV
             cpv_codes = find_all_tags(entry, 'ItemClassificationCode')
             cpv = cpv_codes[0] if cpv_codes else ''
+
+            tipo_contrato_code = find_tag(entry, 'ContractTypeCode') or ''
 
             return {
                 'expediente_id': expediente_id.strip(),
@@ -236,58 +203,93 @@ class ContratacionesScraper(BaseScraper):
                 'fecha_limite_oferta': fecha_limite[:19] if fecha_limite else '',
                 'pdf_pliego_url': '',
                 'fuente': 'atom',
-                'raw_data': {'estado_place': estado_place, 'cpv': cpv},
+                'raw_data': {
+                    'estado_place': estado_place,
+                    'cpv': cpv,
+                    'tipo_contrato_code': tipo_contrato_code,
+                },
             }
         except Exception as e:
             logger.debug('Atom entry parse failed: %s', e)
             return None
 
     def _passes_filters(self, item: dict) -> bool:
-        """Apply importe_max filter (province filter is less reliable from Atom)."""
+        """Apply template filters to a scraped item."""
         importe = item.get('importe_base')
-        importe_max = self.filters.get('importe_max', 4_000_000)
-        importe_min = self.filters.get('importe_min', 0)
+
+        importe_max = self.filters.get('importe_max')
+        importe_min = self.filters.get('importe_min')
         if importe is not None:
-            if importe > importe_max or importe < importe_min:
+            if importe_max is not None and importe > importe_max:
                 return False
+            if importe_min is not None and importe < importe_min:
+                return False
+
+        provincies = self.filters.get('provincies') or []
+        if provincies:
+            # Support legacy single-string 'provincia' key
+            provincia = item.get('provincia', '')
+            if not any(p.lower() in provincia.lower() for p in provincies):
+                return False
+
+        cpv_inclosos = self.filters.get('cpv_inclosos') or []
+        if cpv_inclosos:
+            raw = item.get('raw_data') or {}
+            cpv = raw.get('cpv', '')
+            if not any(cpv.startswith(prefix) for prefix in cpv_inclosos):
+                return False
+
         return True
 
     # ── Playwright fallback ───────────────────────────────────────
+
+    def _build_search_url(self) -> str:
+        """Build the PLACE search URL from current filters."""
+        params = ['tipoBusqueda=4', 'estadoLicitacion=ADM']
+
+        tipus_contracte = self.filters.get('tipus_contracte') or []
+        if tipus_contracte:
+            params.append(f'tipoContrato={tipus_contracte[0]}')
+
+        procediments = self.filters.get('procediments') or []
+        if procediments:
+            params.append(f'procedimiento={procediments[0]}')
+
+        provincies = self.filters.get('provincies') or []
+        if provincies:
+            params.append(f'provincia={provincies[0]}')
+
+        importe_max = self.filters.get('importe_max')
+        if importe_max is not None:
+            params.append(f'importeHasta={int(importe_max)}')
+
+        return f'{PLACE_SEARCH_BASE_URL}?{"&".join(params)}'
 
     async def _scrape_via_playwright(self, max_pages: int) -> list[dict]:
         """Fallback HTML scraping using Playwright."""
         page = await self.new_page()
         results = []
 
-        # Set browser-like headers
         await page.set_extra_http_headers({
             'Accept-Language': 'es-ES,es;q=0.9',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         })
 
-        # Navigate to main portal first to get session cookies
         logger.debug('Playwright: getting session from main page')
         await self.safe_goto(page, 'https://contrataciondelestado.es/wps/portal/plataforma')
         await page.wait_for_load_state('networkidle', timeout=15000)
 
-        # Now navigate to search
-        search_url = (
-            f'{PLACE_SEARCH_URL}'
-            f'&provincia={self.filters.get("provincia", "Valencia")}'
-            f'&importeHasta={self.filters.get("importe_max", 4000000)}'
-        )
+        search_url = self._build_search_url()
         logger.debug('Playwright navigating to search: %s', search_url)
         await self.safe_goto(page, search_url)
         await page.wait_for_load_state('networkidle', timeout=30000)
 
-        # Accept cookie banner if present
         try:
             await page.click('#cookieAccept, .cookie-accept, [id*="cookie"] button', timeout=3000)
             await asyncio.sleep(1)
         except Exception:
             pass
 
-        # Wait for any meaningful content (broader selector set)
         selectors = [
             '.tableOfBids', '.resultsTable', '#listadoLicitaciones',
             'table.licitaciones', '.resultados-busqueda table',
@@ -303,9 +305,11 @@ class ContratacionesScraper(BaseScraper):
             content = await page.content()
             logger.warning(
                 'No result selectors found after 30s. Page snippet:\n%s',
-                content[2000:5000]  # Middle section, skip portal header
+                content[2000:5000]
             )
             return []
+
+        provincia_label = (self.filters.get('provincies') or [''])[0]
 
         for page_num in range(max_pages):
             logger.debug('Scraping HTML page %d', page_num + 1)
@@ -314,7 +318,7 @@ class ContratacionesScraper(BaseScraper):
                 '.resultsTable tbody tr'
             )
             for row in rows:
-                item = await self._extract_row(row)
+                item = await self._extract_row(row, provincia_label)
                 if item:
                     results.append(item)
 
@@ -330,7 +334,7 @@ class ContratacionesScraper(BaseScraper):
 
         return results
 
-    async def _extract_row(self, row) -> Optional[dict]:
+    async def _extract_row(self, row, provincia_label: str = '') -> Optional[dict]:
         try:
             text = await row.inner_text()
             if not text.strip():
@@ -346,7 +350,7 @@ class ContratacionesScraper(BaseScraper):
                 'titulo': text.strip()[:500],
                 'url_origen': url,
                 'organismo_nombre': '',
-                'provincia': self.filters.get('provincia', 'Valencia'),
+                'provincia': provincia_label,
                 'municipio': '',
                 'importe_base': None,
                 'importe_iva': None,

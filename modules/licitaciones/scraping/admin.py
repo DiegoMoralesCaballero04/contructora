@@ -1,17 +1,24 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import ScrapingJob
+from .models import ScrapingJob, ScrapingTemplate
+
+
+@admin.register(ScrapingTemplate)
+class ScrapingTemplateAdmin(admin.ModelAdmin):
+    list_display = ('nom', 'activa', 'importe_min', 'importe_max', 'max_pagines', 'creada_en')
+    list_filter = ('activa',)
+    list_editable = ('activa',)
 
 
 @admin.register(ScrapingJob)
 class ScrapingJobAdmin(admin.ModelAdmin):
     list_display = (
-        'pk', 'estat_badge', 'iniciat_en', 'duracio_display',
+        'pk', 'template', 'estat_badge', 'iniciat_en', 'duracio_display',
         'total_trobades', 'noves_insertades', 'errors',
     )
-    list_filter = ('estat',)
+    list_filter = ('estat', 'template')
     readonly_fields = (
-        'iniciat_en', 'finalitzat_en', 'estat',
+        'template', 'iniciat_en', 'finalitzat_en', 'estat',
         'total_trobades', 'noves_insertades', 'actualitzades',
         'descartades', 'errors', 'detalls_error', 'filtres_aplicats',
     )
