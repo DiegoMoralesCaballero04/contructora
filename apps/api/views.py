@@ -7,7 +7,7 @@ from rest_framework import status
 class ScrapingTriggerView(APIView):
     """POST /api/v1/scraping/executar/ — trigger a scraping job (for n8n).
     Always uses the single ScrapingTemplate. template_id param ignored for backward compatibility."""
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def post(self, request):
         import json
