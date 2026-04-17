@@ -118,7 +118,7 @@ def download_pdf_licitacio(self, licitacio_pk: int):
 def _persist_licitacio(item: dict) -> int:
     """
     Persist a scraped item to PostgreSQL and MongoDB.
-    Returns 1 if new record created, 0 if already existed.
+    Returns 1 if new record created, 0 if already existed or deadline passed.
     """
     from modules.licitaciones.licitaciones.models import Licitacion, Organismo
     from core.mongo.collections import raw_licitaciones
@@ -126,6 +126,11 @@ def _persist_licitacio(item: dict) -> int:
     expediente_id = item.get('expediente_id', '').strip()
     if not expediente_id:
         logger.warning('Item without expediente_id, skipping')
+        return 0
+
+    fecha_limite = _parse_date(item.get('fecha_limite_oferta'))
+    if fecha_limite and fecha_limite < timezone.now():
+        logger.debug('Item %s deadline passed, skipping', expediente_id)
         return 0
 
     raw_doc = {**item, 'scraped_at': datetime.utcnow()}
@@ -157,7 +162,7 @@ def _persist_licitacio(item: dict) -> int:
         importe_iva=item.get('importe_iva'),
         procedimiento=item.get('procedimiento', 'ABIERTO'),
         fecha_publicacion=_parse_date(item.get('fecha_publicacion')),
-        fecha_limite_oferta=_parse_date(item.get('fecha_limite_oferta')),
+        fecha_limite_oferta=fecha_limite,
         pdf_pliego_url=item.get('pdf_pliego_url', ''),
         mongo_id=str(mongo_result.upserted_id or ''),
     )

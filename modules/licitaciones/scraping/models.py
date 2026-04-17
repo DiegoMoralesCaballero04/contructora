@@ -11,6 +11,8 @@ class ScrapingTemplate(models.Model):
 
     provincies = models.JSONField(default=list, blank=True)
 
+    municipis = models.JSONField(default=list, blank=True)
+
     tipus_contracte = models.JSONField(default=list, blank=True)
 
     procediments = models.JSONField(default=list, blank=True)
@@ -50,6 +52,8 @@ class ScrapingTemplate(models.Model):
             filters['importe_max'] = float(self.importe_max)
         if self.provincies:
             filters['provincies'] = list(self.provincies)
+        if self.municipis:
+            filters['municipis'] = list(self.municipis)
         if self.tipus_contracte:
             filters['tipus_contracte'] = list(self.tipus_contracte)
         if self.procediments:

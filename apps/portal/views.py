@@ -706,14 +706,26 @@ if _LICITACIONES:
                 from modules.licitaciones.licitaciones.models import PROVINCIES_ESPANYA
 
                 all_provs = []
+                all_munis = set()
                 for provs in PROVINCIES_ESPANYA.values():
                     all_provs.extend(provs)
                 all_provs = sorted(set(all_provs))
+
+                try:
+                    from modules.licitaciones.licitaciones.models import Licitacion
+                    all_munis = sorted(set(
+                        Licitacion.objects.values_list('municipio', flat=True)
+                        .filter(municipio__isnull=False)
+                        .exclude(municipio='')
+                    ))
+                except Exception:
+                    all_munis = []
 
                 return render(request, self.template_name, {
                     'template': template,
                     'profile': get_profile(request.user),
                     'provincias_list': all_provs,
+                    'municipios_list': all_munis,
                     'tipo_choices': [
                         ('1', 'Obras'),
                         ('2', 'Concesión Obras'),
@@ -745,6 +757,7 @@ if _LICITACIONES:
                 template.max_pagines = int(max_pagines) if max_pagines.isdigit() else 10
 
                 template.provincies = request.POST.getlist('provincies')
+                template.municipis = request.POST.getlist('municipis')
                 template.tipus_contracte = request.POST.getlist('tipus_contracte')
                 template.procediments = request.POST.getlist('procediments')
 

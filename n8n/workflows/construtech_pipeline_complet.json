@@ -24,7 +24,7 @@
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
-            { "name": "max_pagines", "value": "5" }
+            { "name": "max_pagines", "value": "150" }
           ]
         },
         "options": { "timeout": 30000 }
@@ -37,11 +37,11 @@
     },
     {
       "parameters": {
-        "amount": 90,
+        "amount": 180,
         "unit": "seconds"
       },
       "id": "n3-wait",
-      "name": "⏳ Esperar 90s (scraping)",
+      "name": "⏳ Esperar 180s (scraping)",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [580, 300]
@@ -208,9 +208,9 @@
       "main": [[{ "node": "🕷️ Trigger Scraping Django", "type": "main", "index": 0 }]]
     },
     "🕷️ Trigger Scraping Django": {
-      "main": [[{ "node": "⏳ Esperar 90s (scraping)", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "⏳ Esperar 180s (scraping)", "type": "main", "index": 0 }]]
     },
-    "⏳ Esperar 90s (scraping)": {
+    "⏳ Esperar 180s (scraping)": {
       "main": [[{ "node": "📋 Obtener licitaciones nuevas", "type": "main", "index": 0 }]]
     },
     "📋 Obtener licitaciones nuevas": {

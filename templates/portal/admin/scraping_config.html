@@ -96,6 +96,23 @@
   </div>
 
   <div class="config-card">
+    <h6 class="mb-3"><i class="bi bi-building me-2 text-primary"></i>{% trans "Municipis" %}</h6>
+    <small class="info-text d-block mb-2">{% trans "Selecciona els municipis a incloure. Deixar buit = tots" %}</small>
+    <div class="checkbox-grid">
+      {% for muni in municipios_list %}
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="municipis"
+               id="muni-{{ muni|slugify }}" value="{{ muni }}"
+               {% if muni in template.municipis %}checked{% endif %}>
+        <label class="form-check-label" for="muni-{{ muni|slugify }}">
+          {{ muni }}
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="config-card">
     <h6 class="mb-3"><i class="bi bi-briefcase me-2 text-primary"></i>{% trans "Tipus de Contrate" %}</h6>
     <small class="info-text d-block mb-2">{% trans "Selecciona els tipus. Deixar buit = tots" %}</small>
     <div class="checkbox-grid">
