@@ -24,7 +24,6 @@
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
-            { "name": "template_id", "value": "1" },
             { "name": "max_pagines", "value": "5" }
           ]
         },

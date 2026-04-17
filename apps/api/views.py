@@ -5,7 +5,8 @@ from rest_framework import status
 
 
 class ScrapingTriggerView(APIView):
-    """POST /api/v1/scraping/executar/ — trigger a scraping job (for n8n)."""
+    """POST /api/v1/scraping/executar/ — trigger a scraping job (for n8n).
+    Always uses the single ScrapingTemplate. template_id param ignored for backward compatibility."""
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -27,17 +28,9 @@ class ScrapingTriggerView(APIView):
         raw_max = request.data.get('max_pagines')
         max_pagines = int(raw_max) if raw_max is not None else None
 
-        template_id = request.data.get('template_id')
-        if template_id is not None:
-            try:
-                template_id = int(template_id)
-            except (TypeError, ValueError):
-                template_id = None
-
         task = scrape_licitaciones.delay(
             filtres=filtres or None,
             max_pagines=max_pagines,
-            template_id=template_id,
         )
         return Response({'task_id': task.id, 'estat': 'encuat'}, status=status.HTTP_202_ACCEPTED)
 

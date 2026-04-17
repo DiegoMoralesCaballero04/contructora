@@ -80,6 +80,11 @@
     <a href="{% url 'portal:territoris' %}" class="nav-link {% if request.resolver_match.url_name == 'territoris' %}active{% endif %}">
       <i class="bi bi-geo-alt"></i> {% trans "Territoris" %}
     </a>
+    {% if has_scraping %}
+    <a href="{% url 'portal:scraping_config' %}" class="nav-link {% if request.resolver_match.url_name == 'scraping_config' %}active{% endif %}">
+      <i class="bi bi-spellcheck"></i> {% trans "Scraping" %}
+    </a>
+    {% endif %}
     {% endif %}
     {% endif %}
   </nav>

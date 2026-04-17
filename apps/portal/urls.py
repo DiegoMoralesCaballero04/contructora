@@ -23,6 +23,14 @@ if views._LICITACIONES:
         path('admin-portal/territories/contacte/<int:pk>/edit/', views.ContacteEditView.as_view(), name='contacte_edit'),
         path('admin-portal/territories/contacte/<int:pk>/delete/', views.ContacteDeleteView.as_view(), name='contacte_delete'),
     ]
+    try:
+        from modules.licitaciones.scraping.models import ScrapingTemplate
+        if hasattr(views, 'ScrapingConfigView'):
+            urlpatterns += [
+                path('admin-portal/scraping/', views.ScrapingConfigView.as_view(), name='scraping_config'),
+            ]
+    except ImportError:
+        pass
 
 if views._RRHH:
     urlpatterns += [

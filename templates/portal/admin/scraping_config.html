@@ -1,0 +1,151 @@
+{% extends 'portal/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Configuració de Scraping" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{% trans "Configuració de Scraping" %}{% endblock %}
+
+{% block extra_head %}
+<style>
+  .config-card { background: #fff; border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); margin-bottom: 1.5rem; }
+  .config-card h6 { color: #1a3a5c; font-weight: 700; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 2px solid #f0f2f5; }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { font-size: .9rem; font-weight: 600; color: #495057; }
+  .form-check-label { font-size: .88rem; color: #6c757d; }
+  .form-control, .form-select { font-size: .9rem; border-color: #dee2e6; }
+  .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .info-text { font-size: .85rem; color: #6c757d; margin-top: .25rem; }
+  .status-badge { display: inline-block; padding: .25rem .75rem; border-radius: 20px; font-size: .8rem; font-weight: 600; }
+  .status-active { background: #d4edda; color: #155724; }
+  .status-inactive { background: #f8d7da; color: #721c24; }
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post" id="form-scraping">
+  {% csrf_token %}
+
+  <div class="config-card">
+    <h6 class="mb-3"><i class="bi bi-gear me-2 text-primary"></i>{% trans "Configuració General" %}</h6>
+
+    <div class="form-group">
+      <label for="id_nom">{% trans "Nom de la plantilla" %}</label>
+      <input type="text" class="form-control" id="id_nom" name="nom" value="{{ template.nom }}" required>
+      <small class="info-text">{% trans "Identificador de la plantilla de scraping" %}</small>
+    </div>
+
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" id="id_activa" name="activa" {% if template.activa %}checked{% endif %}>
+      <label class="form-check-label" for="id_activa">
+        {% trans "Plantilla activa" %}
+        <span class="status-badge {% if template.activa %}status-active{% else %}status-inactive{% endif %}">
+          {% if template.activa %}{% trans "Activa" %}{% else %}{% trans "Inactiva" %}{% endif %}
+        </span>
+      </label>
+      <small class="info-text d-block">{% trans "La plantilla activa s'utiliza en el scraping automàtic" %}</small>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="id_max_pagines">{% trans "Pàgines màximes per execució" %}</label>
+          <input type="number" class="form-control" id="id_max_pagines" name="max_pagines" value="{{ template.max_pagines }}" min="1" max="100">
+          <small class="info-text">{% trans "Límit de pàgines a raspar per cada execució" %}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="config-card">
+    <h6 class="mb-3"><i class="bi bi-currency-euro me-2 text-primary"></i>{% trans "Filtres d'Importe" %}</h6>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="id_importe_min">{% trans "Importe mínimo" %}</label>
+          <input type="number" class="form-control" id="id_importe_min" name="importe_min"
+                 value="{{ template.importe_min|default:'' }}" min="0" step="0.01">
+          <small class="info-text">{% trans "EUR. Deixar buit per a sense límit" %}</small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="id_importe_max">{% trans "Importe màxim" %}</label>
+          <input type="number" class="form-control" id="id_importe_max" name="importe_max"
+                 value="{{ template.importe_max|default:'' }}" min="0" step="0.01">
+          <small class="info-text">{% trans "EUR. Deixar buit per a sense límit" %}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="config-card">
+    <h6 class="mb-3"><i class="bi bi-geo-alt me-2 text-primary"></i>{% trans "Territoris" %}</h6>
+    <small class="info-text d-block mb-2">{% trans "Selecciona les províncies a incloure. Deixar buit = totes" %}</small>
+    <div class="checkbox-grid">
+      {% for prov in provincias_list %}
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="provincies"
+               id="prov-{{ prov|slugify }}" value="{{ prov }}"
+               {% if prov in template.provincies %}checked{% endif %}>
+        <label class="form-check-label" for="prov-{{ prov|slugify }}">
+          {{ prov }}
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="config-card">
+    <h6 class="mb-3"><i class="bi bi-briefcase me-2 text-primary"></i>{% trans "Tipus de Contrate" %}</h6>
+    <small class="info-text d-block mb-2">{% trans "Selecciona els tipus. Deixar buit = tots" %}</small>
+    <div class="checkbox-grid">
+      {% for type_id, type_label in tipo_choices %}
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="tipus_contracte"
+               id="type-{{ type_id }}" value="{{ type_id }}"
+               {% if type_id|stringformat:"s" in template.tipus_contracte %}checked{% endif %}>
+        <label class="form-check-label" for="type-{{ type_id }}">
+          {{ type_label }}
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="config-card">
+    <h6 class="mb-3"><i class="bi bi-clipboard-check me-2 text-primary"></i>{% trans "Procediments" %}</h6>
+    <small class="info-text d-block mb-2">{% trans "Selecciona els procediments. Deixar buit = tots" %}</small>
+    <div class="checkbox-grid">
+      {% for proc_id, proc_label in procediment_choices %}
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="procediments"
+               id="proc-{{ proc_id }}" value="{{ proc_id }}"
+               {% if proc_id|stringformat:"s" in template.procediments %}checked{% endif %}>
+        <label class="form-check-label" for="proc-{{ proc_id }}">
+          {{ proc_label }}
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="config-card">
+    <h6 class="mb-3"><i class="bi bi-tag me-2 text-primary"></i>{% trans "Codis CPV" %}</h6>
+    <small class="info-text d-block mb-2">{% trans "Prefix de codi CPV (ex: 45, 71). Deixar buit = tots" %}</small>
+    <div class="form-group">
+      <textarea class="form-control" id="id_cpv_raw" name="cpv_raw" rows="3" placeholder="45&#10;71&#10;72">{% for cpv in template.cpv_inclosos %}{{ cpv }}
+{% endfor %}</textarea>
+      <small class="info-text">{% trans "Un codi per línia" %}</small>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <button type="submit" class="btn btn-primary btn-lg">
+      <i class="bi bi-check-lg me-1"></i>{% trans "Desar configuració" %}
+    </button>
+    <a href="{% url 'portal:admin_overview' %}" class="btn btn-secondary btn-lg">
+      <i class="bi bi-x-lg me-1"></i>{% trans "Cancelar" %}
+    </a>
+  </div>
+</form>
+{% endblock %}

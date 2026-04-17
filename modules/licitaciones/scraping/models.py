@@ -1,34 +1,22 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class ScrapingTemplate(models.Model):
-    """
-    Client-configurable scraping template.
-    All filter fields are optional — empty means 'no filter'.
-    The first active template is used by default when no template_id is provided.
-    """
-    nom = models.CharField(max_length=200)
+    nom = models.CharField(max_length=200, default='Default')
     activa = models.BooleanField(default=True, db_index=True)
 
-    # Amount range
     importe_min = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
     importe_max = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
 
-    # Territory — list of province names, e.g. ["Valencia", "Alicante"]
     provincies = models.JSONField(default=list, blank=True)
 
-    # Contract type codes (empty = all)
-    # 1=Obras, 2=Concesión Obras, 3=Gestión Servicios, 4=Suministros, 5=Servicios, 6=Otros
     tipus_contracte = models.JSONField(default=list, blank=True)
 
-    # Procedure codes (empty = all)
-    # 1=Abierto, 2=Restringido, 4=Negociado s/publicidad, 7=Simplificado
     procediments = models.JSONField(default=list, blank=True)
 
-    # CPV code prefixes to include (empty = all), e.g. ["45", "71"]
     cpv_inclosos = models.JSONField(default=list, blank=True)
 
-    # Max pages to scrape per run
     max_pagines = models.IntegerField(default=10)
 
     creada_en = models.DateTimeField(auto_now_add=True)
@@ -37,13 +25,24 @@ class ScrapingTemplate(models.Model):
     class Meta:
         verbose_name = 'Plantilla de scraping'
         verbose_name_plural = 'Plantilles de scraping'
-        ordering = ['nom']
 
     def __str__(self):
         return self.nom
 
+    def clean(self):
+        if ScrapingTemplate.objects.exclude(pk=self.pk).exists():
+            raise ValidationError('Solo puede existir una plantilla de scraping.')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def get_singleton(cls):
+        template, _ = cls.objects.get_or_create(pk=1, defaults={'nom': 'Default'})
+        return template
+
     def to_filters(self) -> dict:
-        """Return a filters dict ready for ContratacionesScraper."""
         filters = {}
         if self.importe_min is not None:
             filters['importe_min'] = float(self.importe_min)

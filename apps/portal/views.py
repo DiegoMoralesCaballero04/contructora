@@ -688,6 +688,84 @@ if _RRHH:
             })
 
 
+# ─── Scraping Configuration ──────────────────────────────────────────────────
+
+if _LICITACIONES:
+    try:
+        from modules.licitaciones.scraping.models import ScrapingTemplate
+        _SCRAPING = True
+    except ImportError:
+        _SCRAPING = False
+
+    if _SCRAPING:
+        class ScrapingConfigView(AdminAccessMixin, View):
+            template_name = 'portal/admin/scraping_config.html'
+
+            def get(self, request):
+                template = ScrapingTemplate.get_singleton()
+                from modules.licitaciones.licitaciones.models import PROVINCIES_ESPANYA
+
+                all_provs = []
+                for provs in PROVINCIES_ESPANYA.values():
+                    all_provs.extend(provs)
+                all_provs = sorted(set(all_provs))
+
+                return render(request, self.template_name, {
+                    'template': template,
+                    'profile': get_profile(request.user),
+                    'provincias_list': all_provs,
+                    'tipo_choices': [
+                        ('1', 'Obras'),
+                        ('2', 'Concesión Obras'),
+                        ('3', 'Gestión Servicios'),
+                        ('4', 'Suministros'),
+                        ('5', 'Servicios'),
+                        ('6', 'Otros'),
+                    ],
+                    'procediment_choices': [
+                        ('1', 'Abierto'),
+                        ('2', 'Restringido'),
+                        ('4', 'Negociado s/publicidad'),
+                        ('7', 'Simplificado'),
+                    ],
+                })
+
+            def post(self, request):
+                template = ScrapingTemplate.get_singleton()
+
+                template.nom = request.POST.get('nom', '').strip() or 'Default'
+                template.activa = request.POST.get('activa') == 'on'
+
+                importe_min = request.POST.get('importe_min', '').strip()
+                importe_max = request.POST.get('importe_max', '').strip()
+                template.importe_min = float(importe_min) if importe_min else None
+                template.importe_max = float(importe_max) if importe_max else None
+
+                max_pagines = request.POST.get('max_pagines', '10').strip()
+                template.max_pagines = int(max_pagines) if max_pagines.isdigit() else 10
+
+                template.provincies = request.POST.getlist('provincies')
+                template.tipus_contracte = request.POST.getlist('tipus_contracte')
+                template.procediments = request.POST.getlist('procediments')
+
+                cpv_raw = request.POST.get('cpv_raw', '').strip()
+                if cpv_raw:
+                    cpv_list = [c.strip() for c in cpv_raw.split('\n') if c.strip()]
+                    template.cpv_inclosos = cpv_list
+                else:
+                    template.cpv_inclosos = []
+
+                try:
+                    template.save()
+                    log_action('UPDATE', model_name='ScrapingTemplate', object_id=str(template.pk),
+                               object_repr='ScrapingTemplate', request=request)
+                    messages.success(request, 'Configuració de scraping actualitzada.')
+                except Exception as e:
+                    messages.error(request, f'Error: {e}')
+
+                return redirect('portal:scraping_config')
+
+
 # ─── Language switch (always available) ──────────────────────────────────────
 
 class SetLanguageView(View):
