@@ -28,8 +28,6 @@ except ImportError:
     _RRHH = False
 
 
-# ─── Auth ────────────────────────────────────────────────────────────────────
-
 class LoginView(View):
     template_name = 'portal/login.html'
 
@@ -57,8 +55,6 @@ class LogoutView(View):
         logout(request)
         return redirect('portal:login')
 
-
-# ─── Dashboard ───────────────────────────────────────────────────────────────
 
 class DashboardView(PortalLoginMixin, View):
     template_name = 'portal/dashboard.html'
@@ -135,8 +131,6 @@ class DashboardView(PortalLoginMixin, View):
             'territoris_noves': territoris_noves,
         })
 
-
-# ─── Licitacions ─────────────────────────────────────────────────────────────
 
 if _LICITACIONES:
     class LicitacionsListView(PortalLoginMixin, ListView):

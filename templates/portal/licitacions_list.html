@@ -107,10 +107,16 @@
           </td>
           <td>
             {% with informe=l.informes.first %}
-              {% if informe and informe.pdf_s3_url %}
-                <a href="{{ informe.pdf_s3_url }}" target="_blank" title="Ver informe PDF">
-                  <i class="bi bi-file-pdf text-danger"></i>
-                </a>
+              {% if informe %}
+                {% if informe.pdf_s3_url %}
+                  <a href="{{ informe.pdf_s3_url }}" target="_blank" title="Ver informe PDF">
+                    <i class="bi bi-file-pdf text-danger"></i>
+                  </a>
+                {% else %}
+                  <a href="{% url 'portal:informe_print' informe.pk %}" target="_blank" title="Ver informe">
+                    <i class="bi bi-file-text text-secondary"></i>
+                  </a>
+                {% endif %}
               {% endif %}
             {% endwith %}
           </td>
@@ -127,18 +133,35 @@
       <ul class="pagination pagination-sm mb-0">
         {% if page_obj.has_previous %}
         <li class="page-item">
+          <a class="page-link" href="?{% for k,v in filtres.items %}{% if k != 'page' %}{{ k }}={{ v }}&{% endif %}{% endfor %}page=1" title="Primera">
+            <i class="bi bi-chevron-double-left"></i>
+          </a>
+        </li>
+        <li class="page-item">
           <a class="page-link" href="?{% for k,v in filtres.items %}{% if k != 'page' %}{{ k }}={{ v }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
             <i class="bi bi-chevron-left"></i>
           </a>
         </li>
         {% endif %}
-        <li class="page-item disabled">
-          <span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        <li class="page-item">
+          <form method="get" id="page-jump-form" class="d-flex align-items-center">
+            {% for k,v in filtres.items %}{% if k != 'page' %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endif %}{% endfor %}
+            <input type="number" name="page" id="page-input" value="{{ page_obj.number }}"
+                   min="1" max="{{ page_obj.paginator.num_pages }}"
+                   class="page-link text-center border-0 bg-transparent fw-semibold"
+                   style="width:3rem;-moz-appearance:textfield;appearance:textfield;">
+            <span class="page-link border-0 bg-transparent text-muted pe-1 ps-0">/ {{ page_obj.paginator.num_pages }}</span>
+          </form>
         </li>
         {% if page_obj.has_next %}
         <li class="page-item">
           <a class="page-link" href="?{% for k,v in filtres.items %}{% if k != 'page' %}{{ k }}={{ v }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
             <i class="bi bi-chevron-right"></i>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?{% for k,v in filtres.items %}{% if k != 'page' %}{{ k }}={{ v }}&{% endif %}{% endfor %}page={{ page_obj.paginator.num_pages }}" title="Última">
+            <i class="bi bi-chevron-double-right"></i>
           </a>
         </li>
         {% endif %}
@@ -147,4 +170,26 @@
   </div>
   {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  const input = document.getElementById('page-input');
+  const form  = document.getElementById('page-jump-form');
+  if (!input || !form) return;
+  const max = parseInt(input.max, 10);
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      let v = parseInt(input.value, 10);
+      if (isNaN(v) || v < 1) v = 1;
+      if (v > max) v = max;
+      input.value = v;
+      form.submit();
+    }
+  });
+  input.addEventListener('wheel', function (e) { e.preventDefault(); }, { passive: false });
+})();
+</script>
 {% endblock %}

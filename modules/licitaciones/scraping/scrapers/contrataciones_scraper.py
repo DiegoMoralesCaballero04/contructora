@@ -60,8 +60,6 @@ class ContratacionesScraper(BaseScraper):
         finally:
             await self._stop_browser()
 
-    # ── Atom feed (primary) ───────────────────────────────────────
-
     async def _scrape_via_atom(self, max_pages: int) -> list[dict]:
         """Parse the PLACE Atom syndication feed with pagination — no JS, reliable."""
         results = []
@@ -248,7 +246,6 @@ class ContratacionesScraper(BaseScraper):
 
         provincies = self.filters.get('provincies') or []
         if provincies:
-            # Support legacy single-string 'provincia' key
             provincia = item.get('provincia', '')
             if not any(p.lower() in provincia.lower() for p in provincies):
                 return False
@@ -274,8 +271,6 @@ class ContratacionesScraper(BaseScraper):
             return False
 
         return True
-
-    # ── Playwright fallback ───────────────────────────────────────
 
     def _build_search_url(self, provincia_override: str = '') -> str:
         params = ['tipoBusqueda=4', 'estadoLicitacion=ADM']

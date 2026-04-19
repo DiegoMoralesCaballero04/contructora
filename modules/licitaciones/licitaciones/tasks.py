@@ -4,17 +4,11 @@ from celery import shared_task
 
 logger = logging.getLogger(__name__)
 
-PDF_TRACEABILITY_STATES = {'PRESENTADA', 'ADJUDICADA', 'DESIERTA'}
-
-
 @shared_task(bind=True, max_retries=3, default_retry_delay=60)
 def generar_pdf_informe(self, informe_pk: int):
     """
     Generates a PDF for an InformeIntern using Playwright (headless Chromium),
     uploads it to S3, and saves the key + presigned URL on the informe.
-
-    Only runs when the related licitación is in a traceability state
-    (PRESENTADA, ADJUDICADA, DESIERTA).
     """
     from .models import InformeIntern
     from core.storage.utils import generate_informe_s3_key, upload_pdf_to_s3, get_presigned_url
@@ -25,13 +19,6 @@ def generar_pdf_informe(self, informe_pk: int):
         ).get(pk=informe_pk)
     except InformeIntern.DoesNotExist:
         logger.error('InformeIntern %d not found', informe_pk)
-        return
-
-    if informe.licitacion.estado not in PDF_TRACEABILITY_STATES:
-        logger.debug(
-            'Informe %d: licitació en estat %s, no cal PDF S3',
-            informe_pk, informe.licitacion.estado
-        )
         return
 
     logger.info('Generating PDF for informe %d (licitació %s)', informe_pk, informe.licitacion.estado)

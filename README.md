@@ -2,7 +2,7 @@
 
 Sistema de vigilancia, análisis y gestión de licitaciones públicas de construcción, desarrollado en el marco del programa **Talent PIME Fase II** (IES Eduardo Primo Marqués, curso 2025-2026).
 
-Reduce de 2 horas a 20-30 minutos la revisión diaria manual de [contratacionesdelestado.es](https://contrataciondelestado.es).
+Automatiza la revisión diaria de [contratacionesdelestado.es](https://contratacionesdelestado.es), reduciendo el tiempo de análisis de 2 horas a menos de 30 minutos.
 
 ---
 
@@ -23,25 +23,26 @@ Reduce de 2 horas a 20-30 minutos la revisión diaria manual de [contratacionesd
 
 ## Qué hace
 
-Cada mañana a las 7:00 (de lunes a viernes), el sistema ejecuta automáticamente el siguiente ciclo:
+Cada mañana a las 7:00 (lunes a viernes), el sistema ejecuta automáticamente:
 
-1. **Scraping** — Busca licitaciones nuevas en contratacionesdelestado.es con los filtros configurados (obras, Comunitat Valenciana, procedimiento abierto, importe 0–4 M EUR).
-2. **Descarga** — Baja el PDF del pliego de condiciones de cada licitación y lo sube a AWS S3.
-3. **Extracción con LLM** — Envía el texto del PDF a Ollama (Llama 3 en local) y extrae de forma estructurada: importe, plazos, criterios de adjudicación, fórmulas de puntuación y clasificación empresarial requerida.
-4. **Resumen** — Genera un resumen ejecutivo por cada licitación.
-5. **Alertas** — Envía notificaciones por Telegram con las licitaciones relevantes del día.
-6. **Portal** — Todo queda accesible en el portal web para revisión, filtrado, gestión interna e informes.
+1. **Scraping** — Pagina el feed Atom de PLACE (contratacionesdelestado.es) recogiendo hasta 20 páginas × 50 entradas. Aplica los filtros configurados: tipo de contrato, procedimiento, importe mínimo/máximo, provincias y municipios.
+2. **Almacenamiento** — Guarda cada licitación en PostgreSQL y el JSON en bruto en MongoDB.
+3. **Descarga de pliegos** — Descarga el PDF del pliego de condiciones y lo sube a AWS S3.
+4. **Extracción con IA** — Envía el texto del PDF a Ollama (Llama 3 local) y extrae de forma estructurada: importe, plazos, criterios de adjudicación, fórmulas de puntuación y clasificación empresarial requerida.
+5. **Resumen** — n8n genera un resumen ejecutivo por cada licitación nueva usando Ollama.
+6. **Alertas** — Envía un informe diario por Telegram con las licitaciones más relevantes.
+7. **Portal** — Todo queda accesible en el portal web para revisión, filtrado, gestión interna e informes.
 
 ---
 
 ## Arquitectura
 
 ```
-contratacionesdelestado.es
+contratacionesdelestado.es (feed Atom PLACE)
          |
-         v  (Playwright / feed PLACE)
+         v
   +-----------------+
-  |  Celery Worker  |  <-- Celery Beat (cron 07:00)
+  |  Celery Worker  |  <-- Celery Beat (cron 07:00 L-V)
   |  scrape task    |
   +--------+--------+
            |
@@ -49,28 +50,25 @@ contratacionesdelestado.es
      |             |
      v             v
 PostgreSQL       MongoDB
-(estructurado)   (raw HTML/JSON scrapeado)
+(estructurado)   (raw JSON scrapeado)
      |
-     v  (si es relevante)
+     v
   +-----+
   |  S3 |  <-- PDF del pliego subido
   +--+--+
      |
-     v  (Celery Worker: extract task)
+     v
   +--------+
-  | Ollama |  (Llama 3 local)
+  | Ollama |  (Llama 3.2 local)
   +---+----+
       |
       +---> PostgreSQL  (datos extraídos + resumen)
       +---> MongoDB     (respuesta raw del LLM)
            |
            v
-  Telegram  (alertas automáticas)
-           |
-           v
-  +------------------+     +-----+
-  | Portal Django    |     | n8n |  (workflows adicionales)
-  +------------------+     +-----+
+  +-------+--------+     +-----+
+  | Portal Django  |     | n8n |  (pipeline + alertas Telegram)
+  +----------------+     +-----+
 ```
 
 ---
@@ -85,47 +83,51 @@ PostgreSQL       MongoDB
 | Base de datos documental | MongoDB | 7 |
 | Cola de tareas | Celery + Redis | 5.4 / 7 |
 | Almacenamiento de PDFs | AWS S3 | — |
-| Scraping web | Python Playwright | 1.47 |
-| Modelo de lenguaje (LLM) | Ollama + Llama 3 | local |
+| Modelo de lenguaje (LLM) | Ollama + Llama 3.2:3b | local |
 | Orquestación de workflows | n8n | latest |
 | Proxy | Nginx | alpine |
 | Contenedores | Docker Compose | — |
+| Internacionalización | Django i18n (ES / CA / EN) | — |
 
 ---
 
 ## Estructura del proyecto
 
 ```
-construtech-ia/
+construtech/
 ├── apps/
-│   ├── licitaciones/      # Modelos principales (Licitacion, InformeIntern,
-│   │                      # ConfigEmpresa, ContacteProvincial), API, admin
-│   ├── rrhh/              # Control de presencia (Fichaje), perfiles de usuario
-│   ├── portal/            # Vistas del portal web, mixins de autenticación, URLs
-│   ├── scraping/          # Scraper Playwright, tareas Celery, ScrapingJob
-│   ├── extraccion/        # Cliente Ollama, extracción PDF, modelo Extraccion
-│   ├── alertas/           # Notificaciones Telegram
-│   ├── audit/             # Log de acciones de usuario
-│   └── api/               # Router DRF, autenticación API key, health check
+│   ├── api/               Autenticación por API key, health check, router DRF
+│   └── portal/            Vistas web, mixins de login, URLs del portal
+├── core/
+│   ├── audit/             Log de acciones de usuario
+│   ├── mongo/             Cliente pymongo, colecciones
+│   └── storage/           Helpers AWS S3, generación de URLs presignadas
+├── modules/
+│   ├── licitaciones/
+│   │   ├── licitaciones/  Modelos principales (Licitacion, InformeIntern,
+│   │   │                  ConfigEmpresa, ContacteProvincial, ScrapingTemplate)
+│   │   ├── scraping/      Scraper Atom feed PLACE, tareas Celery, ScrapingJob
+│   │   ├── extraccion/    Cliente Ollama, extracción PDF, modelo Extraccion
+│   │   └── alertas/       Notificaciones Telegram y email
+│   ├── rrhh/rrhh/         Perfiles de usuario, roles
+│   └── fichajes/          Control de presencia (entradas/salidas)
 ├── config/
-│   ├── settings.py        # Configuración Django
-│   ├── celery.py          # Configuración Celery
-│   └── urls.py            # URLs raíz
+│   ├── settings.py        Configuración Django
+│   ├── celery.py          Configuración Celery
+│   └── urls.py            URLs raíz
 ├── docker/
-│   ├── django/Dockerfile  # Imagen Django + Playwright (Ubuntu Jammy)
-│   └── nginx/             # Proxy inverso
+│   ├── django/Dockerfile  Imagen Django + Playwright (Ubuntu Jammy)
+│   └── nginx/             Proxy inverso
 ├── locale/
-│   ├── es/                # Traducciones español (idioma base)
-│   ├── ca/                # Traducciones valenciano/catalán
-│   └── en/                # Traducciones inglés
-├── mongo/                 # Cliente pymongo y definición de colecciones
-├── n8n/workflows/         # Workflows exportados (JSON)
-├── storage/               # Helpers AWS S3 y generación de URLs firmadas
-├── templates/portal/      # Plantillas HTML del portal
-├── docker-compose.yml     # Todos los servicios
+│   ├── es/                Traducciones español (idioma base)
+│   ├── ca/                Traducciones valenciano/catalán
+│   └── en/                Traducciones inglés
+├── n8n/workflows/         Workflows exportados (JSON)
+├── templates/portal/      Plantillas HTML del portal
+├── docker-compose.yml     Todos los servicios
 ├── requirements.txt
-├── .env.example           # Plantilla de variables de entorno
-└── Makefile               # Atajos de comandos
+├── .env.example           Plantilla de variables de entorno
+└── Makefile               Atajos de comandos
 ```
 
 ---
@@ -140,7 +142,6 @@ construtech-ia/
 ### Paso 1 — Clonar y configurar el entorno
 
 ```bash
-cd construtech-ia
 cp .env.example .env
 ```
 
@@ -154,11 +155,10 @@ docker compose up -d --build
 
 La primera vez tarda unos minutos mientras se construye la imagen Django y se descargan las imágenes de PostgreSQL, MongoDB, Redis, Ollama y n8n.
 
-Para desarrollo local, hay un override que usa `runserver` de forma que los cambios de código se reflejan sin reiniciar contenedores:
+Para desarrollo local, usa el override que activa el servidor de desarrollo con recarga automática:
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d django
-# o con el Makefile:
 make dev
 ```
 
@@ -177,7 +177,14 @@ docker compose exec ollama ollama pull llama3.2:3b
 
 El modelo pesa aproximadamente 2 GB. Para producción se recomienda `llama3:8b` o superior.
 
-### Paso 5 — Verificar que todo funciona
+### Paso 5 — Importar el workflow de n8n
+
+1. Accede a n8n en **http://localhost:5678**.
+2. Ve a **Settings → Import from file**.
+3. Importa `n8n/workflows/construtech_pipeline_complet.json`.
+4. Configura las credenciales (ver sección [Workflows n8n](#workflows-n8n)).
+
+### Paso 6 — Verificar que todo funciona
 
 ```bash
 curl http://localhost:8000/api/v1/health/
@@ -209,6 +216,7 @@ Todas las variables de entorno van al fichero `.env`. No subas este fichero a gi
 |---|---|---|
 | `DJANGO_SECRET_KEY` | Clave secreta Django | `openssl rand -hex 32` |
 | `POSTGRES_PASSWORD` | Contraseña PostgreSQL | — |
+| `API_KEY` | Clave para autenticar llamadas desde n8n | cualquier string seguro |
 
 ### AWS S3
 
@@ -239,8 +247,6 @@ TELEGRAM_CHAT_ID=987654321
 ### n8n
 
 ```env
-N8N_BASIC_AUTH_USER=admin
-N8N_BASIC_AUTH_PASSWORD=construtech2026
 API_KEY=clave_para_autenticar_llamadas_desde_n8n
 ```
 
@@ -256,14 +262,16 @@ El portal está completamente traducido al español, valenciano y inglés. El id
 
 #### Licitaciones
 
-Lista paginada con filtros por texto, estado, provincia e importe. Vista de detalle con toda la información extraída por el LLM, criterios de adjudicación, visor del pliego PDF en línea y acceso a los informes internos.
+Lista paginada con filtros por texto, estado y plazo (solo vigentes por defecto). Columnas: expediente, título, organismo, municipio/provincia, importe base, plazo de presentación con días restantes, estado y enlace al informe/PDF.
+
+La paginación permite navegar con los botones primera/anterior/siguiente/última página, o escribir directamente el número de página y pulsar Enter.
 
 Estados posibles de una licitación:
 
 | Estado | Descripción |
 |---|---|
 | Nueva | Recién scrapeada, pendiente de revisión |
-| Revisada | Revisada y procesada por el workflow de n8n |
+| Revisada | Procesada por el workflow de n8n |
 | En preparación | El equipo está preparando la oferta |
 | Presentada | Oferta enviada |
 | Adjudicada | El contrato ha sido adjudicado |
@@ -274,46 +282,43 @@ Estados posibles de una licitación:
 
 Permite documentar el análisis interno de cada licitación: análisis técnico, puntos fuertes y débiles, observaciones, puntuación del 1 al 10 y recomendación (presentar / descartar / estudiar más).
 
-Para licitaciones en estado Presentada, Adjudicada o Desierta, el informe se archiva automáticamente como PDF en S3 para trazabilidad. El PDF se genera con el mismo contenido que la vista de impresión del portal.
+Al crear un informe, se genera automáticamente un PDF via Playwright y se sube a S3. El PDF es accesible desde la columna PDF de la lista de licitaciones.
+
+#### Scraping — Configuración de plantilla
+
+Panel de administración para configurar los filtros del scraping automático:
+
+- **Importe mínimo/máximo** — rango de importes a incluir.
+- **Provincias** — selección de provincias a monitorizar.
+- **Municipios** — municipios concretos de interés.
+- **Tipos de contrato** — obras, servicios, suministros, etc.
+- **Procedimientos** — abierto, restringido, negociado, etc.
+- **Códigos CPV** — prefijos de categoría (45 = construcción, 71 = arquitectura, etc.).
 
 #### Territorios
 
-Configuración de provincias y municipios de interés para la empresa:
+Configuración de poblaciones de interés para el usuario:
 
-- **Provincia principal** — la provincia base de la empresa (marcada con estrella).
-- **Provincias favoritas** — otras provincias donde la empresa licita habitualmente.
-- **Municipios** — ciudades concretas de interés.
+- **Municipio principal** — la localidad base (marcada con estrella).
+- **Favoritos** — otros municipios donde la empresa licita habitualmente.
 
-Las licitaciones de los territorios favoritos aparecen destacadas en el dashboard y se pueden filtrar con un clic desde la lista. En el detalle de cada licitación, si la provincia coincide con un favorito, se muestran automáticamente los contactos locales asociados.
+Las licitaciones de los municipios favoritos aparecen destacadas y se pueden filtrar desde el dashboard.
 
 #### Contactos provinciales
 
-Directorio de contactos locales por provincia: subcontratistas, proveedores, delegados, técnicos o arquitectos. Información de contacto (teléfono, email), empresa y notas. Acceso directo desde el detalle de cualquier licitación de esa provincia.
+Directorio de contactos locales por provincia: subcontratistas, proveedores, delegados, técnicos. Acceso directo desde el detalle de cualquier licitación de esa provincia.
 
 #### Control de presencia (Fichaje)
 
-Registro de entradas y salidas diarias. Cada usuario puede ver su historial y editar sus propios fichajes. Los administradores pueden editar el fichaje de cualquier trabajador desde el módulo de RRHH.
+Registro de entradas y salidas diarias. Cada usuario puede ver su historial. Los administradores pueden editar el fichaje de cualquier trabajador desde el módulo de RRHH.
 
 #### RRHH
 
-Vista diaria y semanal de todos los fichajes del personal. Resumen de horas trabajadas por trabajador y semana. Gestión del personal activo.
+Vista diaria y semanal de todos los fichajes del personal. Resumen de horas trabajadas por trabajador y semana.
 
 #### Gestión de usuarios
 
-Alta, edición y baja de usuarios. Cada usuario tiene un rol (Administrador, Jefe, Supervisor, Trabajador) que determina qué secciones del portal puede ver.
-
-### Comandos de gestión
-
-```bash
-# Forzar un scraping manual
-make scrape
-
-# Limpiar municipios con valor incorrecto ("Madrid" en provincias no madrileñas)
-docker compose exec django python manage.py fix_municipios --apply
-
-# Ver logs en tiempo real
-make logs
-```
+Alta, edición y baja de usuarios. Cada usuario tiene un rol (Administrador, Jefe, Supervisor, Trabajador) que determina las secciones accesibles.
 
 ### Makefile
 
@@ -328,6 +333,7 @@ make health        # Comprobar el estado de todos los servicios
 make ollama-pull   # Descargar el modelo Llama
 make db-shell      # Consola PostgreSQL
 make mongo-shell   # Consola MongoDB
+make dev           # Arrancar en modo desarrollo con recarga automática
 ```
 
 ---
@@ -338,10 +344,10 @@ Documentación interactiva (Swagger): **http://localhost:8000/api/docs/**
 
 ### Autenticación
 
-Las peticiones desde n8n deben incluir la cabecera:
+Las peticiones deben incluir la cabecera:
 
 ```
-X-API-KEY: <valor de API_KEY en .env>
+X-API-Key: <valor de API_KEY en .env>
 ```
 
 ### Endpoints principales
@@ -365,6 +371,7 @@ X-API-KEY: <valor de API_KEY en .env>
 ?fecha_desde=2026-01-01
 ?ordering=-importe_base
 ?search=escola municipal
+?page_size=50
 ```
 
 ---
@@ -373,31 +380,27 @@ X-API-KEY: <valor de API_KEY en .env>
 
 Accede a n8n en **http://localhost:5678**.
 
-Los workflows se encuentran en `n8n/workflows/` y se importan manualmente desde **Settings → Import from file**.
+Los workflows se encuentran en `n8n/workflows/` y se importan desde **Settings → Import from file**.
 
 ### Workflow principal: Pipeline completo (`construtech_pipeline_complet.json`)
 
 Se ejecuta de lunes a viernes a las **07:00**. Proceso:
 
-1. Consulta via API las licitaciones nuevas del día (estado NUEVA).
-2. Para cada licitación (una a una, procesamiento secuencial con SplitInBatches):
-   - Prepara el prompt con los datos de la licitación.
-   - Envía el prompt a Ollama (Llama 3) para obtener el análisis.
-   - Guarda el resultado y marca la licitación como Revisada.
-3. Al finalizar el ciclo, envía un resumen por Telegram con las 5 licitaciones más relevantes del día.
-
-El nodo SplitInBatches procesa cada licitación individualmente para evitar saturar el LLM con 30 ítems a la vez.
+1. Llama al endpoint `/api/v1/scraping/executar/` con `max_pagines: 20` (~88 segundos de scraping).
+2. Espera **600 segundos** para que el scraping finalice.
+3. Consulta las licitaciones en estado NUEVA ordenadas por importe.
+4. Para cada licitación (una a una con SplitInBatches):
+   - Prepara un prompt con los datos de la licitación.
+   - Envía el prompt a Ollama (Llama 3.2:3b) para obtener un resumen ejecutivo.
+   - Marca la licitación como Revisada en Django.
+5. Al finalizar el ciclo, genera un informe HTML con las 5 licitaciones más relevantes y lo envía por Telegram.
+6. Si no hay licitaciones nuevas, envía un mensaje informativo por Telegram.
 
 ### Configurar credenciales en n8n
 
-1. En n8n: **Settings → Credentials → New**
-2. Tipo: **HTTP Header Auth**
-   - Name: `CONSTRUTECH-API`
-   - Header Name: `X-API-KEY`
-   - Header Value: (el valor de `API_KEY` en `.env`)
-3. Para Telegram: **Telegram API** con el token del bot.
+Las llamadas a Django usan la variable de entorno `CONSTRUTECH_API_KEY` (configurada en `docker-compose.yml` como `${API_KEY}`). No se necesita configurar credenciales adicionales en n8n siempre que `N8N_BLOCK_ENV_ACCESS_IN_NODE=false`.
 
-El parse mode de los mensajes Telegram es HTML. Los caracteres especiales `&`, `<` y `>` deben escaparse como `&amp;`, `&lt;` y `&gt;`.
+Para Telegram, configura en n8n: **Settings → Credentials → New → Telegram API** con el token del bot. Alternativamente, el nodo usa la variable de entorno `TELEGRAM_BOT_TOKEN`.
 
 ---
 
@@ -411,7 +414,8 @@ El parse mode de los mensajes Telegram es HTML. Los caracteres especiales `&`, `
 | `licitaciones_organismo` | Organismos contratantes |
 | `licitaciones_criterioadjudicacion` | Criterios de adjudicación por licitación |
 | `licitaciones_informeintern` | Informes internos de análisis |
-| `licitaciones_configempresa` | Configuración de la empresa (provincias y municipios favoritos) |
+| `licitaciones_configempresa` | Configuración de la empresa |
+| `licitaciones_scrapingtemplate` | Plantillas de configuración del scraping |
 | `licitaciones_contacteprovincial` | Directorio de contactos por provincia |
 | `extraccion_extraccion` | Resultado de la extracción LLM por licitación |
 | `alertas_alertaconfig` | Configuración de alertas por usuario |
@@ -423,50 +427,40 @@ El parse mode de los mensajes Telegram es HTML. Los caracteres especiales `&`, `
 
 | Colección | Contenido |
 |---|---|
-| `raw_licitaciones` | JSON/HTML en bruto scrapeados de PLACE |
+| `raw_licitaciones` | JSON en bruto scrapeado de PLACE |
 | `llm_responses` | Respuestas completas del LLM (prompt + respuesta) |
 | `pdf_chunks` | Fragmentos de texto extraídos de los PDFs |
 
 ### AWS S3
 
 ```
-s3://<bucket>/plecs/<expediente_id>/plec_<expediente_id>.pdf
-s3://<bucket>/informes/<expediente_id>/informe_<pk>.pdf
+s3://<bucket>/plecs/<expediente_id>/plec_<expediente_id>.pdf   ← PDF del pliego
+s3://<bucket>/informes/<expediente_id>/informe_<pk>.pdf        ← PDF del informe interno
 ```
-
-Los PDFs de pliegos se descargan automáticamente durante el scraping. Los PDFs de informes internos se generan mediante Playwright al crear un informe para una licitación en estado Presentada, Adjudicada o Desierta.
 
 ---
 
 ## Flujo automático completo
 
 ```
-07:00 -- Celery Beat --> scrape_licitaciones()
-                              |
-                     +--------v--------+
-                     | Por cada nueva  |
-                     | licitación:     |
-                     +--------+--------+
-                              |
-              +---------------+---------------+
-              v               v               v
-      Guarda en          Guarda raw       Descarga
-      PostgreSQL         en MongoDB       PDF a S3
-              |
-              v
-      extreure_dades_pdf()
-              |
-        Extrae texto PDF
-              |
-        Envía a Ollama
-              |
-     +--------v--------+
-     | Datos extraídos |---> PostgreSQL (Extraccion)
-     | Resumen         |---> MongoDB (llm_responses)
-     +-----------------+
+07:00 Celery Beat
+  └─> scrape_licitaciones()
+        └─> Pagina feed Atom PLACE (20 páginas × 50 entradas)
+              └─> Filtra por provincia / importe / procedimiento / CPV
+                    └─> Guarda en PostgreSQL + MongoDB
+                          └─> Descarga PDF pliego → S3
+                                └─> extreure_dades_pdf()
+                                      └─> Ollama extrae datos estructurados
+                                            └─> Guarda en PostgreSQL (Extraccion)
 
-n8n 07:00 -- SplitInBatches --> Una licitacion a la vez --> Ollama --> Marcar revisada
-          +--> Al finalizar: resumen por Telegram
+07:00 n8n Schedule
+  └─> POST /api/v1/scraping/executar/ (max_pagines: 20)
+        └─> Espera 600s
+              └─> GET /api/v1/licitacions/?estado=NUEVA
+                    └─> SplitInBatches (una licitación a la vez)
+                          └─> Ollama resumen ejecutivo
+                                └─> PATCH marcar-revisada
+                                      └─> Telegram informe diario
 ```
 
 ---

@@ -4,8 +4,6 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
-# ─── Province data ───────────────────────────────────────────────────────────
-
 PROVINCIES_ESPANYA = {
     'Andalucía':          ['Almería', 'Cádiz', 'Córdoba', 'Granada', 'Huelva', 'Jaén', 'Málaga', 'Sevilla'],
     'Aragón':             ['Huesca', 'Teruel', 'Zaragoza'],
@@ -61,56 +59,39 @@ class Licitacion(models.Model):
         SIMPLIFICADO = 'SIMPLIFICADO', _('Simplificado')
         OTRO         = 'OTRO',         _('Otro')
 
-    # Identificadors
     expediente_id = models.CharField(max_length=200, unique=True, db_index=True)
     url_origen = models.URLField(max_length=1000)
-
-    # Dades bàsiques
     titulo = models.CharField(max_length=1000)
     organismo = models.ForeignKey(
         Organismo, on_delete=models.SET_NULL, null=True, related_name='licitaciones'
     )
     provincia = models.CharField(max_length=100, blank=True)
     municipio = models.CharField(max_length=200, blank=True)
-
-    # Econòmics
     importe_base = models.DecimalField(
         max_digits=14, decimal_places=2, null=True, blank=True
     )
     importe_iva = models.DecimalField(
         max_digits=14, decimal_places=2, null=True, blank=True
     )
-
-    # Procediment i terminis
     procedimiento = models.CharField(
         max_length=20, choices=Procedimiento.choices, default=Procedimiento.ABIERTO
     )
     fecha_publicacion = models.DateField(null=True, blank=True)
     fecha_limite_oferta = models.DateTimeField(null=True, blank=True)
     plazo_ejecucion_dias = models.IntegerField(null=True, blank=True)
-
-    # Classificació empresarial
     clasificacion_grupo = models.CharField(max_length=5, blank=True)
     clasificacion_subgrupo = models.CharField(max_length=5, blank=True)
     clasificacion_categoria = models.CharField(max_length=5, blank=True)
-
-    # PDF a S3
     pdf_pliego_s3_key = models.CharField(max_length=500, blank=True)
     pdf_pliego_url = models.URLField(max_length=1000, blank=True)
     pdf_descargado = models.BooleanField(default=False)
-
-    # Estat intern
     estado = models.CharField(
         max_length=20, choices=Estado.choices, default=Estado.NUEVA, db_index=True
     )
     es_relevante = models.BooleanField(default=True)
     notas = models.TextField(blank=True)
-
-    # Metadades
     creado_en = models.DateTimeField(auto_now_add=True)
     actualizado_en = models.DateTimeField(auto_now=True)
-
-    # Referència al document MongoDB (raw data)
     mongo_id = models.CharField(max_length=50, blank=True)
 
     class Meta:
@@ -147,12 +128,11 @@ class InformeIntern(models.Model):
     licitacion      = models.ForeignKey(Licitacion, on_delete=models.CASCADE, related_name='informes')
     autor           = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='informes')
     recomendacio    = models.CharField(max_length=20, choices=Recomendacio.choices, default=Recomendacio.ESTUDIAR)
-    puntuacio       = models.PositiveSmallIntegerField(null=True, blank=True)  # 1-10
+    puntuacio       = models.PositiveSmallIntegerField(null=True, blank=True)
     analisi_tecnica = models.TextField(blank=True)
     punts_forts     = models.TextField(blank=True)
     punts_febles    = models.TextField(blank=True)
     observacions    = models.TextField(blank=True)
-    # PDF generat automàticament per a trazabilitat (estats PRESENTADA/ADJUDICADA/DESIERTA)
     pdf_s3_key      = models.CharField(max_length=500, blank=True)
     pdf_s3_url      = models.URLField(max_length=1000, blank=True)
     creado_en       = models.DateTimeField(auto_now_add=True)
