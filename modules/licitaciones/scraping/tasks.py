@@ -174,7 +174,8 @@ def _parse_date(value):
         return None
     for fmt in ('%Y-%m-%dT%H:%M:%S', '%Y-%m-%d', '%d/%m/%Y'):
         try:
-            return datetime.strptime(str(value)[:19], fmt)
+            naive = datetime.strptime(str(value)[:19], fmt)
+            return timezone.make_aware(naive, timezone.get_current_timezone())
         except ValueError:
             continue
     return None

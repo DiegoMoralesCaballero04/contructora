@@ -665,3 +665,85 @@ msgstr "Encara no hi ha licitacions en els teus territoris."
 
 msgid "Territoris:"
 msgstr "Territoris:"
+
+# scraping_config.html
+msgid "Configuració de Scraping"
+msgstr "Configuració de Scraping"
+
+msgid "Configuració General"
+msgstr "Configuració General"
+
+msgid "Nom de la plantilla"
+msgstr "Nom de la plantilla"
+
+msgid "Identificador de la plantilla de scraping"
+msgstr "Identificador de la plantilla de scraping"
+
+msgid "Plantilla activa"
+msgstr "Plantilla activa"
+
+msgid "La plantilla activa s'utiliza en el scraping automàtic"
+msgstr "La plantilla activa s'utilitza en el scraping automàtic"
+
+msgid "Activa"
+msgstr "Activa"
+
+msgid "Inactiva"
+msgstr "Inactiva"
+
+msgid "Pàgines màximes per execució"
+msgstr "Pàgines màximes per execució"
+
+msgid "Límit de pàgines a raspar per cada execució"
+msgstr "Límit de pàgines a raspar per cada execució"
+
+msgid "Filtres d'Importe"
+msgstr "Filtres d'Import"
+
+msgid "Importe mínimo"
+msgstr "Import mínim"
+
+msgid "EUR. Deixar buit per a sense límit"
+msgstr "EUR. Deixar buit per a sense límit"
+
+msgid "Importe màxim"
+msgstr "Import màxim"
+
+msgid "Selecciona les províncies a incloure. Deixar buit = totes"
+msgstr "Selecciona les províncies a incloure. Deixar buit = totes"
+
+msgid "Municipis"
+msgstr "Municipis"
+
+msgid "Selecciona els municipis a incloure. Deixar buit = tots"
+msgstr "Selecciona els municipis a incloure. Deixar buit = tots"
+
+msgid "Tipus de Contrate"
+msgstr "Tipus de Contracte"
+
+msgid "Selecciona els tipus. Deixar buit = tots"
+msgstr "Selecciona els tipus. Deixar buit = tots"
+
+msgid "Procediments"
+msgstr "Procediments"
+
+msgid "Selecciona els procediments. Deixar buit = tots"
+msgstr "Selecciona els procediments. Deixar buit = tots"
+
+msgid "Codis CPV"
+msgstr "Codis CPV"
+
+msgid "Prefix de codi CPV (ex: 45, 71). Deixar buit = tots"
+msgstr "Prefix de codi CPV (ex: 45, 71). Deixar buit = tots"
+
+msgid "Un codi per línia"
+msgstr "Un codi per línia"
+
+msgid "Desar configuració"
+msgstr "Desar configuració"
+
+msgid "Solo vigentes"
+msgstr "Només vigents"
+
+msgid "Municipio/Provincia"
+msgstr "Municipi/Província"

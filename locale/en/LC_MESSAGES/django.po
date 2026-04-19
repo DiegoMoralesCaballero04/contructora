@@ -665,3 +665,85 @@ msgstr "No tenders in your territories yet."
 
 msgid "Territoris:"
 msgstr "Territories:"
+
+# scraping_config.html
+msgid "Configuració de Scraping"
+msgstr "Scraping Configuration"
+
+msgid "Configuració General"
+msgstr "General Settings"
+
+msgid "Nom de la plantilla"
+msgstr "Template name"
+
+msgid "Identificador de la plantilla de scraping"
+msgstr "Scraping template identifier"
+
+msgid "Plantilla activa"
+msgstr "Active template"
+
+msgid "La plantilla activa s'utiliza en el scraping automàtic"
+msgstr "The active template is used in automatic scraping"
+
+msgid "Activa"
+msgstr "Active"
+
+msgid "Inactiva"
+msgstr "Inactive"
+
+msgid "Pàgines màximes per execució"
+msgstr "Max pages per run"
+
+msgid "Límit de pàgines a raspar per cada execució"
+msgstr "Page limit to scrape per execution"
+
+msgid "Filtres d'Importe"
+msgstr "Amount Filters"
+
+msgid "Importe mínimo"
+msgstr "Minimum amount"
+
+msgid "EUR. Deixar buit per a sense límit"
+msgstr "EUR. Leave blank for no limit"
+
+msgid "Importe màxim"
+msgstr "Maximum amount"
+
+msgid "Selecciona les províncies a incloure. Deixar buit = totes"
+msgstr "Select provinces to include. Leave blank = all"
+
+msgid "Municipis"
+msgstr "Municipalities"
+
+msgid "Selecciona els municipis a incloure. Deixar buit = tots"
+msgstr "Select municipalities to include. Leave blank = all"
+
+msgid "Tipus de Contrate"
+msgstr "Contract Types"
+
+msgid "Selecciona els tipus. Deixar buit = tots"
+msgstr "Select types. Leave blank = all"
+
+msgid "Procediments"
+msgstr "Procedures"
+
+msgid "Selecciona els procediments. Deixar buit = tots"
+msgstr "Select procedures. Leave blank = all"
+
+msgid "Codis CPV"
+msgstr "CPV Codes"
+
+msgid "Prefix de codi CPV (ex: 45, 71). Deixar buit = tots"
+msgstr "CPV code prefix (e.g. 45, 71). Leave blank = all"
+
+msgid "Un codi per línia"
+msgstr "One code per line"
+
+msgid "Desar configuració"
+msgstr "Save configuration"
+
+msgid "Solo vigentes"
+msgstr "Active only"
+
+msgid "Municipio/Provincia"
+msgstr "Municipality/Province"

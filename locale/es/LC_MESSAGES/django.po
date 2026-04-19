@@ -429,6 +429,122 @@ msgstr "Sin contactos para esta provincia."
 msgid "Els meus territoris"
 msgstr "Mis territorios"
 
+# scraping_config.html
+msgid "Configuració de Scraping"
+msgstr "Configuración de Scraping"
+
+msgid "Configuració General"
+msgstr "Configuración General"
+
+msgid "Nom de la plantilla"
+msgstr "Nombre de la plantilla"
+
+msgid "Identificador de la plantilla de scraping"
+msgstr "Identificador de la plantilla de scraping"
+
+msgid "Plantilla activa"
+msgstr "Plantilla activa"
+
+msgid "La plantilla activa s'utiliza en el scraping automàtic"
+msgstr "La plantilla activa se utiliza en el scraping automático"
+
+msgid "Activa"
+msgstr "Activa"
+
+msgid "Inactiva"
+msgstr "Inactiva"
+
+msgid "Pàgines màximes per execució"
+msgstr "Páginas máximas por ejecución"
+
+msgid "Límit de pàgines a raspar per cada execució"
+msgstr "Límite de páginas a raspar por cada ejecución"
+
+msgid "Filtres d'Importe"
+msgstr "Filtros de Importe"
+
+msgid "Importe mínimo"
+msgstr "Importe mínimo"
+
+msgid "EUR. Deixar buit per a sense límit"
+msgstr "EUR. Dejar vacío para sin límite"
+
+msgid "Importe màxim"
+msgstr "Importe máximo"
+
+msgid "Selecciona les províncies a incloure. Deixar buit = totes"
+msgstr "Selecciona las provincias a incluir. Dejar vacío = todas"
+
+msgid "Municipis"
+msgstr "Municipios"
+
+msgid "Selecciona els municipis a incloure. Deixar buit = tots"
+msgstr "Selecciona los municipios a incluir. Dejar vacío = todos"
+
+msgid "Tipus de Contrate"
+msgstr "Tipos de Contrato"
+
+msgid "Selecciona els tipus. Deixar buit = tots"
+msgstr "Selecciona los tipos. Dejar vacío = todos"
+
+msgid "Procediments"
+msgstr "Procedimientos"
+
+msgid "Selecciona els procediments. Deixar buit = tots"
+msgstr "Selecciona los procedimientos. Dejar vacío = todos"
+
+msgid "Codis CPV"
+msgstr "Códigos CPV"
+
+msgid "Prefix de codi CPV (ex: 45, 71). Deixar buit = tots"
+msgstr "Prefijo de código CPV (ej: 45, 71). Dejar vacío = todos"
+
+msgid "Un codi per línia"
+msgstr "Un código por línea"
+
+msgid "Desar configuració"
+msgstr "Guardar configuración"
+
+# licitacions_list.html
+msgid "Buscar por título, expediente..."
+msgstr "Buscar por título, expediente..."
+
+msgid "Todos los estados"
+msgstr "Todos los estados"
+
+msgid "Solo vigentes"
+msgstr "Solo vigentes"
+
+msgid "Filtrar"
+msgstr "Filtrar"
+
+msgid "resultados"
+msgstr "resultados"
+
+msgid "Expediente"
+msgstr "Expediente"
+
+msgid "Título"
+msgstr "Título"
+
+msgid "Organismo"
+msgstr "Organismo"
+
+msgid "Municipio/Provincia"
+msgstr "Municipio/Provincia"
+
+msgid "Importe base"
+msgstr "Importe base"
+
+msgid "Plazo"
+msgstr "Plazo"
+
+msgid "Estado"
+msgstr "Estado"
+
+msgid "No se han encontrado licitaciones con estos filtros."
+msgstr "No se han encontrado licitaciones con estos filtros."
+
 msgid "licitacions"
 msgstr "licitaciones"
 

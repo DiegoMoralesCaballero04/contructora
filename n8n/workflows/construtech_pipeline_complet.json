@@ -24,7 +24,7 @@
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
-            { "name": "max_pagines", "value": "150" }
+            { "name": "max_pagines", "value": "20" }
           ]
         },
         "options": { "timeout": 30000 }
@@ -37,11 +37,11 @@
     },
     {
       "parameters": {
-        "amount": 180,
+        "amount": 600,
         "unit": "seconds"
       },
       "id": "n3-wait",
-      "name": "⏳ Esperar 180s (scraping)",
+      "name": "⏳ Esperar 600s (scraping)",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
       "position": [580, 300]
@@ -63,7 +63,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const data = $input.first().json;\nconst licitaciones = data.results || [];\n\nif (licitaciones.length === 0) {\n  return [{ json: { continuar: false, total: 0 } }];\n}\n\nreturn licitaciones.map(l => ({\n  json: {\n    continuar: true,\n    id: l.id,\n    expediente_id: l.expediente_id,\n    titulo: l.titulo,\n    importe_base: l.importe_base,\n    provincia: l.provincia,\n    organismo: l.organismo_nombre,\n    fecha_limite: l.fecha_limite_oferta,\n    dias_restantes: l.dias_restantes,\n    pdf_disponible: l.pdf_descargado,\n    total_licitaciones: licitaciones.length\n  }\n}));"
+        "jsCode": "const data = $input.first().json;\nconst licitaciones = data.results || [];\n\nif (licitaciones.length === 0) {\n  return [{ json: { continuar: false, total: 0 } }];\n}\n\nreturn licitaciones.map(l => ({\n  json: {\n    continuar: true,\n    id: l.id,\n    expediente_id: l.expediente_id,\n    titulo: l.titulo,\n    importe_base: l.importe_base,\n    provincia: l.provincia,\n    municipio: l.municipio || '',\n    localitzacio: l.municipio ? `${l.municipio}/${l.provincia}` : (l.provincia || 'N/D'),\n    organismo: l.organismo_nombre,\n    fecha_limite: l.fecha_limite_oferta,\n    dias_restantes: l.dias_restantes,\n    total_licitaciones: licitaciones.length\n  }\n}));"
       },
       "id": "n5-split-licitacions",
       "name": "📊 Dividir por licitación",
@@ -105,7 +105,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// One item per iteration — build the Ollama prompt\nconst l = $input.first().json;\n\nconst importe_fmt = l.importe_base\n  ? parseFloat(l.importe_base).toLocaleString('es-ES', { minimumFractionDigits: 0 })\n  : 'N/D';\n\nconst plazo_txt = l.dias_restantes !== null && l.dias_restantes !== undefined\n  ? `${l.dias_restantes} días`\n  : 'sin fecha';\n\nconst prompt = `Analiza la siguiente licitación pública española y genera un resumen ejecutivo de UNA sola frase (máximo 80 palabras) destacando el aspecto más relevante para una empresa constructora.\\n\\nLicitación:\\n- Título: ${l.titulo}\\n- Organismo: ${l.organismo || 'Desconocido'}\\n- Provincia: ${l.provincia || 'N/D'}\\n- Importe base: ${importe_fmt} EUR\\n- Plazo de presentación: ${plazo_txt}\\n\\nResponde ÚNICAMENTE con el resumen, sin introducción ni explicación adicional.`;\n\nreturn [{ json: { ...l, prompt, importe_fmt, plazo_txt } }];"
+        "jsCode": "// One item per iteration — build the Ollama prompt\nconst l = $input.first().json;\n\nconst importe_fmt = l.importe_base\n  ? parseFloat(l.importe_base).toLocaleString('es-ES', { minimumFractionDigits: 0 })\n  : 'N/D';\n\nconst plazo_txt = l.dias_restantes !== null && l.dias_restantes !== undefined\n  ? `${l.dias_restantes} días`\n  : 'sin fecha';\n\nconst prompt = `Analiza la siguiente licitación pública española y genera un resumen ejecutivo de UNA sola frase (máximo 80 palabras) destacando el aspecto más relevante para una empresa constructora.\\n\\nLicitación:\\n- Título: ${l.titulo}\\n- Organismo: ${l.organismo || 'Desconocido'}\\n- Localización: ${l.localitzacio || 'N/D'}\\n- Importe base: ${importe_fmt} EUR\\n- Plazo de presentación: ${plazo_txt}\\n\\nResponde ÚNICAMENTE con el resumen, sin introducción ni explicación adicional.`;\n\nreturn [{ json: { ...l, prompt, importe_fmt, plazo_txt } }];"
       },
       "id": "n7-prepara-prompt",
       "name": "✏️ Preparar prompt Ollama",
@@ -168,7 +168,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Receives ALL accumulated enriched items after the loop finishes\nconst items = $input.all();\nconst fecha = new Date().toLocaleDateString('es-ES');\nconst total = items.length;\n\nfunction esc(s) {\n  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n}\n\nconst linies = items.slice(0, 5).map(item => {\n  const l = item.json;\n  const importe_txt = l.importe_fmt ? `${l.importe_fmt} EUR` : 'N/D';\n  const resumen = l.ollama_error\n    ? '⚠️ Resum IA no disponible'\n    : (l.resumen_ia?.substring(0, 120) || '—');\n  return `<b>${esc((l.titulo || 'N/D').substring(0, 70))}</b>\\n📍 ${esc(l.provincia || 'N/D')} | 💶 ${importe_txt} | ⏰ ${l.plazo_txt || 'sin fecha'}\\n<i>${esc(resumen)}</i>`;\n});\n\nconst peu = total > 5 ? `\\n\\n<i>... i ${total - 5} licitació${total - 5 !== 1 ? 'ns' : ''} més</i>` : '';\n\nconst mensaje = `🏗️ <b>CONSTRUTECH-IA — Noves Licitacions</b>\\n📅 ${fecha} — <b>${total}</b> nova${total !== 1 ? 's' : ''}\\n\\n${linies.join('\\n\\n')}${peu}`;\n\nreturn [{ json: { mensaje } }];"
+        "jsCode": "// Receives ALL accumulated enriched items after the loop finishes\nconst items = $input.all();\nconst fecha = new Date().toLocaleDateString('es-ES');\nconst total = items.length;\n\nfunction esc(s) {\n  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n}\n\nconst linies = items.slice(0, 5).map(item => {\n  const l = item.json;\n  const importe_txt = l.importe_fmt ? `${l.importe_fmt} EUR` : 'N/D';\n  const resumen = l.ollama_error\n    ? '⚠️ Resum IA no disponible'\n    : (l.resumen_ia?.substring(0, 120) || '—');\n  return `<b>${esc((l.titulo || 'N/D').substring(0, 70))}</b>\\n📍 ${esc(l.localitzacio || 'N/D')} | 💶 ${importe_txt} | ⏰ ${l.plazo_txt || 'sin fecha'}\\n<i>${esc(resumen)}</i>`;\n});\n\nconst peu = total > 5 ? `\\n\\n<i>... i ${total - 5} licitació${total - 5 !== 1 ? 'ns' : ''} més</i>` : '';\n\nconst mensaje = `🏗️ <b>CONSTRUTECH-IA — Noves Licitacions</b>\\n📅 ${fecha} — <b>${total}</b> nova${total !== 1 ? 's' : ''}\\n\\n${linies.join('\\n\\n')}${peu}`;\n\nreturn [{ json: { mensaje } }];"
       },
       "id": "n11-resum-final",
       "name": "📝 Generar informe final",
@@ -210,7 +210,7 @@
     "🕷️ Trigger Scraping Django": {
       "main": [[{ "node": "⏳ Esperar 180s (scraping)", "type": "main", "index": 0 }]]
     },
-    "⏳ Esperar 180s (scraping)": {
+    "⏳ Esperar 600s (scraping)": {
       "main": [[{ "node": "📋 Obtener licitaciones nuevas", "type": "main", "index": 0 }]]
     },
     "📋 Obtener licitaciones nuevas": {

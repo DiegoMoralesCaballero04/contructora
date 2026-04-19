@@ -63,9 +63,8 @@ class ContratacionesScraper(BaseScraper):
     # ── Atom feed (primary) ───────────────────────────────────────
 
     async def _scrape_via_atom(self, max_pages: int) -> list[dict]:
-        """Parse the PLACE Atom syndication feed — no JS, reliable."""
+        """Parse the PLACE Atom syndication feed with pagination — no JS, reliable."""
         results = []
-        max_items = max_pages * 25
 
         browser_headers = {
             'User-Agent': (
@@ -84,14 +83,14 @@ class ContratacionesScraper(BaseScraper):
             'https://contrataciondelestado.es/sindicacion/sindicacion_1143/licitacionesPerfilesContratanteCompleto3.atom',
         ]
 
-        xml_text = None
+        start_url = None
         async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
             for url in feed_urls:
                 try:
                     resp = await client.get(url, headers=browser_headers)
                     resp.raise_for_status()
-                    if '<feed' in resp.text or '<rss' in resp.text or '<?xml' in resp.text:
-                        xml_text = resp.text
+                    if '<feed' in resp.text or '<?xml' in resp.text:
+                        start_url = url
                         logger.info('Atom feed OK from: %s', url)
                         break
                     else:
@@ -99,17 +98,37 @@ class ContratacionesScraper(BaseScraper):
                 except Exception as e:
                     logger.debug('Feed URL %s failed: %s', url, e)
 
-        if not xml_text:
+        if not start_url:
             raise ValueError('All Atom feed URLs returned non-XML responses')
 
-        root = ET.fromstring(xml_text)
-        entries = root.findall('atom:entry', NS)
-        logger.info('Atom feed has %d entries', len(entries))
+        current_url = start_url
+        pages_fetched = 0
 
-        for entry in entries[:max_items]:
-            item = self._parse_atom_entry(entry)
-            if item and self._passes_filters(item):
-                results.append(item)
+        async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
+            while current_url and pages_fetched < max_pages:
+                try:
+                    resp = await client.get(current_url, headers=browser_headers)
+                    resp.raise_for_status()
+                    if '<feed' not in resp.text and '<?xml' not in resp.text:
+                        break
+                    root = ET.fromstring(resp.text)
+                    entries = root.findall('atom:entry', NS)
+                    logger.info('Atom page %d: %d entries', pages_fetched + 1, len(entries))
+
+                    for entry in entries:
+                        item = self._parse_atom_entry(entry)
+                        if item and self._passes_filters(item):
+                            results.append(item)
+
+                    next_link = root.find('atom:link[@rel="next"]', NS)
+                    current_url = next_link.get('href') if next_link is not None else None
+                    pages_fetched += 1
+
+                    if not entries:
+                        break
+                except Exception as e:
+                    logger.warning('Atom page %d failed: %s', pages_fetched + 1, e)
+                    break
 
         return results
 
@@ -188,6 +207,7 @@ class ContratacionesScraper(BaseScraper):
             cpv = cpv_codes[0] if cpv_codes else ''
 
             tipo_contrato_code = find_tag(entry, 'ContractTypeCode') or ''
+            procedure_code = find_tag(entry, 'ProcedureCode') or ''
 
             return {
                 'expediente_id': expediente_id.strip(),
@@ -198,7 +218,7 @@ class ContratacionesScraper(BaseScraper):
                 'municipio': municipio[:200],
                 'importe_base': self._parse_decimal(importe_base_raw),
                 'importe_iva': self._parse_decimal(importe_iva_raw),
-                'procedimiento': 'ABIERTO',
+                'procedimiento': procedure_code or 'ABIERTO',
                 'fecha_publicacion': fecha_pub[:19] if fecha_pub else '',
                 'fecha_limite_oferta': fecha_limite[:19] if fecha_limite else '',
                 'pdf_pliego_url': '',
@@ -207,6 +227,7 @@ class ContratacionesScraper(BaseScraper):
                     'estado_place': estado_place,
                     'cpv': cpv,
                     'tipo_contrato_code': tipo_contrato_code,
+                    'procedure_code': procedure_code,
                 },
             }
         except Exception as e:
@@ -239,12 +260,24 @@ class ContratacionesScraper(BaseScraper):
             if not any(cpv.startswith(prefix) for prefix in cpv_inclosos):
                 return False
 
+        procediments = self.filters.get('procediments') or []
+        if procediments:
+            raw_data = item.get('raw_data') or {}
+            proc_code = raw_data.get('procedure_code', '')
+            if proc_code and proc_code not in procediments:
+                return False
+
+        raw_data = item.get('raw_data') or {}
+        estado_place = (raw_data.get('estado_place') or '').upper()
+        CLOSED_STATES = {'EV', 'RES', 'ANU', 'DES', 'ADJ', 'ANUL', 'ADJUDICADA'}
+        if estado_place and estado_place in CLOSED_STATES:
+            return False
+
         return True
 
     # ── Playwright fallback ───────────────────────────────────────
 
-    def _build_search_url(self) -> str:
-        """Build the PLACE search URL from current filters."""
+    def _build_search_url(self, provincia_override: str = '') -> str:
         params = ['tipoBusqueda=4', 'estadoLicitacion=ADM']
 
         tipus_contracte = self.filters.get('tipus_contracte') or []
@@ -255,9 +288,9 @@ class ContratacionesScraper(BaseScraper):
         if procediments:
             params.append(f'procedimiento={procediments[0]}')
 
-        provincies = self.filters.get('provincies') or []
-        if provincies:
-            params.append(f'provincia={provincies[0]}')
+        provincia = provincia_override or (self.filters.get('provincies') or [''])[0]
+        if provincia:
+            params.append(f'provincia={provincia}')
 
         importe_max = self.filters.get('importe_max')
         if importe_max is not None:
@@ -265,7 +298,7 @@ class ContratacionesScraper(BaseScraper):
 
         return f'{PLACE_SEARCH_BASE_URL}?{"&".join(params)}'
 
-    async def _scrape_via_playwright(self, max_pages: int) -> list[dict]:
+    async def _scrape_via_playwright(self, max_pages: int, provincia_override: str = '') -> list[dict]:
         """Fallback HTML scraping using Playwright."""
         page = await self.new_page()
         results = []
@@ -279,7 +312,7 @@ class ContratacionesScraper(BaseScraper):
         await self.safe_goto(page, 'https://contrataciondelestado.es/wps/portal/plataforma')
         await page.wait_for_load_state('networkidle', timeout=15000)
 
-        search_url = self._build_search_url()
+        search_url = self._build_search_url(provincia_override=provincia_override)
         logger.debug('Playwright navigating to search: %s', search_url)
         await self.safe_goto(page, search_url)
         await page.wait_for_load_state('networkidle', timeout=30000)
@@ -309,7 +342,7 @@ class ContratacionesScraper(BaseScraper):
             )
             return []
 
-        provincia_label = (self.filters.get('provincies') or [''])[0]
+        provincia_label = provincia_override or (self.filters.get('provincies') or [''])[0]
 
         for page_num in range(max_pages):
             logger.debug('Scraping HTML page %d', page_num + 1)

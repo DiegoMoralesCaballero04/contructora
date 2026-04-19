@@ -146,13 +146,15 @@ if _LICITACIONES:
         paginate_by = 20
 
         def get_queryset(self):
-            qs = Licitacion.objects.select_related('organismo').order_by('-creado_en')
+            qs = Licitacion.objects.select_related('organismo').prefetch_related('informes').order_by('-creado_en')
             q = self.request.GET.get('q', '').strip()
             estat = self.request.GET.get('estat', '')
             provincia = self.request.GET.get('provincia', '')
             import_min = self.request.GET.get('import_min', '')
             import_max = self.request.GET.get('import_max', '')
             territori = self.request.GET.get('territori', '')
+            formsubmitted = self.request.GET.get('submitted', '')
+            solo_vigent = self.request.GET.get('solo_vigent', '') if formsubmitted else '1'
             if q:
                 qs = qs.filter(
                     Q(titulo__icontains=q) | Q(expediente_id__icontains=q) | Q(organismo__nombre__icontains=q))
@@ -173,6 +175,8 @@ if _LICITACIONES:
                 qs = qs.filter(importe_base__gte=import_min)
             if import_max:
                 qs = qs.filter(importe_base__lte=import_max)
+            if solo_vigent == '1':
+                qs = qs.filter(fecha_limite_oferta__gte=timezone.now())
             return qs
 
         def get_context_data(self, **kwargs):
