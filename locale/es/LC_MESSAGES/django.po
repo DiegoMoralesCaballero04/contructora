@@ -559,3 +559,67 @@ msgstr "Aún no hay licitaciones en tus territorios."
 
 msgid "Territoris:"
 msgstr "Territorios:"
+
+# empresa.html
+msgid "Datos de empresa"
+msgstr "Datos de empresa"
+
+msgid "Última actualización"
+msgstr "Última actualización"
+
+msgid "Información general"
+msgstr "Información general"
+
+msgid "Nombre de empresa"
+msgstr "Nombre de empresa"
+
+msgid "Descripción"
+msgstr "Descripción"
+
+msgid "Breve descripción de la empresa (opcional)"
+msgstr "Breve descripción de la empresa (opcional)"
+
+msgid "Localización"
+msgstr "Localización"
+
+msgid "Dirección"
+msgstr "Dirección"
+
+msgid "Ciudad"
+msgstr "Ciudad"
+
+msgid "País"
+msgstr "País"
+
+msgid "Contacto"
+msgstr "Contacto"
+
+msgid "Email de contacto"
+msgstr "Email de contacto"
+
+msgid "Logo"
+msgstr "Logo"
+
+msgid "Cambiar"
+msgstr "Cambiar"
+
+msgid "PNG, JPG o SVG. Máx. 2 MB. Recomendado: fondo transparente."
+msgstr "PNG, JPG o SVG. Máx. 2 MB. Recomendado: fondo transparente."
+
+msgid "Resumen"
+msgstr "Resumen"
+
+msgid "Guardar cambios"
+msgstr "Guardar cambios"
+
+msgid "Clic para subir logo"
+msgstr "Clic para subir logo"
+
+msgid "Datos de empresa actualizados correctamente."
+msgstr "Datos de empresa actualizados correctamente."
+
+msgid "Haz clic o arrastra tu logo aquí"
+msgstr "Haz clic o arrastra tu logo aquí"
+
+msgid "Eliminar logo"
+msgstr "Eliminar logo"

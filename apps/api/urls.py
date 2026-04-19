@@ -16,3 +16,11 @@ urlpatterns = [
     path('scraping/executar/', ScrapingTriggerView.as_view(), name='scraping-trigger'),
     path('health/', HealthView.as_view(), name='health'),
 ]
+
+try:
+    from modules.empresa.empresa.views import EmpresaView
+    urlpatterns += [
+        path('empresa/', EmpresaView.as_view(), name='empresa'),
+    ]
+except ImportError:
+    pass

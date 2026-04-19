@@ -747,3 +747,67 @@ msgstr "Només vigents"
 
 msgid "Municipio/Provincia"
 msgstr "Municipi/Província"
+
+# empresa.html
+msgid "Datos de empresa"
+msgstr "Dades de l'empresa"
+
+msgid "Última actualización"
+msgstr "Última actualització"
+
+msgid "Información general"
+msgstr "Informació general"
+
+msgid "Nombre de empresa"
+msgstr "Nom de l'empresa"
+
+msgid "Descripción"
+msgstr "Descripció"
+
+msgid "Breve descripción de la empresa (opcional)"
+msgstr "Breu descripció de l'empresa (opcional)"
+
+msgid "Localización"
+msgstr "Localització"
+
+msgid "Dirección"
+msgstr "Adreça"
+
+msgid "Ciudad"
+msgstr "Ciutat"
+
+msgid "País"
+msgstr "País"
+
+msgid "Contacto"
+msgstr "Contacte"
+
+msgid "Email de contacto"
+msgstr "Email de contacte"
+
+msgid "Logo"
+msgstr "Logo"
+
+msgid "Cambiar"
+msgstr "Canviar"
+
+msgid "PNG, JPG o SVG. Máx. 2 MB. Recomendado: fondo transparente."
+msgstr "PNG, JPG o SVG. Màx. 2 MB. Recomanat: fons transparent."
+
+msgid "Resumen"
+msgstr "Resum"
+
+msgid "Guardar cambios"
+msgstr "Desar canvis"
+
+msgid "Clic para subir logo"
+msgstr "Clic per pujar logo"
+
+msgid "Datos de empresa actualizados correctamente."
+msgstr "Dades de l'empresa actualitzades correctament."
+
+msgid "Haz clic o arrastra tu logo aquí"
+msgstr "Fes clic o arrossega el logo aquí"
+
+msgid "Eliminar logo"
+msgstr "Eliminar logo"

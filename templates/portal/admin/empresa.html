@@ -1,0 +1,285 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Datos de empresa" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{% trans "Datos de empresa" %}{% endblock %}
+
+{% block extra_head %}
+<style>
+  :root { --checker: #e8e8e8; }
+  .field-card {
+    background: #fff; border-radius: 10px; padding: 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,.07); margin-bottom: 1.25rem;
+  }
+  .field-card h6 {
+    font-size: .72rem; text-transform: uppercase; letter-spacing: .07em;
+    color: #6c757d; margin-bottom: 1.1rem; font-weight: 700;
+  }
+  .form-label { font-size: .85rem; font-weight: 500; color: #495057; }
+  .updated-badge { font-size: .75rem; color: #6c757d; }
+
+  /* ── Logo drop zone ── */
+  .logo-drop-zone {
+    width: 100%; height: 170px;
+    border: 2px dashed #ced4da; border-radius: 10px;
+    background: repeating-conic-gradient(var(--checker) 0% 25%, #fff 0% 50%) 0 0 / 18px 18px;
+    cursor: pointer; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .logo-drop-zone:hover { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,132,42,.12); }
+  .logo-drop-zone.drag-over {
+    border-color: var(--accent); border-style: solid;
+    box-shadow: 0 0 0 4px rgba(232,132,42,.18);
+    background: repeating-conic-gradient(#f5e8d4 0% 25%, #fffaf5 0% 50%) 0 0 / 18px 18px;
+  }
+  .logo-drop-zone img {
+    max-width: 100%; max-height: 100%; object-fit: contain;
+    pointer-events: none; padding: .5rem;
+  }
+  .logo-empty-state {
+    text-align: center; color: #adb5bd; pointer-events: none; padding: 1rem;
+    display: flex; flex-direction: column; align-items: center; gap: .3rem;
+  }
+  .logo-empty-state i { font-size: 2.2rem; color: #ced4da; }
+  .logo-empty-state .upload-hint { font-size: .82rem; font-weight: 500; color: #6c757d; }
+  .logo-empty-state .upload-formats { font-size: .73rem; color: #adb5bd; }
+  .logo-file-info {
+    font-size: .78rem; color: #495057; background: #f8f9fa;
+    border-radius: 6px; padding: .35rem .7rem; margin-top: .5rem;
+    display: flex; align-items: center; gap: .4rem;
+  }
+  .logo-file-info i { color: var(--accent); }
+  .logo-actions { display: flex; gap: .5rem; margin-top: .65rem; flex-wrap: wrap; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <div>
+    <h5 class="mb-0 fw-semibold">{% trans "Datos de empresa" %}</h5>
+    <span class="updated-badge">
+      <i class="bi bi-clock me-1"></i>{% trans "Última actualización" %}: {{ empresa.actualizado_en|date:"d/m/Y H:i" }}
+    </span>
+  </div>
+</div>
+
+<form method="post" enctype="multipart/form-data" id="empresa-form">
+  {% csrf_token %}
+  <input type="hidden" name="logo_clear" id="logo_clear" value="0">
+
+  <div class="row g-3">
+
+    <div class="col-lg-8">
+
+      <div class="field-card">
+        <h6><i class="bi bi-building me-1"></i>{% trans "Información general" %}</h6>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label" for="id_nombre_empresa">{% trans "Nombre de empresa" %} <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="id_nombre_empresa" name="nombre_empresa"
+                   value="{{ empresa.nombre_empresa }}" required maxlength="200">
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="id_descripcion">{% trans "Descripción" %}</label>
+            <textarea class="form-control" id="id_descripcion" name="descripcion" rows="3"
+                      placeholder="{% trans 'Breve descripción de la empresa (opcional)' %}">{{ empresa.descripcion }}</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-card">
+        <h6><i class="bi bi-geo-alt me-1"></i>{% trans "Localización" %}</h6>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label" for="id_direccion">{% trans "Dirección" %}</label>
+            <input type="text" class="form-control" id="id_direccion" name="direccion"
+                   value="{{ empresa.direccion }}" maxlength="500">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="id_ciudad">{% trans "Ciudad" %}</label>
+            <input type="text" class="form-control" id="id_ciudad" name="ciudad"
+                   value="{{ empresa.ciudad }}" maxlength="100">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="id_pais">{% trans "País" %}</label>
+            <input type="text" class="form-control" id="id_pais" name="pais"
+                   value="{{ empresa.pais }}" maxlength="100">
+          </div>
+        </div>
+      </div>
+
+      <div class="field-card">
+        <h6><i class="bi bi-envelope me-1"></i>{% trans "Contacto" %}</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" for="id_email_contacto">{% trans "Email de contacto" %}</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control" id="id_email_contacto" name="email_contacto"
+                     value="{{ empresa.email_contacto }}" maxlength="254">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="id_telefono">{% trans "Teléfono" %}</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+              <input type="tel" class="form-control" id="id_telefono" name="telefono"
+                     value="{{ empresa.telefono }}" maxlength="30">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+      <div class="field-card">
+        <h6><i class="bi bi-image me-1"></i>{% trans "Logo" %}</h6>
+
+        <div class="logo-drop-zone" id="logo-drop-zone">
+          <div id="logo-preview-inner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+            {% if empresa.logo %}
+            <img src="{{ empresa.logo.url }}" alt="Logo" id="logo-img">
+            {% else %}
+            <div class="logo-empty-state" id="logo-empty">
+              <i class="bi bi-cloud-arrow-up"></i>
+              <span class="upload-hint">{% trans "Haz clic o arrastra tu logo aquí" %}</span>
+              <span class="upload-formats">PNG · JPG · SVG</span>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div id="logo-file-info" class="logo-file-info" style="display:none;">
+          <i class="bi bi-file-image"></i>
+          <span id="logo-file-name"></span>
+          <span id="logo-file-size" class="text-muted ms-auto"></span>
+        </div>
+
+        <input type="file" class="d-none" id="id_logo" name="logo" accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/webp">
+
+        <div class="logo-actions">
+          <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-change-logo">
+            <i class="bi bi-upload me-1"></i>{% trans "Cambiar" %}
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-danger {% if not empresa.logo %}d-none{% endif %}" id="btn-clear-logo">
+            <i class="bi bi-trash me-1"></i>{% trans "Eliminar logo" %}
+          </button>
+        </div>
+        <div class="form-text mt-1">{% trans "PNG, JPG o SVG. Máx. 2 MB. Recomendado: fondo transparente." %}</div>
+      </div>
+
+      <div class="field-card">
+        <h6><i class="bi bi-info-circle me-1"></i>{% trans "Resumen" %}</h6>
+        <dl class="mb-0" style="font-size:.83rem;">
+          <dt class="text-muted fw-normal">{% trans "Nombre" %}</dt>
+          <dd class="fw-semibold" id="summary-nombre">{{ empresa.nombre_empresa|default:"—" }}</dd>
+          <dt class="text-muted fw-normal">{% trans "Ciudad" %}</dt>
+          <dd id="summary-ciudad">{{ empresa.ciudad|default:"—" }}{% if empresa.pais %}, {{ empresa.pais }}{% endif %}</dd>
+          <dt class="text-muted fw-normal">{% trans "Contacto" %}</dt>
+          <dd>{{ empresa.email_contacto|default:"—" }}</dd>
+        </dl>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="d-flex gap-2 mt-1">
+    <button type="submit" class="btn btn-primary px-4">
+      <i class="bi bi-floppy me-1"></i>{% trans "Guardar cambios" %}
+    </button>
+    <a href="{% url 'portal:dashboard' %}" class="btn btn-outline-secondary">{% trans "Cancelar" %}</a>
+  </div>
+
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  const dropZone    = document.getElementById('logo-drop-zone');
+  const logoInput   = document.getElementById('id_logo');
+  const btnChange   = document.getElementById('btn-change-logo');
+  const btnClear    = document.getElementById('btn-clear-logo');
+  const logoClear   = document.getElementById('logo_clear');
+  const fileInfo    = document.getElementById('logo-file-info');
+  const fileName    = document.getElementById('logo-file-name');
+  const fileSize    = document.getElementById('logo-file-size');
+  const previewInner = document.getElementById('logo-preview-inner');
+
+  const emptyHTML = previewInner ? previewInner.innerHTML : '';
+
+  function formatBytes(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  }
+
+  function applyPreview(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      previewInner.innerHTML = `<img src="${e.target.result}" alt="Logo" style="max-width:100%;max-height:100%;object-fit:contain;padding:.5rem;">`;
+      if (fileInfo) {
+        fileName.textContent = file.name;
+        fileSize.textContent = formatBytes(file.size);
+        fileInfo.style.display = 'flex';
+      }
+      if (btnClear) btnClear.classList.remove('d-none');
+      logoClear.value = '0';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  btnChange.addEventListener('click', () => logoInput.click());
+
+  logoInput.addEventListener('change', function () {
+    if (this.files[0]) applyPreview(this.files[0]);
+  });
+
+  btnClear.addEventListener('click', function () {
+    previewInner.innerHTML = emptyHTML || `<div class="logo-empty-state"><i class="bi bi-cloud-arrow-up" style="font-size:2.2rem;color:#ced4da;"></i><span class="upload-hint">{% trans "Haz clic o arrastra tu logo aquí" %}</span><span class="upload-formats">PNG · JPG · SVG</span></div>`;
+    logoInput.value = '';
+    logoClear.value = '1';
+    if (fileInfo) fileInfo.style.display = 'none';
+    btnClear.classList.add('d-none');
+  });
+
+  dropZone.addEventListener('click', () => logoInput.click());
+
+  dropZone.addEventListener('dragover', e => {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+  });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      logoInput.files = dt.files;
+      applyPreview(file);
+    }
+  });
+
+  const nombreInput = document.getElementById('id_nombre_empresa');
+  const ciudadInput = document.getElementById('id_ciudad');
+  const paisInput   = document.getElementById('id_pais');
+
+  function updateSummary() {
+    const sNombre = document.getElementById('summary-nombre');
+    const sCiudad = document.getElementById('summary-ciudad');
+    if (sNombre) sNombre.textContent = nombreInput.value || '—';
+    if (sCiudad) {
+      const c = ciudadInput.value, p = paisInput.value;
+      sCiudad.textContent = c ? (p ? `${c}, ${p}` : c) : (p || '—');
+    }
+  }
+  [nombreInput, ciudadInput, paisInput].forEach(el => { if (el) el.addEventListener('input', updateSummary); });
+})();
+</script>
+{% endblock %}

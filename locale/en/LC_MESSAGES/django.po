@@ -747,3 +747,67 @@ msgstr "Active only"
 
 msgid "Municipio/Provincia"
 msgstr "Municipality/Province"
+
+# empresa.html
+msgid "Datos de empresa"
+msgstr "Company details"
+
+msgid "Última actualización"
+msgstr "Last updated"
+
+msgid "Información general"
+msgstr "General information"
+
+msgid "Nombre de empresa"
+msgstr "Company name"
+
+msgid "Descripción"
+msgstr "Description"
+
+msgid "Breve descripción de la empresa (opcional)"
+msgstr "Brief company description (optional)"
+
+msgid "Localización"
+msgstr "Location"
+
+msgid "Dirección"
+msgstr "Address"
+
+msgid "Ciudad"
+msgstr "City"
+
+msgid "País"
+msgstr "Country"
+
+msgid "Contacto"
+msgstr "Contact"
+
+msgid "Email de contacto"
+msgstr "Contact email"
+
+msgid "Logo"
+msgstr "Logo"
+
+msgid "Cambiar"
+msgstr "Change"
+
+msgid "PNG, JPG o SVG. Máx. 2 MB. Recomendado: fondo transparente."
+msgstr "PNG, JPG or SVG. Max. 2 MB. Recommended: transparent background."
+
+msgid "Resumen"
+msgstr "Summary"
+
+msgid "Guardar cambios"
+msgstr "Save changes"
+
+msgid "Clic para subir logo"
+msgstr "Click to upload logo"
+
+msgid "Datos de empresa actualizados correctamente."
+msgstr "Company details saved successfully."
+
+msgid "Haz clic o arrastra tu logo aquí"
+msgstr "Click or drag your logo here"
+
+msgid "Eliminar logo"
+msgstr "Delete logo"

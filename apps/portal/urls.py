@@ -32,6 +32,11 @@ if views._LICITACIONES:
     except ImportError:
         pass
 
+if views._EMPRESA:
+    urlpatterns += [
+        path('admin-portal/empresa/', views.EmpresaEditView.as_view(), name='empresa_edit'),
+    ]
+
 if views._RRHH:
     urlpatterns += [
         path('timeclock/', views.FicharView.as_view(), name='fichar'),

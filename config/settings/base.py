@@ -41,6 +41,7 @@ _OPTIONAL_MODULES = [
     'modules.licitaciones.extraccion',
     'modules.licitaciones.alertas',
     'modules.rrhh.rrhh',
+    'modules.empresa.empresa',
 ]
 
 for _mod in _OPTIONAL_MODULES:

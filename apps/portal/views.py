@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Count, Sum, Q, Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.views import View
 from django.views.generic import ListView, DetailView
 
@@ -26,6 +27,12 @@ try:
     _RRHH = True
 except ImportError:
     _RRHH = False
+
+try:
+    from modules.empresa.empresa.models import Empresa as EmpresaModel
+    _EMPRESA = True
+except ImportError:
+    _EMPRESA = False
 
 
 class LoginView(View):
@@ -775,6 +782,44 @@ if _LICITACIONES:
                     messages.error(request, f'Error: {e}')
 
                 return redirect('portal:scraping_config')
+
+
+# ─── Empresa config ──────────────────────────────────────────────────────────
+
+if _EMPRESA:
+    class EmpresaEditView(AdminAccessMixin, View):
+        template_name = 'portal/admin/empresa.html'
+
+        def get(self, request):
+            empresa = EmpresaModel.get()
+            return render(request, self.template_name, {
+                'empresa': empresa,
+                'profile': get_profile(request.user),
+            })
+
+        def post(self, request):
+            empresa = EmpresaModel.get()
+            empresa.nombre_empresa = request.POST.get('nombre_empresa', '').strip() or empresa.nombre_empresa
+            empresa.direccion = request.POST.get('direccion', '').strip()
+            empresa.ciudad = request.POST.get('ciudad', '').strip()
+            empresa.pais = request.POST.get('pais', '').strip() or 'España'
+            empresa.email_contacto = request.POST.get('email_contacto', '').strip()
+            empresa.telefono = request.POST.get('telefono', '').strip()
+            empresa.descripcion = request.POST.get('descripcion', '').strip()
+
+            if 'logo' in request.FILES:
+                if empresa.logo:
+                    empresa.logo.delete(save=False)
+                empresa.logo = request.FILES['logo']
+            elif request.POST.get('logo_clear') == '1' and empresa.logo:
+                empresa.logo.delete(save=False)
+                empresa.logo = None
+
+            empresa.save()
+            log_action('UPDATE', model_name='Empresa', object_id='1',
+                       object_repr=empresa.nombre_empresa, request=request)
+            messages.success(request, _('Datos de empresa actualizados correctamente.'))
+            return redirect('portal:empresa_edit')
 
 
 # ─── Language switch (always available) ──────────────────────────────────────

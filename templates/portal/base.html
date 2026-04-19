@@ -52,7 +52,15 @@
 <body>
 {% if user.is_authenticated %}
 <div class="sidebar">
-  <div class="sidebar-brand">CONSTRUTECH<span>-IA</span></div>
+  <div class="sidebar-brand">
+    {% if empresa and empresa.logo %}
+    <img src="{{ empresa.logo.url }}" alt="{{ empresa.nombre_empresa }}" style="max-height:36px;max-width:160px;object-fit:contain;display:block;">
+    {% elif empresa and empresa.nombre_empresa %}
+    {{ empresa.nombre_empresa }}
+    {% else %}
+    CONSTRUTECH<span>-IA</span>
+    {% endif %}
+  </div>
   <nav class="sidebar-nav">
     <div class="sidebar-section">{% trans "Principal" %}</div>
     <a href="{% url 'portal:dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
@@ -83,6 +91,12 @@
     {% if has_scraping %}
     <a href="{% url 'portal:scraping_config' %}" class="nav-link {% if request.resolver_match.url_name == 'scraping_config' %}active{% endif %}">
       <i class="bi bi-spellcheck"></i> {% trans "Scraping" %}
+    </a>
+    {% endif %}
+    {% url 'portal:empresa_edit' as empresa_url %}
+    {% if empresa_url %}
+    <a href="{{ empresa_url }}" class="nav-link {% if request.resolver_match.url_name == 'empresa_edit' %}active{% endif %}">
+      <i class="bi bi-building"></i> {% trans "Empresa" %}
     </a>
     {% endif %}
     {% endif %}

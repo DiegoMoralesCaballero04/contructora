@@ -8,4 +8,12 @@ def scraping_context(request):
         has_scraping = True
     except ImportError:
         pass
-    return {'has_scraping': has_scraping}
+
+    empresa = None
+    try:
+        from modules.empresa.empresa.models import Empresa
+        empresa = Empresa.get()
+    except ImportError:
+        pass
+
+    return {'has_scraping': has_scraping, 'empresa': empresa}
