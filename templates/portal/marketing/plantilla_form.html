@@ -1,0 +1,179 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% if plantilla %}{% trans "Editar plantilla" %}{% else %}{% trans "Nova plantilla" %}{% endif %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}
+  <i class="bi bi-envelope-paper me-2"></i>
+  {% if plantilla %}{% trans "Editar plantilla d'email" %}{% else %}{% trans "Nova plantilla d'email" %}{% endif %}
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  .preview-box { background:#f8f9fa; border:1px solid #dee2e6; border-radius:6px; padding:1rem; min-height:120px; font-size:.9rem; white-space:pre-wrap; font-family:inherit; }
+  .variable-tag { display:inline-block; background:#e8f4ff; border:1px solid #bee3f8; border-radius:3px; padding:.1rem .4rem; font-size:.78rem; cursor:pointer; margin:.15rem; color:#1a3a5c; }
+  .variable-tag:hover { background:#bee3f8; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-3">
+  <a href="{% url 'portal:plantilles_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Torna" %}
+  </a>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    <form method="post" id="plantilla-form">
+      {% csrf_token %}
+
+      <div class="card shadow-sm mb-3">
+        <div class="card-header bg-white py-2">
+          <h6 class="mb-0 fw-semibold"><i class="bi bi-gear me-1"></i>{% trans "Configuració" %}</h6>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Nom de la plantilla" %} <span class="text-danger">*</span></label>
+              <input type="text" name="nom" class="form-control" required
+                     value="{{ plantilla.nom|default:'' }}"
+                     placeholder="{% trans 'Ex: Prospecció construcció...' %}">
+            </div>
+            <div class="col-sm-3">
+              <label class="form-label fw-semibold">{% trans "Tipus" %}</label>
+              <select name="tipus" class="form-select">
+                {% for val, label in tipus_choices %}
+                <option value="{{ val }}" {% if plantilla.tipus == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <label class="form-label fw-semibold">{% trans "Idioma" %}</label>
+              <select name="idioma" class="form-select">
+                {% for codi, nom_idioma in idiomes %}
+                <option value="{{ codi }}" {% if plantilla.idioma == codi %}selected{% endif %}>{{ nom_idioma }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold">{% trans "Assumpte de l'email" %} <span class="text-danger">*</span></label>
+              <input type="text" name="assumpte" id="assumpte" class="form-control" required
+                     value="{{ plantilla.assumpte|default:'' }}"
+                     placeholder="{% trans 'Ex: Presentació de {empresa_nom} — Solucions de construcció...' %}">
+            </div>
+            <div class="col-auto">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="activa" id="activa"
+                       {% if plantilla.activa or not plantilla %}checked{% endif %}>
+                <label class="form-check-label" for="activa">{% trans "Plantilla activa" %}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mb-3">
+        <div class="card-header bg-white py-2 d-flex align-items-center justify-content-between">
+          <h6 class="mb-0 fw-semibold"><i class="bi bi-text-left me-1"></i>{% trans "Cos del missatge (text)" %} <span class="text-danger">*</span></h6>
+          <div>
+            <button type="button" class="btn btn-xs btn-outline-secondary" style="font-size:.78rem;padding:.15rem .5rem;"
+                    onclick="document.getElementById('preview-text').textContent=document.getElementById('cos-text').value">
+              <i class="bi bi-eye me-1"></i>{% trans "Previsualitzar" %}
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mb-2">
+            <div style="font-size:.78rem;color:#6c757d;margin-bottom:.4rem;">{% trans "Variables disponibles (clica per inserir):" %}</div>
+            <div>
+              <span class="variable-tag" onclick="insertVar('cos-text', '{nom_prospect}')">&#123;nom_prospect&#125;</span>
+              <span class="variable-tag" onclick="insertVar('cos-text', '{persona_contacte}')">&#123;persona_contacte&#125;</span>
+              <span class="variable-tag" onclick="insertVar('cos-text', '{sector}')">&#123;sector&#125;</span>
+              <span class="variable-tag" onclick="insertVar('cos-text', '{poblacio}')">&#123;poblacio&#125;</span>
+              <span class="variable-tag" onclick="insertVar('cos-text', '{empresa_nom}')">&#123;empresa_nom&#125;</span>
+              <span class="variable-tag" onclick="insertVar('cos-text', '{web}')">&#123;web&#125;</span>
+            </div>
+          </div>
+          <textarea name="cos_text" id="cos-text" rows="12" class="form-control" required
+                    style="font-family:monospace;font-size:.88rem;"
+                    placeholder="{% trans 'Benvolgut/da {persona_contacte},...' %}">{{ plantilla.cos_text|default:'' }}</textarea>
+          <div class="mt-2">
+            <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:#6c757d;margin-bottom:.3rem;">{% trans "Previsualització" %}</div>
+            <div class="preview-box" id="preview-text">{{ plantilla.cos_text|default:'' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-save me-1"></i>
+          {% if plantilla %}{% trans "Desar canvis" %}{% else %}{% trans "Crear plantilla" %}{% endif %}
+        </button>
+        <a href="{% url 'portal:plantilles_list' %}" class="btn btn-outline-secondary">{% trans "Cancel·lar" %}</a>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card shadow-sm mb-3" style="border-left:4px solid var(--accent);">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-info-circle me-1"></i>{% trans "Com usar les variables" %}</h6>
+      </div>
+      <div class="card-body" style="font-size:.87rem;">
+        <p class="mb-2">{% trans "Insereix variables entre claus que seran substituïdes per les dades del prospect:" %}</p>
+        <ul class="list-unstyled mb-2" style="font-size:.84rem;">
+          <li class="mb-1"><code>{nom_prospect}</code> — {% trans "Nom de l'empresa" %}</li>
+          <li class="mb-1"><code>{persona_contacte}</code> — {% trans "Nom del contacte" %}</li>
+          <li class="mb-1"><code>{sector}</code> — {% trans "Sector de l'empresa" %}</li>
+          <li class="mb-1"><code>{poblacio}</code> — {% trans "Localitat" %}</li>
+          <li class="mb-1"><code>{empresa_nom}</code> — {% trans "Nom de la nostra empresa" %}</li>
+        </ul>
+        <div class="alert alert-info py-2" style="font-size:.82rem;">
+          <i class="bi bi-robot me-1"></i>
+          {% trans "Si activeu la millora amb IA a la campanya, Ollama personalitzarà el contingut automàticament." %}
+        </div>
+      </div>
+    </div>
+
+    {% if plantilla %}
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-info-circle me-1"></i>{% trans "Metadades" %}</h6>
+      </div>
+      <div class="card-body" style="font-size:.87rem;">
+        <div class="d-flex justify-content-between border-bottom pb-1 mb-1">
+          <span class="text-muted">{% trans "Creada per" %}</span>
+          <span>{{ plantilla.creada_per.get_full_name|default:plantilla.creada_per.username|default:"—" }}</span>
+        </div>
+        <div class="d-flex justify-content-between border-bottom pb-1 mb-1">
+          <span class="text-muted">{% trans "Creada" %}</span>
+          <span>{{ plantilla.creada_en|date:"d/m/Y" }}</span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span class="text-muted">{% trans "Actualitzada" %}</span>
+          <span>{{ plantilla.actualitzada_en|date:"d/m/Y H:i" }}</span>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function insertVar(fieldId, variable) {
+  const ta = document.getElementById(fieldId);
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  ta.value = ta.value.slice(0, start) + variable + ta.value.slice(end);
+  ta.selectionStart = ta.selectionEnd = start + variable.length;
+  ta.focus();
+  document.getElementById('preview-text').textContent = ta.value;
+}
+
+document.getElementById('cos-text').addEventListener('input', function() {
+  document.getElementById('preview-text').textContent = this.value;
+});
+</script>
+{% endblock %}

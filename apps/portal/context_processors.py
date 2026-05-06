@@ -1,6 +1,3 @@
-from django.conf import settings
-
-
 def scraping_context(request):
     has_scraping = False
     try:
@@ -16,4 +13,12 @@ def scraping_context(request):
     except ImportError:
         pass
 
-    return {'has_scraping': has_scraping, 'empresa': empresa}
+    profile = None
+    if request.user.is_authenticated:
+        try:
+            from modules.rrhh.rrhh.models import UserProfile
+            profile = UserProfile.objects.filter(user=request.user).first()
+        except ImportError:
+            pass
+
+    return {'has_scraping': has_scraping, 'empresa': empresa, 'profile': profile}

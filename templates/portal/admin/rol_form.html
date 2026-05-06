@@ -1,0 +1,106 @@
+{% extends 'portal/base.html' %}
+{% load i18n %}
+
+{% block title %}{{ action }} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{{ action }}{% endblock %}
+
+{% block extra_head %}
+<style>
+  .modul-card { border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+  .modul-header { background: #f8f9fa; padding: .6rem 1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #dee2e6; }
+  .modul-body { padding: .75rem 1rem; }
+  .perm-switch { display: flex; align-items: center; gap: .6rem; padding: .35rem 0; }
+  .perm-switch label { font-size: .875rem; cursor: pointer; margin: 0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header fw-semibold">
+        <i class="bi bi-shield me-2"></i>{{ action }}
+      </div>
+      <div class="card-body">
+        <form method="post" id="rol-form">
+          {% csrf_token %}
+
+          <div class="row g-3 mb-4">
+            <div class="col-sm-8">
+              <label class="form-label fw-semibold">{% trans "Nom del rol" %} <span class="text-danger">*</span></label>
+              <input type="text" name="nom" value="{{ rol.nom|default:'' }}" class="form-control"
+                     required placeholder="{% trans 'Ex: Comercial, Tècnic, Comptabilitat...' %}">
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label fw-semibold">{% trans "Descripció" %}</label>
+              <input type="text" name="descripcio" value="{{ rol.descripcio|default:'' }}" class="form-control"
+                     placeholder="{% trans 'Opcional' %}">
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-semibold mb-0"><i class="bi bi-toggles me-2"></i>{% trans "Permisos per mòdul" %}</h6>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-success btn-sm" onclick="toggleAll(true)">
+                <i class="bi bi-check-all me-1"></i>{% trans "Tot" %}
+              </button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleAll(false)">
+                <i class="bi bi-x-lg me-1"></i>{% trans "Cap" %}
+              </button>
+            </div>
+          </div>
+
+          {% for modul_key, modul_label, modul_keys in permisos_per_modul %}
+          <div class="modul-card">
+            <div class="modul-header">
+              <span class="fw-semibold small"><i class="bi bi-grid me-2 text-primary"></i>{{ modul_label }}</span>
+              <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2"
+                      onclick="toggleModul('{{ modul_key }}', true)"
+                      title="{% trans 'Seleccionar tots' %}">
+                <i class="bi bi-check2-all"></i>
+              </button>
+            </div>
+            <div class="modul-body">
+              <div class="row row-cols-1 row-cols-md-2 g-1">
+                {% for key, label in permisos_disponibles %}
+                {% if key in modul_keys %}
+                <div class="col">
+                  <div class="perm-switch">
+                    <div class="form-check form-switch mb-0">
+                      <input class="form-check-input perm-{{ modul_key }}" type="checkbox" role="switch"
+                             name="{{ key }}" id="perm_{{ key }}"
+                             {% if key in permisos_actius %}checked{% endif %}>
+                    </div>
+                    <label for="perm_{{ key }}">{{ label }}</label>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+          <div class="d-flex gap-2 justify-content-between mt-3">
+            <a href="{% url 'portal:rols_list' %}" class="btn btn-outline-secondary">{% trans "Cancel·lar" %}</a>
+            <button type="submit" class="btn btn-primary px-4">
+              <i class="bi bi-save me-1"></i>{% trans "Guardar rol" %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleAll(state) {
+  document.querySelectorAll('#rol-form input[type="checkbox"]').forEach(cb => cb.checked = state);
+}
+function toggleModul(modul, state) {
+  document.querySelectorAll(`.perm-${modul}`).forEach(cb => cb.checked = state);
+}
+</script>
+{% endblock %}

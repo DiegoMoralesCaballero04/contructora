@@ -1,0 +1,69 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Nou client" %} — CONSTRUTECH-IA{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="mb-0 fw-bold"><i class="bi bi-person-plus me-2 text-warning"></i>{% trans "Nou client" %}</h5>
+  <a href="{% url 'portal:erp_clients' %}" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Tornar" %}
+  </a>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-sm-8">
+              <label class="form-label fw-semibold">{% trans "Nom / Raó social" %} <span class="text-danger">*</span></label>
+              <input type="text" name="nom" value="{{ data.nom|default:'' }}" class="form-control" required>
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label fw-semibold">NIF / CIF</label>
+              <input type="text" name="nif" value="{{ data.nif|default:'' }}" class="form-control" placeholder="B12345678">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Email" %}</label>
+              <input type="email" name="email" value="{{ data.email|default:'' }}" class="form-control">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Telèfon" %}</label>
+              <input type="text" name="telefon" value="{{ data.telefon|default:'' }}" class="form-control">
+            </div>
+            <div class="col-12">
+              <label class="form-label">{% trans "Adreça" %}</label>
+              <input type="text" name="adreca" value="{{ data.adreca|default:'' }}" class="form-control">
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label">{% trans "Codi postal" %}</label>
+              <input type="text" name="codi_postal" value="{{ data.codi_postal|default:'' }}" class="form-control">
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label">{% trans "Població" %}</label>
+              <input type="text" name="poblacio" value="{{ data.poblacio|default:'' }}" class="form-control">
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label">{% trans "Província" %}</label>
+              <input type="text" name="provincia" value="{{ data.provincia|default:'' }}" class="form-control">
+            </div>
+            <div class="col-12">
+              <label class="form-label">{% trans "Notes" %}</label>
+              <textarea name="notes" class="form-control" rows="2">{{ data.notes|default:'' }}</textarea>
+            </div>
+          </div>
+          <div class="d-flex gap-2 justify-content-end mt-3">
+            <a href="{% url 'portal:erp_clients' %}" class="btn btn-outline-secondary">{% trans "Cancel·lar" %}</a>
+            <button type="submit" class="btn btn-warning">
+              <i class="bi bi-save me-1"></i>{% trans "Guardar client" %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

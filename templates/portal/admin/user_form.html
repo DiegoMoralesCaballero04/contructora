@@ -54,13 +54,26 @@
                 value="{{ edit_profile.telefon|default:'' }}">
             </div>
             <div class="col-sm-6">
-              <label class="form-label fw-semibold">{% trans "Rol" %} <span class="text-danger">*</span></label>
+              <label class="form-label fw-semibold">{% trans "Rol base" %} <span class="text-danger">*</span></label>
               <select name="role" class="form-select" required>
                 {% for val, lbl in roles %}
-                <option value="{{ val }}"
-                  {% if edit_profile.role == val %}selected{% endif %}>{{ lbl }}</option>
+                <option value="{{ val }}" {% if edit_profile.role == val %}selected{% endif %}>{{ lbl }}</option>
                 {% endfor %}
               </select>
+              <div class="form-text">{% trans "S'utilitza si no hi ha rol personalitzat." %}</div>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Rol personalitzat" %}</label>
+              <select name="rol_custom_id" class="form-select">
+                <option value="">— {% trans "Cap (usar rol base)" %} —</option>
+                {% for r in rols_custom %}
+                <option value="{{ r.pk }}" {% if edit_profile.rol_custom_id == r.pk %}selected{% endif %}>{{ r.nom }}</option>
+                {% endfor %}
+              </select>
+              <div class="form-text">
+                {% trans "Si s'assigna, els permisos vénen del rol personalitzat." %}
+                <a href="{% url 'portal:rols_list' %}" target="_blank">{% trans "Gestionar rols" %}</a>
+              </div>
             </div>
             <div class="col-sm-6">
               <label class="form-label fw-semibold">{% trans "Departamento" %}</label>

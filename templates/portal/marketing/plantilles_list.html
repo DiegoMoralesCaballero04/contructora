@@ -1,0 +1,69 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Plantilles email" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}<i class="bi bi-envelope-paper me-2"></i>{% trans "Plantilles d'email" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex gap-2 mb-3">
+  <a href="{% url 'portal:plantilla_create' %}" class="btn btn-sm btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>{% trans "Nova plantilla" %}
+  </a>
+  <a href="{% url 'portal:campanyes_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Campanyes" %}
+  </a>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header bg-white d-flex align-items-center justify-content-between py-2">
+    <h6 class="mb-0 fw-semibold"><i class="bi bi-list-ul me-1"></i>{% trans "Plantilles" %}</h6>
+    <small class="text-muted">{{ plantilles|length }} {% trans "total" %}</small>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover table-sm mb-0" style="font-size:.9rem;">
+      <thead class="table-light">
+        <tr>
+          <th>{% trans "Nom" %}</th>
+          <th>{% trans "Tipus" %}</th>
+          <th>{% trans "Idioma" %}</th>
+          <th>{% trans "Assumpte" %}</th>
+          <th>{% trans "Estat" %}</th>
+          <th>{% trans "Actualitzada" %}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in plantilles %}
+        <tr>
+          <td class="fw-semibold">{{ p.nom|truncatechars:35 }}</td>
+          <td><small>{{ p.get_tipus_display }}</small></td>
+          <td><span class="badge bg-secondary" style="font-size:.72rem;">{{ p.idioma|upper }}</span></td>
+          <td><small class="text-muted">{{ p.assumpte|truncatechars:45 }}</small></td>
+          <td>
+            {% if p.activa %}
+            <span class="badge bg-success" style="font-size:.72rem;">{% trans "Activa" %}</span>
+            {% else %}
+            <span class="badge bg-secondary" style="font-size:.72rem;">{% trans "Inactiva" %}</span>
+            {% endif %}
+          </td>
+          <td><small class="text-muted">{{ p.actualitzada_en|date:"d/m/Y H:i" }}</small></td>
+          <td class="text-end">
+            <a href="{% url 'portal:plantilla_edit' p.pk %}" class="btn btn-xs btn-outline-primary"
+               style="font-size:.78rem;padding:.15rem .5rem;">
+              <i class="bi bi-pencil me-1"></i>{% trans "Editar" %}
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-center text-muted py-4">
+            <i class="bi bi-envelope-x fs-3 d-block mb-2"></i>
+            {% trans "No hi ha plantilles. Crea la primera!" %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

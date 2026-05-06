@@ -1,0 +1,164 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Pujar document" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}<i class="bi bi-upload me-2"></i>{% trans "Pujar document" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-3">
+  <a href="{% url 'portal:documents_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Torna" %}
+  </a>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-file-earmark-plus me-1"></i>{% trans "Nou document" %}</h6>
+      </div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Fitxer" %} <span class="text-danger">*</span></label>
+            <div id="drop-zone" class="border-2 border-dashed rounded p-4 text-center"
+                 style="border:2px dashed #dee2e6;background:#f8f9fa;cursor:pointer;transition:all .15s;">
+              <i class="bi bi-cloud-upload fs-2 text-muted d-block mb-2"></i>
+              <p class="mb-1" style="font-size:.9rem;">{% trans "Arrossega un fitxer aquí o" %}
+                <label for="fitxer" class="text-primary" style="cursor:pointer;text-decoration:underline;">{% trans "clica per seleccionar" %}</label>
+              </p>
+              <small class="text-muted">{% trans "PDF, DOCX, XLSX — Màx. 50 MB" %}</small>
+              <input type="file" name="fitxer" id="fitxer" class="d-none" accept=".pdf,.docx,.xlsx,.doc,.xls" required>
+            </div>
+            <div id="file-info" class="mt-2 d-none">
+              <div class="alert alert-success py-2 d-flex align-items-center gap-2" style="font-size:.88rem;">
+                <i class="bi bi-file-earmark-check text-success fs-5"></i>
+                <span id="file-name"></span> — <span id="file-size"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Nom del document" %} <span class="text-danger">*</span></label>
+            <input type="text" name="nom" id="nom-input" class="form-control" required
+                   placeholder="{% trans 'Nom descriptiu del document...' %}">
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Categoria" %} <span class="text-danger">*</span></label>
+              <select name="categoria" class="form-select" required>
+                <option value="">{% trans "— Selecciona —" %}</option>
+                {% for cat in categories %}
+                <option value="{{ cat.codi }}">{{ cat.nom }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Tipus" %}</label>
+              <select name="tipus" class="form-select">
+                {% for val, label in tipus_choices %}
+                <option value="{{ val }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Descripció" %}</label>
+            <textarea name="descripcio" rows="2" class="form-control"
+                      placeholder="{% trans 'Descripció opcional del document...' %}"></textarea>
+          </div>
+
+          <div class="alert alert-info py-2 mb-3" style="font-size:.86rem;">
+            <i class="bi bi-shield-check me-1"></i>
+            {% trans "El fitxer es pujarà a S3 amb xifrat AES-256. Es calcularà el hash SHA-256 per verificar la integritat (ISO 9001/14001)." %}
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-upload me-1"></i>{% trans "Pujar document" %}
+            </button>
+            <a href="{% url 'portal:documents_list' %}" class="btn btn-outline-secondary">{% trans "Cancel·lar" %}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card shadow-sm" style="border-left:4px solid var(--accent);">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-shield me-1"></i>{% trans "Seguretat i compliment ISO" %}</h6>
+      </div>
+      <div class="card-body" style="font-size:.88rem;">
+        <ul class="list-unstyled mb-0">
+          <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>{% trans "Xifrat S3 AES-256 server-side" %}</li>
+          <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>{% trans "Hash SHA-256 per integritat (ISO 9001)" %}</li>
+          <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>{% trans "Versionat automàtic de fitxers" %}</li>
+          <li class="mb-2"><i class="bi bi-check2-circle text-success me-2"></i>{% trans "Log immutable d'accessos i descàrregues" %}</li>
+          <li><i class="bi bi-check2-circle text-success me-2"></i>{% trans "Accés per URLs pre-signades (30 min)" %}</li>
+        </ul>
+      </div>
+    </div>
+
+    {% if categories %}
+    <div class="card shadow-sm mt-2">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-tags me-1"></i>{% trans "Categories disponibles" %}</h6>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for cat in categories %}
+        <li class="list-group-item py-1" style="font-size:.87rem;">
+          <div class="d-flex justify-content-between">
+            <span><code class="me-2" style="font-size:.78rem;">{{ cat.codi }}</code>{{ cat.nom }}</span>
+            <small class="text-muted">{{ cat.retencio_anys }}{% trans "a" %}</small>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('fitxer');
+const fileInfo = document.getElementById('file-info');
+const nomInput = document.getElementById('nom-input');
+
+function handleFile(file) {
+  if (!file) return;
+  document.getElementById('file-name').textContent = file.name;
+  const kb = (file.size / 1024).toFixed(1);
+  const mb = (file.size / 1048576).toFixed(2);
+  document.getElementById('file-size').textContent = file.size > 1048576 ? `${mb} MB` : `${kb} KB`;
+  fileInfo.classList.remove('d-none');
+  dropZone.style.borderColor = '#28a745';
+  dropZone.style.background = '#f0fff4';
+  if (!nomInput.value) {
+    nomInput.value = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+  }
+}
+
+fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
+
+dropZone.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
+dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = '#dee2e6'; });
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    fileInput.files = dt.files;
+    handleFile(file);
+  }
+});
+</script>
+{% endblock %}

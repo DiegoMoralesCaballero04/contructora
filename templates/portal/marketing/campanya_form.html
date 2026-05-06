@@ -1,0 +1,132 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Nova campanya" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}<i class="bi bi-send me-2"></i>{% trans "Nova campanya de marketing" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-3">
+  <a href="{% url 'portal:campanyes_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Torna" %}
+  </a>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="card shadow-sm mb-3">
+        <div class="card-header bg-white py-2">
+          <h6 class="mb-0 fw-semibold"><i class="bi bi-megaphone me-1"></i>{% trans "Dades de la campanya" %}</h6>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Nom de la campanya" %} <span class="text-danger">*</span></label>
+            <input type="text" name="nom" class="form-control" required
+                   placeholder="{% trans 'Ex: Construcció tardor 2025...' %}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Plantilla d'email" %} <span class="text-danger">*</span></label>
+            {% if plantilles %}
+            <div class="d-flex gap-2 align-items-start">
+              <select name="plantilla_id" class="form-select" required>
+                <option value="">{% trans "— Selecciona una plantilla —" %}</option>
+                {% for p in plantilles %}
+                <option value="{{ p.pk }}">{{ p.nom }} ({{ p.get_tipus_display }}, {{ p.idioma|upper }})</option>
+                {% endfor %}
+              </select>
+              <a href="{% url 'portal:plantilla_create' %}" class="btn btn-outline-secondary btn-sm text-nowrap">
+                <i class="bi bi-plus-lg me-1"></i>{% trans "Nova" %}
+              </a>
+            </div>
+            {% else %}
+            <div class="alert alert-warning py-2 d-flex align-items-center gap-2" style="font-size:.88rem;">
+              <i class="bi bi-exclamation-triangle"></i>
+              <span>{% trans "No hi ha plantilles d'email actives." %}
+                <a href="{% url 'portal:plantilla_create' %}" class="alert-link">{% trans "Crea la primera ara." %}</a>
+              </span>
+            </div>
+            {% endif %}
+          </div>
+          <div class="mb-3">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" name="millorar_amb_ia" id="ia_switch" checked>
+              <label class="form-check-label fw-semibold" for="ia_switch">
+                <i class="bi bi-robot me-1"></i>{% trans "Millorar emails amb IA (Ollama)" %}
+              </label>
+              <div class="form-text">{% trans "Personalitza el contingut de cada email amb les dades del prospect usant el model local d'IA." %}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mb-3">
+        <div class="card-header bg-white py-2">
+          <h6 class="mb-0 fw-semibold"><i class="bi bi-funnel me-1"></i>{% trans "Segmentació de prospects" %}</h6>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Sectors objectiu" %}</label>
+            <div class="row g-2">
+              {% for val, label in sectors %}
+              <div class="col-auto">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="sectors" value="{{ val }}" id="sec_{{ val }}" checked>
+                  <label class="form-check-label" for="sec_{{ val }}">{{ label }}</label>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Scoring mínim" %}</label>
+              <div class="d-flex align-items-center gap-2">
+                <input type="range" name="scoring_minim" id="scoring_range" class="form-range flex-grow-1"
+                       min="0" max="10" step="0.5" value="3"
+                       oninput="document.getElementById('scoring_val').textContent = this.value">
+                <span id="scoring_val" class="fw-semibold" style="min-width:24px;">3</span>
+              </div>
+              <div class="form-text">{% trans "Només s'inclouran prospects amb scoring igual o superior." %}</div>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Província (opcional)" %}</label>
+              <input type="text" name="provincia" class="form-control" placeholder="{% trans 'Ex: Barcelona, Valencia...' %}">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="alert alert-info py-2" style="font-size:.86rem;">
+        <i class="bi bi-shield-check me-1"></i>
+        {% trans "Només s'enviaran emails als prospects amb consentiment GDPR actiu i sense baixa voluntària." %}
+      </div>
+
+      <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary" {% if not plantilles %}disabled{% endif %}>
+          <i class="bi bi-plus-lg me-1"></i>{% trans "Crear campanya" %}
+        </button>
+        <a href="{% url 'portal:campanyes_list' %}" class="btn btn-outline-secondary">{% trans "Cancel·lar" %}</a>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card shadow-sm" style="border-left:4px solid var(--accent);">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-info-circle me-1"></i>{% trans "Com funciona" %}</h6>
+      </div>
+      <div class="card-body" style="font-size:.87rem;">
+        <ol class="ps-3 mb-0">
+          <li class="mb-2">{% trans "Seleccioneu una plantilla d'email base." %}</li>
+          <li class="mb-2">{% trans "Definiu la segmentació (sectors, scoring, província)." %}</li>
+          <li class="mb-2">{% trans "Activeu la millora amb IA per personalitzar cada email." %}</li>
+          <li class="mb-2">{% trans "Creeu la campanya en estat Esborrany." %}</li>
+          <li>{% trans "Llanceu-la des del llistat de campanyes." %}</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

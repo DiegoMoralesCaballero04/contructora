@@ -1,0 +1,161 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Calendari" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}<i class="bi bi-calendar3 me-2"></i>{% trans "Calendari Laboral" %}{% endblock %}
+
+{% block extra_head %}
+<style>
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:1px; background:#dee2e6; border:1px solid #dee2e6; border-radius:6px; overflow:hidden; }
+  .cal-cell { background:#fff; min-height:88px; padding:.35rem .45rem; font-size:.82rem; vertical-align:top; }
+  .cal-cell.other-month { background:#f8f9fa; }
+  .cal-cell.other-month .cal-day-num { color:#adb5bd; }
+  .cal-cell.today { background:#fff9f0; }
+  .cal-header-cell { background:var(--primary); color:rgba(255,255,255,.85); text-align:center; padding:.35rem; font-size:.76rem; font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+  .cal-day-num { font-weight:600; font-size:.88rem; margin-bottom:.2rem; }
+  .cal-cell.today .cal-day-num { color:var(--accent); }
+  .cal-event { color:#fff; border-radius:3px; padding:.1rem .3rem; margin-bottom:.12rem; font-size:.73rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; }
+  .TERMINI_LICITACIO   { background:#dc3545; }
+  .REUNIO_INTERNA      { background:#007bff; }
+  .PRESENTACIO_OFERTA  { background:#20c997; }
+  .APERTURA_PLIQUES    { background:#6f42c1; }
+  .SEGUIMENT           { background:#fd7e14; }
+  .ALTRES              { background:#6c757d; }
+  .event-pill { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:.25rem; flex-shrink:0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
+  <a href="{% url 'portal:esdeveniment_create' %}" class="btn btn-sm btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>{% trans "Nou esdeveniment" %}
+  </a>
+  <div class="ms-auto d-flex align-items-center gap-2">
+    <a href="?mes={{ mes_anterior.month }}&any={{ mes_anterior.year }}" class="btn btn-sm btn-outline-secondary">
+      <i class="bi bi-chevron-left"></i>
+    </a>
+    <span class="fw-semibold px-2" style="min-width:140px;text-align:center;">
+      {{ inici|date:"F Y"|capfirst }}
+    </span>
+    <a href="?mes={{ mes_seguent.month }}&any={{ mes_seguent.year }}" class="btn btn-sm btn-outline-secondary">
+      <i class="bi bi-chevron-right"></i>
+    </a>
+    <a href="?" class="btn btn-sm btn-outline-secondary">{% trans "Avui" %}</a>
+  </div>
+</div>
+
+{% if request.GET.ms_ok %}
+<div class="alert alert-success alert-dismissible py-2 mb-3" style="font-size:.85rem;">
+  <i class="bi bi-check2-circle me-1"></i>{% trans "Microsoft Calendar connectat correctament!" %}
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% elif request.GET.ms_config == '0' %}
+<div class="alert alert-danger alert-dismissible mb-3" style="font-size:.85rem;">
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <div class="fw-semibold mb-1"><i class="bi bi-gear me-1"></i>{% trans "Microsoft Calendar no configurat" %}</div>
+  <p class="mb-1">{% trans "Cal configurar les credencials de l'aplicació Azure al fitxer" %} <code>.env</code>:</p>
+  <pre class="mb-1" style="font-size:.8rem;background:#fff3cd;border-radius:4px;padding:.4rem .6rem;">MS_CLIENT_ID=&lt;el teu App ID d'Azure&gt;
+MS_CLIENT_SECRET=&lt;el teu Client Secret&gt;
+MS_TENANT_ID=common
+MS_REDIRECT_URI=http://localhost:8000/api/v1/calendari/oauth/callback/</pre>
+  <small>{% trans "Crea l'app a" %} <a href="https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps" target="_blank" rel="noopener">portal.azure.com → App registrations</a> {% trans "i afegeix el permís" %} <code>Calendars.ReadWrite</code>.</small>
+</div>
+{% elif config and config.ms_access_token %}
+<div class="alert alert-success py-2 mb-3" style="font-size:.85rem;">
+  <i class="bi bi-microsoft me-1"></i>{% trans "Sincronitzat amb Microsoft Calendar" %}
+</div>
+{% else %}
+<div class="alert alert-warning py-2 mb-3 d-flex align-items-center gap-2" style="font-size:.85rem;">
+  <i class="bi bi-microsoft"></i>
+  <span>{% trans "Microsoft Calendar no configurat." %}
+    <a href="/api/v1/calendari/oauth/init/" class="alert-link">{% trans "Connectar ara" %}</a>
+  </span>
+</div>
+{% endif %}
+
+<div class="row g-3">
+  <div class="col-lg-9">
+    <div class="card shadow-sm">
+      <div class="card-body p-2">
+        <div class="cal-grid">
+          <div class="cal-header-cell">{% trans "Dl" %}</div>
+          <div class="cal-header-cell">{% trans "Dm" %}</div>
+          <div class="cal-header-cell">{% trans "Dc" %}</div>
+          <div class="cal-header-cell">{% trans "Dj" %}</div>
+          <div class="cal-header-cell">{% trans "Dv" %}</div>
+          <div class="cal-header-cell">{% trans "Ds" %}</div>
+          <div class="cal-header-cell">{% trans "Dg" %}</div>
+          {% for cell in cal_cells %}
+          <div class="cal-cell{% if not cell.current_month %} other-month{% endif %}{% if cell.is_today %} today{% endif %}">
+            <div class="cal-day-num">{{ cell.day }}</div>
+            {% for ev in cell.events %}
+            <a href="#ev-{{ ev.pk }}" class="text-decoration-none">
+              <div class="cal-event {{ ev.tipus }}" title="{{ ev.titol }}">{{ ev.titol|truncatechars:20 }}</div>
+            </a>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold">
+          <i class="bi bi-list-ul me-1"></i>{% trans "Esdeveniments" %}
+          <span class="badge bg-secondary ms-1">{{ esdeveniments|length }}</span>
+        </h6>
+      </div>
+      <div class="card-body p-2" style="max-height:440px;overflow-y:auto;">
+        {% for ev in esdeveniments %}
+        <div class="d-flex gap-2 align-items-start mb-2 p-2 rounded" id="ev-{{ ev.pk }}"
+             style="border-left:3px solid;border-color:{% if ev.tipus == 'TERMINI_LICITACIO' %}#dc3545{% elif ev.tipus == 'REUNIO_INTERNA' %}#007bff{% elif ev.tipus == 'PRESENTACIO_OFERTA' %}#20c997{% elif ev.tipus == 'SEGUIMENT' %}#fd7e14{% elif ev.tipus == 'APERTURA_PLIQUES' %}#6f42c1{% else %}#6c757d{% endif %};background:#f8f9fa;">
+          <div class="flex-grow-1" style="min-width:0;">
+            <div class="fw-semibold" style="font-size:.84rem;">{{ ev.titol|truncatechars:32 }}</div>
+            <small class="text-muted">
+              <i class="bi bi-clock me-1"></i>{{ ev.inici|date:"d/m H:i" }}
+            </small>
+            {% if ev.licitacio %}
+            <br><small class="text-muted font-monospace" style="font-size:.72rem;">{{ ev.licitacio.expediente_id|truncatechars:18 }}</small>
+            {% endif %}
+            {% if ev.estat == 'SINCRONIT' %}
+            <br><small style="color:#28a745;font-size:.72rem;"><i class="bi bi-check2-circle me-1"></i>{% trans "Sync" %}</small>
+            {% elif ev.estat == 'ERROR' %}
+            <br><small style="color:#dc3545;font-size:.72rem;"><i class="bi bi-exclamation-circle me-1"></i>{% trans "Error" %}</small>
+            {% else %}
+            <br><small style="color:#fd7e14;font-size:.72rem;"><i class="bi bi-hourglass-split me-1"></i>{% trans "Pendent" %}</small>
+            {% endif %}
+          </div>
+          <form method="post" action="{% url 'portal:esdeveniment_delete' ev.pk %}"
+                onsubmit="return confirm('{% trans "Eliminar?" %}');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link btn-sm p-0 text-danger">
+              <i class="bi bi-trash3" style="font-size:.8rem;"></i>
+            </button>
+          </form>
+        </div>
+        {% empty %}
+        <div class="text-center text-muted py-3" style="font-size:.88rem;">
+          <i class="bi bi-calendar-x fs-3 d-block mb-2"></i>
+          {% trans "Cap esdeveniment aquest mes." %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="card shadow-sm mt-2">
+      <div class="card-body py-2 px-3">
+        <div style="font-size:.73rem;font-weight:600;text-transform:uppercase;color:#6c757d;margin-bottom:.4rem;">{% trans "Llegenda" %}</div>
+        {% for val, label in tipus_choices %}
+        <div class="d-flex align-items-center gap-2 mb-1" style="font-size:.82rem;">
+          <div class="event-pill {{ val }}"></div>
+          <span>{{ label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

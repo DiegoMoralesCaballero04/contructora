@@ -45,10 +45,16 @@
         {% endfor %}
       </ul>
       {% if profile.can_manage_users %}
-      <div class="card-footer bg-white border-top">
-        <a href="{% url 'portal:admin_user_create' %}" class="btn btn-sm btn-primary w-100">
-          <i class="bi bi-person-plus me-1"></i>{% trans "Añadir usuario" %}
+      <div class="card-footer bg-white border-top d-flex gap-2">
+        <a href="{% url 'portal:admin_user_create' %}" class="btn btn-sm btn-primary flex-fill">
+          <i class="bi bi-person-plus me-1"></i>{% trans "Nou usuari" %}
         </a>
+        {% url 'portal:rols_list' as rols_url %}
+        {% if rols_url %}
+        <a href="{{ rols_url }}" class="btn btn-sm btn-outline-secondary flex-fill">
+          <i class="bi bi-shield me-1"></i>{% trans "Rols" %}
+        </a>
+        {% endif %}
       </div>
       {% endif %}
     </div>

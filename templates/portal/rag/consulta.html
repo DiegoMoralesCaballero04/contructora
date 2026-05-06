@@ -1,0 +1,323 @@
+{% extends "portal/base.html" %}
+{% load i18n humanize %}
+
+{% block title %}{% trans "Consulta IA" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}<i class="bi bi-robot me-2"></i>{% trans "Consulta Intel·ligent (RAG)" %}{% endblock %}
+
+{% block extra_head %}
+<style>
+  .chat-bubble { max-width:85%; padding:.65rem 1rem; border-radius:12px; margin-bottom:.75rem; line-height:1.5; font-size:.92rem; }
+  .chat-bubble.user { background:var(--primary); color:#fff; margin-left:auto; border-bottom-right-radius:3px; }
+  .chat-bubble.assistant { background:#fff; border:1px solid #e0e0e0; border-bottom-left-radius:3px; box-shadow:0 1px 2px rgba(0,0,0,.06); }
+  .chat-bubble.assistant .fonts { margin-top:.5rem; padding-top:.5rem; border-top:1px solid #eee; font-size:.78rem; color:#6c757d; }
+  .chat-meta { font-size:.72rem; color:rgba(255,255,255,.6); margin-top:.3rem; text-align:right; }
+  .chat-meta.assistant-meta { color:#adb5bd; text-align:left; }
+  .typing-indicator span { width:8px; height:8px; background:#dee2e6; border-radius:50%; display:inline-block; animation:bounce .9s infinite; }
+  .typing-indicator span:nth-child(2){ animation-delay:.2s; }
+  .typing-indicator span:nth-child(3){ animation-delay:.4s; }
+  @keyframes bounce{ 0%,80%,100%{transform:scale(.6)} 40%{transform:scale(1)} }
+  .historial-item { border-left:3px solid var(--primary); padding:.4rem .75rem; margin-bottom:.4rem; background:#fff; border-radius:0 4px 4px 0; box-shadow:0 1px 2px rgba(0,0,0,.06); cursor:pointer; transition:.1s; }
+  .historial-item:hover { background:#f0f4f8; }
+  .historial-item.error { border-color:#dc3545; }
+  .chat-wrap { max-height:480px; overflow-y:auto; padding:1rem; display:flex; flex-direction:column; }
+  .rating-star { font-size:1.3rem; cursor:pointer; color:#dee2e6; transition:.1s; }
+  .rating-star:hover, .rating-star.active { color:#fd7e14; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+
+  {# Columna principal - Chat #}
+  <div class="col-lg-8">
+    <div class="card shadow-sm" style="min-height:600px;display:flex;flex-direction:column;">
+      <div class="card-header bg-white d-flex align-items-center justify-content-between py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-chat-dots me-1"></i>{% trans "Consulta sobre licitacions i documents" %}</h6>
+        <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:.5rem;"></i>{% trans "Ollama actiu" %}</span>
+      </div>
+
+      {# Zona de conversa #}
+      <div class="chat-wrap flex-grow-1" id="chat-zone">
+        <div class="chat-bubble assistant">
+          <i class="bi bi-robot me-2" style="color:var(--accent);"></i>
+          {% trans "Hola! Soc el teu assistent IA. Puc respondre preguntes sobre documents indexats i sobre les dades en temps real de l'aplicació: licitacions, prospects, factures, ofertes i més. Prova a preguntar-me qualsevol cosa." %}
+        </div>
+        <div id="history-bubbles">
+          {# Historial de la sessió actual es carrega via JS #}
+        </div>
+        <div id="typing-indicator" class="d-none">
+          <div class="chat-bubble assistant d-inline-block">
+            <div class="typing-indicator"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+
+      {# Valoració de l'última resposta #}
+      <div id="rating-zone" class="px-3 py-2 border-top d-none">
+        <div class="d-flex align-items-center gap-3" style="font-size:.85rem;">
+          <span class="text-muted">{% trans "Qualitat de la resposta:" %}</span>
+          <div class="d-flex gap-1" id="stars">
+            {% for i in "12345" %}
+            <i class="bi bi-star-fill rating-star" data-val="{{ i }}" onclick="valorar({{ i }})"></i>
+            {% endfor %}
+          </div>
+          <span id="rating-done" class="text-success d-none">
+            <i class="bi bi-check2-circle me-1"></i>{% trans "Gràcies!" %}
+          </span>
+        </div>
+      </div>
+
+      {# Formulari de pregunta #}
+      <div class="card-footer bg-white p-2 border-top">
+        <form id="consulta-form" class="d-flex gap-2">
+          {% csrf_token %}
+          <div class="flex-grow-1">
+            <textarea id="pregunta-input" class="form-control" rows="2"
+                      placeholder="{% trans 'Escriu la teva pregunta... (Intro per enviar, Maj+Intro per nova línia)' %}"
+                      style="resize:none;font-size:.92rem;"></textarea>
+          </div>
+          <div class="d-flex flex-column gap-1">
+            <button type="submit" class="btn btn-primary" id="send-btn" style="height:56px;width:50px;">
+              <i class="bi bi-send-fill"></i>
+            </button>
+          </div>
+        </form>
+
+        {# Filtres avançats (col·lapsable) #}
+        <div class="mt-2">
+          <button class="btn btn-link btn-sm p-0 text-muted" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#filtres-adv">
+            <i class="bi bi-sliders2 me-1"></i>{% trans "Filtres avançats" %}
+          </button>
+          <div class="collapse mt-2" id="filtres-adv">
+            <div class="row g-2">
+              <div class="col-sm-4">
+                <label class="form-label" style="font-size:.78rem;">{% trans "Font" %}</label>
+                <select id="filtres-font" class="form-select form-select-sm">
+                  <option value="">{% trans "Tot" %}</option>
+                  <option value="LICITACIO">{% trans "PDFs de licitacions" %}</option>
+                  <option value="EXTRACCION">{% trans "Extraccions IA" %}</option>
+                  <option value="DOCUMENT">{% trans "Documents interns" %}</option>
+                </select>
+              </div>
+              {% if licitacions %}
+              <div class="col-sm-5">
+                <label class="form-label" style="font-size:.78rem;">{% trans "Licitació específica" %}</label>
+                <select id="filtres-licitacio" class="form-select form-select-sm">
+                  <option value="">{% trans "Totes" %}</option>
+                  {% for lit in licitacions %}
+                  <option value="{{ lit.pk }}">[{{ lit.expediente_id|truncatechars:15 }}] {{ lit.titol|truncatechars:40 }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              {% endif %}
+              <div class="col-sm-3">
+                <label class="form-label" style="font-size:.78rem;">{% trans "Top K resultats" %}</label>
+                <select id="filtres-topk" class="form-select form-select-sm">
+                  <option value="3">3</option>
+                  <option value="5" selected>5</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# Columna lateral - Historial #}
+  <div class="col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-clock-history me-1"></i>{% trans "Historial de consultes" %}</h6>
+      </div>
+      <div class="card-body p-2" id="historial-zone" style="max-height:560px;overflow-y:auto;">
+        {% for c in historial %}
+        <div class="historial-item {% if c.estat == 'ERROR' %}error{% endif %}"
+             data-pregunta="{{ c.pregunta|escapejs }}"
+             data-resposta="{{ c.resposta|escapejs }}"
+             onclick="carregarHistorial(this.dataset.pregunta, this.dataset.resposta)">
+          <div class="fw-semibold" style="font-size:.84rem;">{{ c.pregunta|truncatechars:50 }}</div>
+          <div class="d-flex justify-content-between align-items-center mt-1">
+            <small class="text-muted">{{ c.creada_en|date:"d/m H:i" }}</small>
+            <div class="d-flex gap-1 align-items-center">
+              {% if c.temps_ms %}
+              <small class="text-muted">{{ c.temps_ms|floatformat:0 }}ms</small>
+              {% endif %}
+              {% if c.valoracio %}
+              <span style="font-size:.75rem;color:#fd7e14;">{{ c.valoracio }}<i class="bi bi-star-fill ms-1"></i></span>
+              {% endif %}
+              {% if c.estat == 'ERROR' %}
+              <i class="bi bi-exclamation-circle text-danger" style="font-size:.8rem;"></i>
+              {% elif c.estat == 'COMPLETADA' %}
+              <i class="bi bi-check2-circle text-success" style="font-size:.8rem;"></i>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="text-center text-muted py-3" style="font-size:.88rem;">
+          <i class="bi bi-chat-square-dots fs-3 d-block mb-2"></i>
+          {% trans "Encara no hi ha consultes." %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="card shadow-sm mt-2">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-lightbulb me-1"></i>{% trans "Exemples de preguntes" %}</h6>
+      </div>
+      <div class="card-body p-2">
+        {% for ex in rag_examples %}
+        <div class="historial-item mb-1"
+             onclick="document.getElementById('pregunta-input').value = this.querySelector('span').textContent">
+          <span style="font-size:.83rem;">{{ ex }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+const chatZone = document.getElementById('chat-zone');
+const typingIndicator = document.getElementById('typing-indicator');
+const ratingZone = document.getElementById('rating-zone');
+const sendBtn = document.getElementById('send-btn');
+let lastConsultaId = null;
+
+function scrollBottom() {
+  chatZone.scrollTop = chatZone.scrollHeight;
+}
+
+function addBubble(text, type, meta) {
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `
+    <div class="chat-bubble ${type}">${text}
+      ${meta ? `<div class="${type === 'user' ? 'chat-meta' : 'chat-meta assistant-meta'}">${meta}</div>` : ''}
+    </div>`;
+  document.getElementById('history-bubbles').appendChild(wrap);
+  scrollBottom();
+}
+
+function addAssistantBubble(text, fonts, ms) {
+  const fontsHtml = fonts && fonts.length
+    ? `<div class="fonts"><i class="bi bi-bookmark me-1"></i>{% trans "Fonts" %}: ${fonts.join(', ')}</div>` : '';
+  const metaHtml = ms ? `<span class="text-muted">${ms}ms</span>` : '';
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `<div class="chat-bubble assistant">${text}${fontsHtml}<div class="chat-meta assistant-meta">${metaHtml}</div></div>`;
+  document.getElementById('history-bubbles').appendChild(wrap);
+  scrollBottom();
+}
+
+document.getElementById('consulta-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const pregunta = document.getElementById('pregunta-input').value.trim();
+  if (!pregunta) return;
+
+  const fontTipus = document.getElementById('filtres-font').value;
+  const licitacioId = document.getElementById('filtres-licitacio') ? document.getElementById('filtres-licitacio').value : '';
+  const topK = parseInt(document.getElementById('filtres-topk').value);
+
+  const filtres = {};
+  if (fontTipus) filtres.font_tipus = fontTipus;
+  if (licitacioId) filtres.licitacio_id = parseInt(licitacioId);
+
+  addBubble(pregunta, 'user', '{% now "H:i" %}');
+  document.getElementById('pregunta-input').value = '';
+  typingIndicator.classList.remove('d-none');
+  scrollBottom();
+  sendBtn.disabled = true;
+  ratingZone.classList.add('d-none');
+  document.getElementById('rating-done').classList.add('d-none');
+
+  try {
+    const resp = await fetch('/api/v1/rag/consulta/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+      body: JSON.stringify({ pregunta, filtres, top_k: topK }),
+    });
+    const data = await resp.json();
+    typingIndicator.classList.add('d-none');
+    if (resp.ok) {
+      addAssistantBubble(data.resposta || '{% trans "Sense resposta." %}', data.fonts_citades, data.temps_ms);
+      lastConsultaId = data.id;
+      ratingZone.classList.remove('d-none');
+      document.querySelectorAll('.rating-star').forEach(s => s.classList.remove('active'));
+      addHistorialEntry(data.id, pregunta, data.temps_ms);
+    } else {
+      addBubble(`<i class="bi bi-exclamation-triangle me-1"></i>{% trans "Error" %}: ${data.error || '{% trans "Inesperat" %}'}`, 'assistant');
+    }
+  } catch (err) {
+    typingIndicator.classList.add('d-none');
+    addBubble(`<i class="bi bi-wifi-off me-1"></i>{% trans "Error de xarxa. Comprova la connexió." %}`, 'assistant');
+  }
+  sendBtn.disabled = false;
+});
+
+// Enter to send, Shift+Enter for newline
+document.getElementById('pregunta-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    document.getElementById('consulta-form').dispatchEvent(new Event('submit'));
+  }
+});
+
+async function valorar(val) {
+  if (!lastConsultaId) return;
+  document.querySelectorAll('.rating-star').forEach((s, i) => {
+    s.classList.toggle('active', i < val);
+  });
+  await fetch(`/api/v1/rag/historial/${lastConsultaId}/valorar/`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+    body: JSON.stringify({ valoracio: val }),
+  });
+  document.getElementById('rating-done').classList.remove('d-none');
+}
+
+function addHistorialEntry(pk, pregunta, ms) {
+  const zone = document.querySelector('.card-body[style*="max-height:560px"]') ||
+               document.querySelector('#historial-zone');
+  if (!zone) return;
+  const empty = zone.querySelector('.text-center.text-muted');
+  if (empty) empty.remove();
+  const div = document.createElement('div');
+  div.className = 'historial-item';
+  div.setAttribute('onclick', `document.getElementById('pregunta-input').value = ${JSON.stringify(pregunta)}`);
+  div.innerHTML = `
+    <div class="fw-semibold" style="font-size:.84rem;">${pregunta.length > 50 ? pregunta.slice(0,50)+'…' : pregunta}</div>
+    <div class="d-flex justify-content-between align-items-center mt-1">
+      <small class="text-muted">{% trans "Ara" %}</small>
+      <div class="d-flex gap-1 align-items-center">
+        ${ms ? `<small class="text-muted">${ms}ms</small>` : ''}
+        <i class="bi bi-check2-circle text-success" style="font-size:.8rem;"></i>
+      </div>
+    </div>`;
+  zone.insertBefore(div, zone.firstChild);
+}
+
+function carregarHistorial(pregunta, resposta) {
+  const empty = document.querySelector('#chat-zone .text-center.text-muted');
+  if (empty) empty.remove();
+  addBubble(pregunta, 'user', '');
+  if (resposta) {
+    addAssistantBubble(resposta, [], '');
+  } else {
+    document.getElementById('pregunta-input').value = pregunta;
+  }
+}
+
+function recuperarConsulta(pk, pregunta) {
+  document.getElementById('pregunta-input').value = pregunta;
+}
+
+scrollBottom();
+</script>
+{% endblock %}

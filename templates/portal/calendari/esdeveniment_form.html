@@ -1,0 +1,113 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Nou esdeveniment" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}<i class="bi bi-calendar-plus me-2"></i>{% trans "Nou esdeveniment" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-3">
+  <a href="{% url 'portal:calendari' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Torna al calendari" %}
+  </a>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-calendar-event me-1"></i>{% trans "Dades de l'esdeveniment" %}</h6>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Títol" %} <span class="text-danger">*</span></label>
+            <input type="text" name="titol" class="form-control" required
+                   placeholder="{% trans 'Ex: Reunió revisió oferta...' %}">
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Inici" %} <span class="text-danger">*</span></label>
+              <input type="datetime-local" name="data_inici" class="form-control" required>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Fi" %}</label>
+              <input type="datetime-local" name="data_fi" class="form-control">
+              <div class="form-text">{% trans "Per defecte, +1 hora." %}</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Tipus" %}</label>
+            <div class="row g-2">
+              {% for val, label in tipus_choices %}
+              <div class="col-auto">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="tipus" id="tipus_{{ val }}"
+                         value="{{ val }}" {% if val == 'REUNIO' %}checked{% endif %}>
+                  <label class="form-check-label" for="tipus_{{ val }}">{{ label }}</label>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Licitació associada" %}</label>
+            <select name="licitacio_id" class="form-select">
+              <option value="">{% trans "— Cap (opcional) —" %}</option>
+              {% for lit in licitacions %}
+              <option value="{{ lit.pk }}">
+                [{{ lit.expediente_id|truncatechars:18 }}] {{ lit.titol|truncatechars:60 }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Descripció" %}</label>
+            <textarea name="descripcio" rows="3" class="form-control"
+                      placeholder="{% trans 'Notes addicionals...' %}"></textarea>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-calendar-check me-1"></i>{% trans "Desar i sincronitzar" %}
+            </button>
+            <a href="{% url 'portal:calendari' %}" class="btn btn-outline-secondary">{% trans "Cancel·lar" %}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card shadow-sm" style="border-left:4px solid var(--accent);">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-info-circle me-1"></i>{% trans "Informació" %}</h6>
+      </div>
+      <div class="card-body" style="font-size:.88rem;">
+        <p class="mb-2">{% trans "L'esdeveniment es crearà localment i, si teniu Microsoft Calendar configurat, es sincronitzarà automàticament." %}</p>
+        <p class="mb-0 text-muted">{% trans "Per configurar la sincronització, aneu a:" %}
+          <a href="/api/v1/calendari/oauth/init/">{% trans "Connectar Microsoft Calendar" %}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Set default datetime to now + 1 hour
+const now = new Date();
+now.setMinutes(0, 0, 0);
+now.setHours(now.getHours() + 1);
+const pad = n => String(n).padStart(2, '0');
+const fmt = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:00`;
+document.querySelector('[name="data_inici"]').value = fmt(now);
+const end = new Date(now); end.setHours(end.getHours() + 1);
+document.querySelector('[name="data_fi"]').value = fmt(end);
+</script>
+{% endblock %}

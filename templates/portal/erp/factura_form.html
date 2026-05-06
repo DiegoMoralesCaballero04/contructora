@@ -1,0 +1,81 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Nova factura" %} — CONSTRUTECH-IA{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="mb-0 fw-bold"><i class="bi bi-plus-circle me-2 text-warning"></i>{% trans "Nova factura" %}</h5>
+  <a href="{% url 'portal:erp_factures' %}" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Tornar" %}
+  </a>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Client" %} <span class="text-danger">*</span></label>
+            <select name="client_id" class="form-select" required>
+              <option value="">— {% trans "Selecciona client" %} —</option>
+              {% for c in clients %}
+              <option value="{{ c.pk }}">{{ c.nom }}{% if c.nif %} ({{ c.nif }}){% endif %}</option>
+              {% endfor %}
+            </select>
+            <div class="form-text">
+              <a href="{% url 'portal:erp_client_create' %}" target="_blank">+ {% trans "Crear nou client" %}</a>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Data d'emissió" %}</label>
+              <input type="date" name="data_emisio" class="form-control" value="{% now 'Y-m-d' %}">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Data de venciment" %}</label>
+              <input type="date" name="data_venciment" class="form-control">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">{% trans "Retenció IRPF (%)" %}</label>
+            <input type="number" name="irpf_percentatge" class="form-control" value="0" min="0" max="50" step="0.01"
+                   placeholder="0 (normalment 15% per a professionals)">
+            <div class="form-text">{% trans "Deixa a 0 si no aplica. Habitualment 15% per a professionals autònoms." %}</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">{% trans "Notes / condicions de pagament" %}</label>
+            <textarea name="notes" class="form-control" rows="3"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <div class="form-check">
+              <input type="checkbox" name="verifactu" id="verifactu" class="form-check-input">
+              <label for="verifactu" class="form-check-label">
+                {% trans "Enviar a VerifactuRE (AEAT)" %}
+                <span class="badge bg-secondary ms-1">Beta</span>
+              </label>
+            </div>
+            <div class="form-text text-muted">
+              {% trans "Reial Decret 1007/2023. Opcional fins al termini legal obligatori." %}
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-end">
+            <a href="{% url 'portal:erp_factures' %}" class="btn btn-outline-secondary">{% trans "Cancel·lar" %}</a>
+            <button type="submit" class="btn btn-warning">
+              <i class="bi bi-save me-1"></i>{% trans "Crear factura" %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

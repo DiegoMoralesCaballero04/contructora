@@ -1,0 +1,77 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Mi perfil" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{% trans "Mi perfil" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+
+    <div class="card border-0 shadow-sm mb-3">
+      <div class="card-header fw-semibold">
+        <i class="bi bi-person-circle me-2"></i>{% trans "Datos personales" %}
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Nombre" %}</label>
+              <input type="text" name="first_name" value="{{ edit_user.first_name }}" class="form-control">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Apellidos" %}</label>
+              <input type="text" name="last_name" value="{{ edit_user.last_name }}" class="form-control">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Email" %}</label>
+              <input type="email" name="email" value="{{ edit_user.email }}" class="form-control">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Teléfono" %}</label>
+              <input type="text" name="telefon" value="{{ profile.telefon|default:'' }}" class="form-control">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Departamento" %}</label>
+              <input type="text" name="departament" value="{{ profile.departament|default:'' }}" class="form-control" {% if not profile.can_manage_users %}readonly{% endif %}>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Rol" %}</label>
+              <input type="text" value="{% if profile.rol_custom %}{{ profile.rol_custom.nom }}{% else %}{{ profile.get_role_display }}{% endif %}" class="form-control" readonly>
+            </div>
+          </div>
+          <hr>
+          <h6 class="fw-semibold mb-3"><i class="bi bi-lock me-2"></i>{% trans "Cambiar contraseña" %}</h6>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Nueva contraseña" %}</label>
+              <input type="password" name="password" class="form-control" autocomplete="new-password"
+                     placeholder="{% trans 'Dejar en blanco para no cambiar' %}">
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Confirmar contraseña" %}</label>
+              <input type="password" name="password_confirm" class="form-control" autocomplete="new-password">
+            </div>
+          </div>
+          <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-save me-1"></i>{% trans "Guardar cambios" %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+      <div class="card-body text-muted small">
+        <i class="bi bi-info-circle me-1"></i>
+        {% trans "Usuario" %}: <strong>{{ edit_user.username }}</strong> &nbsp;·&nbsp;
+        {% trans "Alta" %}: {{ profile.data_alta|date:"d/m/Y"|default:"—" }} &nbsp;·&nbsp;
+        {% trans "Activo" %}: {% if edit_user.is_active %}<span class="text-success">{% trans "Sí" %}</span>{% else %}<span class="text-danger">{% trans "No" %}</span>{% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

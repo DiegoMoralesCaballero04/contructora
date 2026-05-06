@@ -10,6 +10,7 @@ app.autodiscover_tasks()
 app.conf.update(
     CELERY_IMPORTS=[
         'modules.licitaciones.scraping.tasks',
+        'modules.prospec.prospec.tasks',
     ]
 )
 

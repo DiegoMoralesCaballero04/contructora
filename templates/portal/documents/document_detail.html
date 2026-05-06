@@ -1,0 +1,240 @@
+{% extends "portal/base.html" %}
+{% load i18n humanize %}
+
+{% block title %}{{ document.nom|truncatechars:40 }} — {% trans "Document" %}{% endblock %}
+{% block page_title %}<i class="bi bi-file-earmark me-2"></i>{% trans "Detall document" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
+  <a href="{% url 'portal:documents_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Torna" %}
+  </a>
+  {% if download_url %}
+  <a href="{{ download_url }}" class="btn btn-sm btn-primary" target="_blank">
+    <i class="bi bi-download me-1"></i>{% trans "Descarregar" %}
+  </a>
+  {% endif %}
+  <span class="badge rounded-pill
+    {% if document.estat == 'ACTIU' %}bg-success
+    {% elif document.estat == 'ARXIVAT' %}bg-secondary
+    {% else %}bg-warning text-dark{% endif %}">
+    {{ document.get_estat_display }}
+  </span>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <div class="d-flex align-items-start gap-3">
+          <i class="bi bi-file-earmark-pdf text-danger" style="font-size:2.5rem;"></i>
+          <div class="flex-grow-1">
+            <h5 class="fw-semibold mb-1" style="color:var(--primary);">{{ document.nom }}</h5>
+            <small class="text-muted">{{ document.nom_fitxer_original }}</small>
+          </div>
+        </div>
+        <hr class="my-2">
+        <div class="row g-3">
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Categoria" %}</div>
+            <div>{{ document.categoria.nom }}</div>
+          </div>
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Tipus" %}</div>
+            <div>{{ document.get_tipus_display }}</div>
+          </div>
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Mida" %}</div>
+            <div>{{ document.mida_bytes|filesizeformat }}</div>
+          </div>
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "MIME" %}</div>
+            <div><small>{{ document.mime_type|default:"—" }}</small></div>
+          </div>
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Pujat per" %}</div>
+            <div>{{ document.pujat_per.get_full_name|default:document.pujat_per.username|default:"—" }}</div>
+          </div>
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Caducitat" %}</div>
+            <div>{% if document.data_caducitat %}{{ document.data_caducitat|date:"d/m/Y" }}{% else %}—{% endif %}</div>
+          </div>
+          {% if document.descripcio %}
+          <div class="col-12">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;margin-bottom:.3rem;">{% trans "Descripció" %}</div>
+            <p style="font-size:.9rem;margin:0;">{{ document.descripcio }}</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {# Integritat ISO #}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-shield-check me-1"></i>{% trans "Integritat ISO 9001/14001" %}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row g-3 align-items-center">
+          <div class="col-sm-8">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;margin-bottom:.3rem;">{% trans "SHA-256" %}</div>
+            {% if document.sha256 %}
+            <code style="font-size:.78rem;word-break:break-all;color:var(--primary);">{{ document.sha256 }}</code>
+            {% else %}
+            <span class="text-muted">{% trans "No disponible" %}</span>
+            {% endif %}
+          </div>
+          <div class="col-sm-4 text-end">
+            <form method="post">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="verificar">
+              <button type="submit" class="btn btn-sm btn-outline-success">
+                <i class="bi bi-patch-check me-1"></i>{% trans "Verificar integritat" %}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Versions #}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold">
+          <i class="bi bi-clock-history me-1"></i>{% trans "Versions" %}
+          <span class="badge bg-secondary ms-1">{{ versions|length }}</span>
+        </h6>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm mb-0" style="font-size:.88rem;">
+          <thead class="table-light">
+            <tr>
+              <th>{% trans "Versió" %}</th>
+              <th>{% trans "Fitxer" %}</th>
+              <th>{% trans "Mida" %}</th>
+              <th>{% trans "SHA-256 (resum)" %}</th>
+              <th>{% trans "Creat per" %}</th>
+              <th>{% trans "Data" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for v in versions %}
+            <tr {% if forloop.first %}class="table-success"{% endif %}>
+              <td class="fw-semibold">v{{ v.numero_versio }}{% if forloop.first %} <span class="badge bg-success ms-1" style="font-size:.65rem;">{% trans "Actual" %}</span>{% endif %}</td>
+              <td><small class="text-muted">{{ v.s3_key|truncatechars:30 }}</small></td>
+              <td>{{ v.mida_bytes|filesizeformat }}</td>
+              <td><code style="font-size:.74rem;">{{ v.sha256|truncatechars:16 }}…</code></td>
+              <td>{{ v.creada_per.get_full_name|default:v.creada_per.username|default:"—" }}</td>
+              <td><small>{{ v.creada_en|date:"d/m/Y H:i" }}</small></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center text-muted py-2">{% trans "Cap versió registrada." %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {# Log d'accessos #}
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-journal-text me-1"></i>{% trans "Log d'accessos (últims 20)" %}</h6>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm mb-0" style="font-size:.86rem;">
+          <thead class="table-light">
+            <tr>
+              <th>{% trans "Usuari" %}</th>
+              <th>{% trans "Acció" %}</th>
+              <th>{% trans "IP" %}</th>
+              <th>{% trans "Data/hora" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for acc in accessos %}
+            <tr>
+              <td>{{ acc.usuari.get_full_name|default:acc.usuari.username|default:"—" }}</td>
+              <td>
+                <span class="badge rounded-pill
+                  {% if acc.accio == 'DESCARREGA' %}bg-primary
+                  {% elif acc.accio == 'VISUALITZA' %}bg-info
+                  {% elif acc.accio == 'EDICIO' %}bg-warning text-dark
+                  {% else %}bg-danger{% endif %}" style="font-size:.7rem;">
+                  {{ acc.accio }}
+                </span>
+              </td>
+              <td><small class="text-muted font-monospace">{{ acc.ip_address|default:"—" }}</small></td>
+              <td><small>{{ acc.timestamp|date:"d/m/Y H:i:s" }}</small></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="text-center text-muted py-2">{% trans "Cap accés registrat." %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    {# Vista prèvia PDF #}
+    {% if download_url %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-eye me-1"></i>{% trans "Vista prèvia" %}</h6>
+      </div>
+      <div class="card-body p-0">
+        <embed src="{{ download_url }}" type="application/pdf" width="100%" height="400px"
+               style="display:block;border:0;">
+      </div>
+      <div class="card-footer bg-white py-1">
+        <small class="text-muted"><i class="bi bi-clock me-1"></i>{% trans "URL vàlida 30 min." %}</small>
+      </div>
+    </div>
+    {% endif %}
+
+    {# Accions #}
+    <div class="card shadow-sm mb-3" style="border-left:4px solid var(--primary);">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-gear me-1"></i>{% trans "Accions" %}</h6>
+      </div>
+      <div class="card-body d-grid gap-2">
+        {% if document.estat == 'ACTIU' %}
+        <form method="post" onsubmit="return confirm('{% trans "Arxivar el document?" %}');">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="arxivar">
+          <button type="submit" class="btn btn-sm btn-outline-secondary w-100">
+            <i class="bi bi-archive me-1"></i>{% trans "Arxivar document" %}
+          </button>
+        </form>
+        {% endif %}
+        {% if download_url %}
+        <a href="{{ download_url }}" class="btn btn-sm btn-primary w-100" target="_blank">
+          <i class="bi bi-download me-1"></i>{% trans "Descarregar" %}
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+    {# Metadades #}
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-info-circle me-1"></i>{% trans "Metadades" %}</h6>
+      </div>
+      <div class="card-body" style="font-size:.88rem;">
+        <div class="d-flex justify-content-between border-bottom pb-1 mb-1">
+          <span class="text-muted">{% trans "Creat" %}</span>
+          <span>{{ document.creada_en|date:"d/m/Y H:i" }}</span>
+        </div>
+        <div class="d-flex justify-content-between border-bottom pb-1 mb-1">
+          <span class="text-muted">{% trans "Retenció" %}</span>
+          <span>{{ document.categoria.retencio_anys }} {% trans "anys" %}</span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span class="text-muted">{% trans "Aprovació" %}</span>
+          <span>{% if document.categoria.requereix_aprovacio %}<i class="bi bi-check2 text-success"></i>{% else %}<i class="bi bi-dash text-muted"></i>{% endif %}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

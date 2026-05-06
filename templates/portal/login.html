@@ -1,5 +1,6 @@
 {% extends 'portal/base.html' %}
 {% load i18n %}
+{% get_current_language as CURRENT_LANG %}
 
 {% block title %}{% trans "Accés" %} — CONSTRUTECH-IA{% endblock %}
 
@@ -37,6 +38,17 @@
           <i class="bi bi-box-arrow-in-right me-1"></i> {% trans "Accedir" %}
         </button>
       </form>
+      <div class="mt-3 d-flex justify-content-center">
+        <form method="post" action="{% url 'portal:set_language' %}" class="d-flex gap-1 align-items-center">
+          {% csrf_token %}
+          <i class="bi bi-globe2 text-muted me-1" style="font-size:.85rem;"></i>
+          <select name="language" class="form-select form-select-sm" style="width:auto;font-size:.8rem;" onchange="this.form.submit()">
+            <option value="es" {% if CURRENT_LANG == 'es' %}selected{% endif %}>ES</option>
+            <option value="ca" {% if CURRENT_LANG == 'ca' %}selected{% endif %}>CA</option>
+            <option value="en" {% if CURRENT_LANG == 'en' %}selected{% endif %}>EN</option>
+          </select>
+        </form>
+      </div>
     </div>
   </div>
 </div>

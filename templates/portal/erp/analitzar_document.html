@@ -1,0 +1,228 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Analitzar document" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{% trans "Analitzar document" %}{% endblock %}
+
+{% block extra_head %}
+<style>
+  .step-badge { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; }
+  .step-done { background: #28a745; color: #fff; }
+  .step-active { background: var(--primary); color: #fff; }
+  .step-pending { background: #dee2e6; color: #6c757d; }
+  .field-extracted { background: #f0fdf4; border-color: #86efac !important; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex align-items-center gap-3 mb-4">
+  <span class="step-badge {% if dades %}step-done{% else %}step-active{% endif %}">1</span>
+  <span class="{% if not dades %}fw-semibold{% else %}text-muted{% endif %}">{% trans "Pujar document" %}</span>
+  <i class="bi bi-chevron-right text-muted"></i>
+  <span class="step-badge {% if dades %}step-active{% else %}step-pending{% endif %}">2</span>
+  <span class="{% if dades %}fw-semibold{% else %}text-muted{% endif %}">{% trans "Revisar i crear" %}</span>
+</div>
+
+{% if not dades %}
+{# ── STEP 1: Upload ── #}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header fw-semibold">
+        <i class="bi bi-upload me-2"></i>{% trans "Pujar document per analitzar" %}
+      </div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="analitzar">
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Tipus de document" %}</label>
+            <div class="d-flex gap-2">
+              {% for val, label in tipus_choices %}
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tipus" id="t_{{ val }}"
+                       value="{{ val }}" {% if tipus == val %}checked{% endif %}>
+                <label class="form-check-label" for="t_{{ val }}">{{ label }}</label>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Fitxer" %} <span class="text-danger">*</span></label>
+            <input type="file" name="document" class="form-control"
+                   accept=".pdf,.png,.jpg,.jpeg,.tiff,.bmp,.webp" required>
+            <div class="form-text">
+              <i class="bi bi-robot me-1"></i>
+              {% trans "La IA llegirà el document i omplirà automàticament els camps." %}
+              {% trans "Formats admesos: PDF, PNG, JPG, TIFF, BMP, WEBP." %}
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">
+            <i class="bi bi-cpu me-2"></i>{% trans "Analitzar amb IA" %}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mt-3">
+      <div class="card-body text-muted small">
+        <i class="bi bi-lightbulb me-2 text-warning"></i>
+        {% trans "La IA extreu automàticament: número, dates, import, IVA, IRPF, client/proveïdor i concepte. Podràs revisar i modificar tots els camps abans de crear el registre." %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+{# ── STEP 2: Review & Create ── #}
+{% with d=dades.dades %}
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="fw-semibold">
+          <i class="bi bi-file-earmark-check me-2 text-success"></i>
+          {% trans "Dades extretes de" %}: <em>{{ dades.fitxer_nom }}</em>
+        </span>
+        <a href="{% url 'portal:erp_analitzar' %}?tipus={{ tipus }}" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-arrow-left me-1"></i>{% trans "Tornar" %}
+        </a>
+      </div>
+      <div class="card-body">
+        {% if tipus == 'factura' %}
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="crear_factura">
+          <input type="hidden" name="tipus" value="factura">
+
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label class="form-label fw-semibold">{% trans "Client" %} <span class="text-danger">*</span></label>
+              <select name="client_id" class="form-select" required>
+                <option value="">— {% trans "Selecciona client" %} —</option>
+                {% for c in clients %}
+                <option value="{{ c.pk }}"
+                  {% if d.client_nom and d.client_nom|lower in c.nom|lower %}selected{% endif %}>
+                  {{ c.nom }}{% if c.nif %} ({{ c.nif }}){% endif %}
+                </option>
+                {% endfor %}
+              </select>
+              {% if d.client_nom %}<div class="form-text text-success"><i class="bi bi-robot me-1"></i>{% trans "IA detectó" %}: <strong>{{ d.client_nom }}</strong>{% if d.client_nif %} — {{ d.client_nif }}{% endif %}</div>{% endif %}
+              <div class="mt-1">
+                <a href="{% url 'portal:erp_client_create' %}" target="_blank" class="small">
+                  + {% trans "Crear nou client" %}
+                </a>
+              </div>
+            </div>
+
+            <div class="col-sm-3">
+              <label class="form-label">{% trans "Data emissió" %}</label>
+              <input type="date" name="data_emisio" class="form-control {% if d.data_emisio %}field-extracted{% endif %}"
+                     value="{{ d.data_emisio|default:'' }}">
+            </div>
+            <div class="col-sm-3">
+              <label class="form-label">{% trans "Data venciment" %}</label>
+              <input type="date" name="data_venciment" class="form-control {% if d.data_venciment %}field-extracted{% endif %}"
+                     value="{{ d.data_venciment|default:'' }}">
+            </div>
+
+            <div class="col-12"><hr class="my-1"><small class="text-muted fw-semibold">{% trans "Línia principal" %}</small></div>
+
+            <div class="col-sm-6">
+              <label class="form-label">{% trans "Concepte / Descripció" %}</label>
+              <input type="text" name="linia_descripcio"
+                     class="form-control {% if d.concepte %}field-extracted{% endif %}"
+                     value="{{ d.concepte|default:'' }}"
+                     placeholder="{% trans 'Descripció del servei o producte' %}">
+            </div>
+            <div class="col-sm-2">
+              <label class="form-label">{% trans "Quantitat" %}</label>
+              <input type="number" name="linia_quantitat" class="form-control" value="1" step="0.001" min="0.001">
+            </div>
+            <div class="col-sm-2">
+              <label class="form-label">{% trans "Preu unit." %}</label>
+              <input type="number" name="linia_preu"
+                     class="form-control {% if d.base_imponible %}field-extracted{% endif %}"
+                     value="{{ d.base_imponible|default:'0' }}" step="0.01" min="0">
+            </div>
+            <div class="col-sm-2">
+              <label class="form-label">IVA %</label>
+              <select name="linia_iva" class="form-select {% if d.tipus_iva %}field-extracted{% endif %}">
+                <option value="0" {% if d.tipus_iva == 0 %}selected{% endif %}>0%</option>
+                <option value="4" {% if d.tipus_iva == 4 %}selected{% endif %}>4%</option>
+                <option value="10" {% if d.tipus_iva == 10 %}selected{% endif %}>10%</option>
+                <option value="21" {% if not d.tipus_iva or d.tipus_iva == 21 %}selected{% endif %}>21%</option>
+              </select>
+            </div>
+
+            <div class="col-sm-4">
+              <label class="form-label">{% trans "Retenció IRPF (%)" %}</label>
+              <input type="number" name="irpf_percentatge"
+                     class="form-control {% if d.irpf_percentatge %}field-extracted{% endif %}"
+                     value="{{ d.irpf_percentatge|default:'0' }}" step="0.01" min="0" max="50">
+            </div>
+            <div class="col-sm-8">
+              <label class="form-label">{% trans "Notes" %}</label>
+              <input type="text" name="notes" class="form-control"
+                     value="{{ d.forma_pago|default:'' }}"
+                     placeholder="{% trans 'Forma de pagament, observacions...' %}">
+            </div>
+
+            <div class="col-12">
+              <div class="form-check">
+                <input type="checkbox" name="verifactu" id="verifactu" class="form-check-input">
+                <label for="verifactu" class="form-check-label small">
+                  {% trans "Enviar a VerifactuRE (AEAT)" %}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-end mt-3">
+            <a href="{% url 'portal:erp_analitzar' %}?tipus=factura" class="btn btn-outline-secondary">
+              {% trans "Tornar" %}
+            </a>
+            <button type="submit" class="btn btn-warning px-4">
+              <i class="bi bi-save me-1"></i>{% trans "Crear factura" %}
+            </button>
+          </div>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header fw-semibold"><i class="bi bi-robot me-2"></i>{% trans "Dades brutes de la IA" %}</div>
+      <div class="card-body p-0">
+        <table class="table table-sm table-borderless mb-0" style="font-size:.8rem;">
+          {% for k, v in dades.dades.items %}
+          {% if v %}
+          <tr>
+            <td class="text-muted ps-3 py-1">{{ k }}</td>
+            <td class="fw-semibold pe-3 py-1">{{ v }}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+          {% if not dades.dades %}
+          <tr><td colspan="2" class="text-center text-muted py-3">{% trans "No s'han pogut extreure dades." %}</td></tr>
+          {% endif %}
+        </table>
+      </div>
+    </div>
+    <div class="card border-0 shadow-sm mt-2">
+      <div class="card-body py-2 px-3 small text-muted">
+        <i class="bi bi-info-circle me-1"></i>
+        {% trans "Els camps amb fons verd han estat omplerts automàticament per la IA. Revisa-los abans de guardar." %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endwith %}
+{% endif %}
+{% endblock %}

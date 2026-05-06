@@ -1,813 +1,4781 @@
 # English translations for CONSTRUTECH-IA
 msgid ""
 msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-03 12:46+0000\n"
+"Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
-
-# Sidebar
-msgid "Principal"
-msgstr "Main"
-msgid "Licitaciones"
-msgstr "Tenders"
-msgid "Personal"
-msgstr "Personal"
-msgid "Fichaje"
-msgstr "Timeclock"
-msgid "Administración"
-msgstr "Administration"
-msgid "Visión general"
-msgstr "Overview"
-msgid "RRHH / Fichajes"
-msgstr "HR / Timesheets"
-msgid "Gestión de usuarios"
-msgstr "User Management"
-
-# Dashboard
-msgid "Total licitaciones"
-msgstr "Total tenders"
-msgid "Nuevas"
-msgstr "New"
-msgid "En preparación"
-msgstr "In preparation"
-msgid "Presentadas"
-msgstr "Submitted"
-msgid "Nuevas esta semana"
-msgstr "New this week"
-msgid "Importe total relevante"
-msgstr "Total relevant amount"
-msgid "Últimas licitaciones"
-msgstr "Latest tenders"
-msgid "Ver todas"
-msgstr "View all"
-msgid "Expediente"
-msgstr "Reference"
-msgid "Título"
-msgstr "Title"
-msgid "Importe"
-msgstr "Amount"
-msgid "Estado"
-msgstr "Status"
-msgid "Aún no hay licitaciones."
-msgstr "No tenders yet."
-msgid "Próximas a vencer"
-msgstr "Expiring soon"
-msgid "días"
-msgstr "days"
-msgid "Ninguna licitación próxima a vencer."
-msgstr "No tenders expiring soon."
-
-# Tenders list
-msgid "Buscar por título, expediente..."
-msgstr "Search by title, reference..."
-msgid "Todos los estados"
-msgstr "All statuses"
-msgid "Provincia"
-msgstr "Province"
-msgid "Filtrar"
-msgstr "Filter"
-msgid "resultados"
-msgstr "results"
-msgid "Organismo"
-msgstr "Organization"
-msgid "Importe base"
-msgstr "Base amount"
-msgid "Plazo"
-msgstr "Deadline"
-msgid "No se han encontrado licitaciones con estos filtros."
-msgstr "No tenders found with these filters."
-
-# Timeclock
-msgid "Mi fichaje"
-msgstr "My timeclock"
-msgid "Hora actual"
-msgstr "Current time"
-msgid "Registrar entrada"
-msgstr "Clock in"
-msgid "Aún no has fichado hoy."
-msgstr "You haven't clocked in today."
-msgid "Entrada registrada a las"
-msgstr "Clocked in at"
-msgid "Registrar salida"
-msgstr "Clock out"
-msgid "Jornada completada:"
-msgstr "Day completed:"
-msgid "horas trabajadas"
-msgstr "hours worked"
-msgid "Últimos fichajes"
-msgstr "Recent entries"
-msgid "Fecha"
-msgstr "Date"
-msgid "Entrada"
-msgstr "Clock in"
-msgid "Salida"
-msgstr "Clock out"
-msgid "Horas"
-msgstr "Hours"
-msgid "Tipo"
-msgstr "Type"
-msgid "En curso"
-msgstr "In progress"
-msgid "Sin fichajes anteriores."
-msgstr "No previous entries."
-
-# Timesheet edit
-msgid "Editar fichaje"
-msgstr "Edit timesheet"
-msgid "Volver"
-msgstr "Back"
-msgid "dejar vacío si en curso"
-msgstr "leave empty if ongoing"
-msgid "Horas registradas:"
-msgstr "Hours registered:"
-msgid "Cancelar"
-msgstr "Cancel"
-msgid "Guardar"
-msgstr "Save"
-
-# Admin overview
-msgid "Usuarios activos"
-msgstr "Active users"
-msgid "En la oficina ahora"
-msgstr "In the office now"
-msgid "Licitaciones nuevas"
-msgstr "New tenders"
-msgid "Roles del sistema"
-msgstr "System roles"
-msgid "usuario"
-msgstr "user"
-msgid "Añadir usuario"
-msgstr "Add user"
-msgid "Fichajes de hoy"
-msgstr "Today's timesheets"
-msgid "Ver todo"
-msgstr "View all"
-msgid "Trabajador"
-msgstr "Worker"
-msgid "Completo"
-msgstr "Complete"
-msgid "Ausente"
-msgstr "Absent"
-msgid "Sin fichajes hoy."
-msgstr "No timesheets today."
-
-# HR timesheets
-msgid "RRHH"
-msgstr "HR"
-msgid "RRHH — Fichajes"
-msgstr "HR — Timesheets"
-msgid "Hoy"
-msgstr "Today"
-msgid "Semana:"
-msgstr "Week:"
-msgid "Fichajes"
-msgstr "Timesheets"
-msgid "Rol"
-msgstr "Role"
-msgid "Trabajando"
-msgstr "Working"
-msgid "Sin fichajes para esta fecha."
-msgstr "No timesheets for this date."
-msgid "Resumen semanal"
-msgstr "Weekly summary"
-msgid "Días"
-msgstr "Days"
-msgid "Total horas"
-msgstr "Total hours"
-msgid "Sin fichajes esta semana."
-msgstr "No timesheets this week."
-msgid "Personal activo"
-msgstr "Active staff"
-msgid "Gestionar"
-msgstr "Manage"
-
-# Users
-msgid "Nombre completo"
-msgstr "Full name"
-msgid "Departamento"
-msgstr "Department"
-msgid "Alta"
-msgstr "Start date"
-msgid "Activo"
-msgstr "Active"
-msgid "Inactivo"
-msgstr "Inactive"
-msgid "Ningún usuario en el sistema."
-msgstr "No users in the system."
-msgid "Nuevo usuario"
-msgstr "New user"
-msgid "en el sistema"
-msgstr "in the system"
-msgid "Usuario"
-msgstr "User"
-
-# Internal report — form
-msgid "Nou informe intern"
-msgstr "New internal report"
-
-msgid "Import N/D"
-msgstr "Amount N/A"
-
-msgid "Descriu els aspectes tècnics clau: requisits, classificació empresarial necessària, medis humans i materials..."
-msgstr "Describe the key technical aspects: requirements, required business classification, human and material resources..."
-
-msgid "Avantatges competitius, experiència prèvia, recursos disponibles..."
-msgstr "Competitive advantages, previous experience, available resources..."
-
-msgid "Limitacions, riscos, requisits que no es compleixen..."
-msgstr "Limitations, risks, requirements not met..."
-
-msgid "Qualsevol altre comentari rellevant, contactes, referències..."
-msgstr "Any other relevant comments, contacts, references..."
-
-msgid "Recomanació"
-msgstr "Recommendation"
-
-msgid "Puntuació interna"
-msgstr "Internal score"
-
-msgid "Molt baixa"
-msgstr "Very low"
-
-msgid "Excel·lent"
-msgstr "Excellent"
-
-msgid "Desar informe"
-msgstr "Save report"
-
-msgid "Cancel·lar"
-msgstr "Cancel"
-
-msgid "Anàlisi tècnica"
-msgstr "Technical analysis"
-
-msgid "Punts forts i febles"
-msgstr "Strengths and weaknesses"
-
-msgid "Punts forts"
-msgstr "Strengths"
-
-msgid "Punts febles"
-msgstr "Weaknesses"
-
-msgid "Observacions addicionals"
-msgstr "Additional observations"
-
-# Internal report — detail
-msgid "Informe intern"
-msgstr "Internal report"
-
-msgid "Tornar"
-msgstr "Back"
-
-msgid "Descargar PDF"
-msgstr "Download PDF"
-
-msgid "Nou informe"
-msgstr "New report"
-
-msgid "Autor"
-msgstr "Author"
-
-msgid "Creat el"
-msgstr "Created on"
-
-msgid "Puntuació"
-msgstr "Score"
-
-msgid "Observacions"
-msgstr "Observations"
-
-msgid "Detalls"
-msgstr "Details"
-
-msgid "Veure licitació"
-msgstr "View tender"
-
-msgid "Aquest informe no té contingut detallat."
-msgstr "This report has no detailed content."
-
-# Internal report — print
-msgid "Informe intern de licitació"
-msgstr "Internal tender report"
-
-msgid "Generat el"
-msgstr "Generated on"
-
-msgid "Autor:"
-msgstr "Author:"
-
-msgid "Data publicació"
-msgstr "Publication date"
-
-msgid "Límit presentació"
-msgstr "Submission deadline"
-
-msgid "Termini execució"
-msgstr "Execution period"
-
-msgid "dies"
-msgstr "days"
-
-msgid "Procediment"
-msgstr "Procedure"
-
-msgid "Elaborat per"
-msgstr "Prepared by"
-
-msgid "Vist i plau"
-msgstr "Approved by"
-
-msgid "Document generat automàticament"
-msgstr "Automatically generated document"
-
-msgid "Imprimir / Guardar PDF"
-msgstr "Print / Save as PDF"
-
-msgid "Obre el diàleg d'impressió. Tria 'Desar com a PDF' com a impressora."
-msgstr "Opens the print dialog. Select 'Save as PDF' as the printer."
-
-msgid "PDF arxivat a S3"
-msgstr "PDF archived in S3"
-
-msgid "PDF arxivat"
-msgstr "Archived PDF"
-
-# Tender detail
-msgid "Detall licitació"
-msgstr "Tender detail"
-
-msgid "Crear informe intern"
-msgstr "Create internal report"
-
-msgid "Organisme"
-msgstr "Organization"
-
-msgid "Província"
-msgstr "Province"
-
-msgid "Municipi"
-msgstr "Municipality"
-
-msgid "Veure a Google Maps"
-msgstr "View on Google Maps"
-
-msgid "Import base (sense IVA)"
-msgstr "Base amount (excl. VAT)"
-
-msgid "Import (amb IVA)"
-msgstr "Amount (incl. VAT)"
-
-msgid "Classificació empresarial"
-msgstr "Business classification"
-
-msgid "Grup"
-msgstr "Group"
-
-msgid "Subgrup"
-msgstr "Subgroup"
-
-msgid "Categoria"
-msgstr "Category"
-
-msgid "Notes"
-msgstr "Notes"
-
-msgid "Criteris d'adjudicació"
+
+#: apps/portal/views.py:103
+msgid "Les contrasenyes no coincideixen."
+msgstr "Passwords do not match."
+
+#: apps/portal/views.py:106
+msgid "La contrasenya ha de tenir mínim 8 caràcters."
+msgstr "Password must be at least 8 characters."
+
+#: apps/portal/views.py:112
+#, fuzzy
+#| msgid "Plantilla actualitzada correctament."
+msgid "Contrasenya actualitzada correctament."
+msgstr "Template updated successfully."
+
+#: apps/portal/views.py:115
+#, fuzzy
+#| msgid "Estat actualitzat."
+msgid "Perfil actualitzat."
+msgstr "Status updated."
+
+#: apps/portal/views.py:755 templates/portal/admin/rols.html:11
+#, fuzzy
+#| msgid "Nou prospect"
+msgid "Nou rol"
+msgstr "New prospect"
+
+#: apps/portal/views.py:762 apps/portal/views.py:797
+msgid "El nom del rol és obligatori."
+msgstr "Role name is required."
+
+#: apps/portal/views.py:773
+#, fuzzy
+#| msgid "Prospect creat correctament."
+msgid "Rol creat correctament."
+msgstr "Prospect created successfully."
+
+#: apps/portal/views.py:789
+#, fuzzy
+#| msgid "Editar"
+msgid "Editar rol"
+msgstr "Edit"
+
+#: apps/portal/views.py:806
+#, fuzzy
+#| msgid "Estat actualitzat."
+msgid "Rol actualitzat."
+msgstr "Status updated."
+
+#: apps/portal/views.py:815
+#, python-brace-format
+msgid "Rol \"{nom}\" eliminat."
+msgstr ""
+
+#: apps/portal/views.py:990
+msgid "Datos de empresa actualizados correctamente."
+msgstr "Company details saved successfully."
+
+#: apps/portal/views.py:1103
+msgid "Estat actualitzat correctament."
+msgstr "Status updated successfully."
+
+#: apps/portal/views.py:1110
+msgid "Notes desades correctament."
+msgstr "Notes saved successfully."
+
+#: apps/portal/views.py:1115
+msgid "Càlcul de preu òptim llançat en segon pla."
+msgstr "Optimal price calculation launched in background."
+
+#: apps/portal/views.py:1117
+msgid "Error llançant el càlcul."
+msgstr ""
+
+#: apps/portal/views.py:1122
+msgid "Generació del Pla de Seguretat llançada en segon pla."
+msgstr "Safety Plan generation launched in background."
+
+#: apps/portal/views.py:1124
+msgid "Error llançant la generació."
+msgstr ""
+
+#: apps/portal/views.py:1149
+#, fuzzy
+#| msgid "— Selecciona una licitació —"
+msgid "Cal seleccionar una licitació."
+msgstr "— Select a tender —"
+
+#: apps/portal/views.py:1159
+#, fuzzy
+#| msgid "Plantilla creada correctament."
+msgid "Oferta creada correctament."
+msgstr "Template created successfully."
+
+#: apps/portal/views.py:1246
+msgid "El títol i la data d'inici són obligatoris."
+msgstr ""
+
+#: apps/portal/views.py:1262
+msgid "Esdeveniment creat correctament."
+msgstr "Event created successfully."
+
+#: apps/portal/views.py:1272
+msgid "Esdeveniment eliminat."
+msgstr "Event deleted."
+
+#: apps/portal/views.py:1352 apps/portal/views.py:2045
+msgid "Estat actualitzat."
+msgstr "Status updated."
+
+#: apps/portal/views.py:1357
+msgid "Scoring recalculat: {:.1f}/10"
+msgstr ""
+
+#: apps/portal/views.py:1371
+#, fuzzy
+#| msgid "Estat actualitzat."
+msgid "Dades actualitzades."
+msgstr "Status updated."
+
+#: apps/portal/views.py:1388 apps/portal/views.py:1982
+msgid "El nom és obligatori."
+msgstr "Name is required."
+
+#: apps/portal/views.py:1404
+msgid "Prospect creat correctament."
+msgstr "Prospect created successfully."
+
+#: apps/portal/views.py:1434
+#, fuzzy
+#| msgid "Nom, assumpte i cos del missatge són obligatoris."
+msgid "Nom i plantilla són obligatoris."
+msgstr "Name, subject and message body are required."
+
+#: apps/portal/views.py:1448
+msgid "Campanya creada. Podeu llançar-la des del detall."
+msgstr ""
+
+#: apps/portal/views.py:1480
+msgid "Nom, assumpte i cos del missatge són obligatoris."
+msgstr "Name, subject and message body are required."
+
+#: apps/portal/views.py:1492
+msgid "Plantilla creada correctament."
+msgstr "Template created successfully."
+
+#: apps/portal/views.py:1518
+msgid "Plantilla actualitzada correctament."
+msgstr "Template updated successfully."
+
+#: apps/portal/views.py:1526
+msgid ""
+"Importació de prospects llançada. Els resultats apareixeran en uns moments."
+msgstr "Prospect import launched. Results will appear shortly."
+
+#: apps/portal/views.py:1593 apps/portal/views.py:1947
+#, fuzzy, python-brace-format
+#| msgid "Prospect creat correctament."
+msgid "{creats} prospect(s) afegit(s) correctament."
+msgstr "Prospect created successfully."
+
+#: apps/portal/views.py:1595 apps/portal/views.py:1949
+msgid "Cap prospect nou afegit (ja existien o cap seleccionat)."
+msgstr "No new prospects added (already existed or none selected)."
+
+#: apps/portal/views.py:1606
+#, python-brace-format
+msgid "Email enviat a {prospect.nom}."
+msgstr ""
+
+#: apps/portal/views.py:1792
+msgid "Integritat verificada: SHA-256 correcte."
+msgstr "Integrity verified: SHA-256 correct."
+
+#: apps/portal/views.py:1794
+msgid "Error d'integritat: el fitxer ha estat modificat."
+msgstr "Integrity error: file has been modified."
+
+#: apps/portal/views.py:1800
+msgid "Document arxivat."
+msgstr "Document archived."
+
+#: apps/portal/views.py:1821
+#, fuzzy
+#| msgid "Nom, assumpte i cos del missatge són obligatoris."
+msgid "Nom, categoria i fitxer són obligatoris."
+msgstr "Name, subject and message body are required."
+
+#: apps/portal/views.py:1836
+msgid "Document pujat correctament."
+msgstr "Document uploaded successfully."
+
+#: apps/portal/views.py:1879 apps/portal/views.py:1893
+msgid "Error en la cerca. Torna-ho a intentar."
+msgstr ""
+
+#: apps/portal/views.py:1908
+#, fuzzy
+#| msgid "Introdueix una ubicació i paraules clau."
+msgid "Introdueix una ubicació per cercar empreses properes."
+msgstr "Enter a location and keywords."
+
+#: apps/portal/views.py:1997
+#, fuzzy
+#| msgid "Esdeveniment creat correctament."
+msgid "Client creat correctament."
+msgstr "Event created successfully."
+
+#: apps/portal/views.py:2064 apps/portal/views.py:2171
+msgid "Client no vàlid."
+msgstr ""
+
+#: apps/portal/views.py:2085
+msgid "Factura creada. Ara podeu afegir les línies."
+msgstr "Invoice created. You can now add lines."
+
+#: apps/portal/views.py:2098 modules/erp/erp/models.py:199
+#: templates/portal/erp/factura_detail.html:10
+msgid "Factura"
+msgstr "Invoice"
+
+#: apps/portal/views.py:2099 modules/erp/erp/models.py:111
+msgid "Albarà"
+msgstr "Delivery note"
+
+#: apps/portal/views.py:2100 modules/erp/erp/models.py:61
+#: templates/portal/erp/albarans.html:41
+msgid "Pedido"
+msgstr "Order"
+
+#: apps/portal/views.py:2122 apps/portal/views.py:2218
+#, fuzzy
+#| msgid "Selecciona una empresa..."
+msgid "Selecciona un fitxer PDF o imatge."
+msgstr "Select a company..."
+
+#: apps/portal/views.py:2127 apps/portal/views.py:2224
+msgid "Format no admès. Puja un PDF o imatge."
+msgstr "Format not supported. Upload a PDF or image."
+
+#: apps/portal/views.py:2153
+msgid ""
+"No s'ha pogut llegir text del document. Introdueix les dades manualment."
+msgstr ""
+
+#: apps/portal/views.py:2158
+#, fuzzy
+#| msgid "Document pujat i dades extretes per IA."
+msgid "Document analitzat. Revisa les dades extretes."
+msgstr "Document uploaded and data extracted by AI."
+
+#: apps/portal/views.py:2161
+msgid "Error en l'anàlisi. Introdueix les dades manualment."
+msgstr ""
+
+#: apps/portal/views.py:2206
+#, fuzzy
+#| msgid "Plantilla creada correctament."
+msgid "Factura creada correctament."
+msgstr "Template created successfully."
+
+#: apps/portal/views.py:2239
+msgid "Document pujat i dades extretes per IA."
+msgstr "Document uploaded and data extracted by AI."
+
+#: apps/portal/views.py:2241
+msgid "Document pujat. La IA no ha pogut extreure dades estructurades."
+msgstr "Document uploaded. AI could not extract structured data."
+
+#: apps/portal/views.py:2243
+msgid "Document pujat però no s'ha pogut llegir el text."
+msgstr ""
+
+#: apps/portal/views.py:2246
+#, fuzzy
+#| msgid "Document pujat correctament."
+msgid "Document pujat. Error en l'extracció IA."
+msgstr "Document uploaded successfully."
+
+#: apps/portal/views.py:2248
+#, fuzzy
+#| msgid "Document pujat correctament."
+msgid "Document adjuntat correctament."
+msgstr "Document uploaded successfully."
+
+#: apps/portal/views.py:2312
+msgid "Quantes licitacions tenim en total i quantes són noves?"
+msgstr "How many tenders do we have in total and how many are new?"
+
+#: apps/portal/views.py:2313
+msgid "Quants prospects tenim i quants han passat a ser clients?"
+msgstr "How many prospects do we have and how many became clients?"
+
+#: apps/portal/views.py:2314
+msgid "Quin és l'import total de les factures pendents de cobrament?"
+msgstr "What is the total amount of pending invoices?"
+
+#: apps/portal/views.py:2315
+#, fuzzy
+#| msgid "Criteris d'adjudicació"
+msgid "Quins criteris d'adjudicació té la licitació X?"
 msgstr "Award criteria"
 
-msgid "Criteri"
-msgstr "Criterion"
+#: apps/portal/views.py:2316
+msgid "Llista els documents ISO actius."
+msgstr "List active ISO documents."
 
-msgid "Punts"
-msgstr "Points"
+#: apps/portal/views.py:2317
+msgid "Quantes ofertes hem guanyat?"
+msgstr "How many offers have we won?"
 
-msgid "Fórmula"
-msgstr "Formula"
+# ─── Calendari Laboral ─────────────────────────────────────────────────────────
+#: modules/calendari/calendari/apps.py:9
+#: templates/portal/calendari/calendari.html:5
+msgid "Calendari Laboral"
+msgstr "Work Calendar"
 
-msgid "Econòmic"
-msgstr "Economic"
+#: modules/calendari/calendari/models.py:24
+#, fuzzy
+#| msgid "Configuració General"
+msgid "Configuració calendari"
+msgstr "General Settings"
 
-msgid "Plec de condicions"
-msgstr "Tender specifications"
+#: modules/calendari/calendari/models.py:36
+#, fuzzy
+#| msgid "Veure licitació"
+msgid "Termini licitació"
+msgstr "View tender"
 
-msgid "Amagar"
-msgstr "Hide"
+#: modules/calendari/calendari/models.py:37
+#, fuzzy
+#| msgid "Puntuació interna"
+msgid "Reunió interna"
+msgstr "Internal score"
 
-msgid "Veure inline"
-msgstr "View inline"
+# Recommendation
+#: modules/calendari/calendari/models.py:38
+#, fuzzy
+#| msgid "Presentar oferta"
+msgid "Presentació oferta"
+msgstr "Submit offer"
 
-msgid "Descarregar PDF"
-msgstr "Download PDF"
+#: modules/calendari/calendari/models.py:39
+msgid "Obertura de pliques"
+msgstr ""
 
-msgid "PDF disponible a S3 però no es pot generar l'URL en aquest moment."
-msgstr "PDF available in S3 but the URL could not be generated at this time."
+#: modules/calendari/calendari/models.py:40
+#: modules/marketing/marketing/models.py:88
+#, fuzzy
+#| msgid "enviaments"
+msgid "Seguiment"
+msgstr "sends"
 
-msgid "Informes interns"
-msgstr "Internal reports"
+#: modules/calendari/calendari/models.py:41
+#: modules/documents/documents/models.py:43
+#: modules/marketing/marketing/models.py:14
+#: modules/ofertes/ofertes/models.py:187
+msgid "Altres"
+msgstr ""
 
-msgid "Nou"
-msgstr "New"
+#: modules/calendari/calendari/models.py:44
+#: modules/marketing/marketing/models.py:159
+#: modules/ofertes/ofertes/models.py:221
+#: templates/portal/calendari/calendari.html:128
+#: templates/portal/ofertes/oferta_detail.html:36
+msgid "Pendent"
+msgstr "Pending"
 
-msgid "Documenta la teva anàlisi interna d'aquesta licitació"
-msgstr "Document your internal analysis of this tender"
+#: modules/calendari/calendari/models.py:45
+#, fuzzy
+#| msgid "Desar i sincronitzar"
+msgid "Sincronitzat"
+msgstr "Save & sync"
 
-msgid "Canviar estat"
-msgstr "Change status"
+#: modules/calendari/calendari/models.py:46
+#, fuzzy
+#| msgid "Desar i sincronitzar"
+msgid "Error sincronització"
+msgstr "Save & sync"
 
-msgid "Desar canvi"
-msgstr "Save change"
+#: modules/calendari/calendari/models.py:47 modules/erp/erp/models.py:47
+#, fuzzy
+#| msgid "Cancel·lar"
+msgid "Cancel·lat"
+msgstr "Cancel"
 
-msgid "Metadades"
-msgstr "Metadata"
+#: modules/calendari/calendari/models.py:83
+#, fuzzy
+#| msgid "Esdeveniments"
+msgid "Esdeveniment"
+msgstr "Events"
 
-msgid "Actualitzat el"
-msgstr "Updated on"
+#: modules/calendari/calendari/models.py:84
+#: templates/portal/calendari/calendari.html:107
+msgid "Esdeveniments"
+msgstr "Events"
 
-msgid "Rellevant"
-msgstr "Relevant"
+# ─── Gestió Documental ─────────────────────────────────────────────────────────
+#: modules/documents/documents/apps.py:9
+#: templates/portal/documents/document_list.html:5
+msgid "Gestió Documental"
+msgstr "Document Management"
 
-msgid "Origen"
-msgstr "Source"
+#: modules/documents/documents/models.py:23
+#, fuzzy
+#| msgid "Arxivar document"
+msgid "Categoria document"
+msgstr "Archive document"
 
-msgid "Veure a contratacionesdelestado.es"
-msgstr "View on contratacionesdelestado.es"
+#: modules/documents/documents/models.py:32
+#, fuzzy
+#| msgid "Pujar document"
+msgid "Pujant"
+msgstr "Upload document"
 
-# base.html
-msgid "Dashboard"
-msgstr "Dashboard"
+#: modules/documents/documents/models.py:33 modules/erp/erp/models.py:27
+#, fuzzy
+#| msgid "Activo"
+msgid "Actiu"
+msgstr "Active"
 
-msgid "Tancar sessió"
-msgstr "Log out"
+#: modules/documents/documents/models.py:34
+#, fuzzy
+#| msgid "PDF arxivat"
+msgid "Arxivat"
+msgstr "Archived PDF"
 
-# login.html
-msgid "Accés"
-msgstr "Sign in"
+#: modules/documents/documents/models.py:35
+#, fuzzy
+#| msgid "Eliminar"
+msgid "Eliminat"
+msgstr "Delete"
 
-msgid "Portal de Licitacions"
-msgstr "Tender Portal"
+#: modules/documents/documents/models.py:41
+msgid "Imatge"
+msgstr ""
 
-msgid "Usuari"
-msgstr "Username"
+#: modules/documents/documents/models.py:42
+msgid "Vídeo"
+msgstr ""
 
-msgid "Contrasenya"
-msgstr "Password"
+#: modules/documents/documents/models.py:46
+#, fuzzy
+#| msgid "Nou document"
+msgid "Nom document"
+msgstr "New document"
 
-msgid "Accedir"
-msgstr "Sign in"
+# ─── Sidebar — Descobrir ───────────────────────────────────────────────────────
+#: modules/documents/documents/models.py:94
+#: templates/portal/documents/document_detail.html:4
+#, fuzzy
+#| msgid "Documents"
+msgid "Document"
+msgstr "Documents"
 
-# admin/user_form.html
-msgid "Contraseña"
-msgstr "Password"
+# ─── Sidebar — Descobrir ───────────────────────────────────────────────────────
+#: modules/documents/documents/models.py:95 modules/rrhh/rrhh/models.py:40
+#: templates/portal/base.html:190
+#: templates/portal/documents/document_list.html:4
+#: templates/portal/documents/document_list.html:55
+msgid "Documents"
+msgstr "Documents"
 
-msgid "vacío = no cambiar"
-msgstr "leave blank to keep current"
+#: modules/documents/documents/models.py:137
+msgid "Lectura"
+msgstr ""
 
-msgid "Nombre"
-msgstr "First name"
+#: modules/documents/documents/models.py:138
+#: modules/documents/documents/models.py:167
+msgid "Edició"
+msgstr ""
 
-msgid "Apellidos"
-msgstr "Last name"
+#: modules/documents/documents/models.py:139 modules/rrhh/rrhh/models.py:75
+#, fuzzy
+#| msgid "Administración"
+msgid "Administrador"
+msgstr "Administration"
 
-msgid "Email"
-msgstr "Email"
+#: modules/documents/documents/models.py:155
+#, fuzzy
+#| msgid "Pujar document"
+msgid "Permís document"
+msgstr "Upload document"
 
+#: modules/documents/documents/models.py:165
+#, fuzzy
+#| msgid "Descarregar"
+msgid "Descàrrega"
+msgstr "Download"
+
+#: modules/documents/documents/models.py:166
+#, fuzzy
+#| msgid "Previsualització"
+msgid "Visualització"
+msgstr "Preview"
+
+#: modules/documents/documents/models.py:168
+#, fuzzy
+#| msgid "Eliminar"
+msgid "Eliminació"
+msgstr "Delete"
+
+#: modules/documents/documents/models.py:180
+#, fuzzy
+#| msgid "Nou document"
+msgid "Accés document"
+msgstr "New document"
+
+#: modules/empresa/empresa/models.py:7
+#, fuzzy
+#| msgid "Nombre de empresa"
+msgid "Nombre empresa"
+msgstr "Company name"
+
+#: modules/empresa/empresa/models.py:8 templates/portal/admin/empresa.html:95
+msgid "Dirección"
+msgstr "Address"
+
+#: modules/empresa/empresa/models.py:9 templates/portal/admin/empresa.html:100
+#: templates/portal/admin/empresa.html:179
+msgid "Ciudad"
+msgstr "City"
+
+#: modules/empresa/empresa/models.py:10 modules/erp/erp/models.py:26
+#: templates/portal/admin/empresa.html:105
+msgid "País"
+msgstr "Country"
+
+#: modules/empresa/empresa/models.py:11 templates/portal/admin/empresa.html:116
+msgid "Email de contacto"
+msgstr "Contact email"
+
+#: modules/empresa/empresa/models.py:12 templates/portal/admin/empresa.html:124
+#: templates/portal/admin/user_form.html:52 templates/portal/meu_perfil.html:32
 msgid "Teléfono"
 msgstr "Phone"
 
-msgid "Fecha de alta"
-msgstr "Start date"
+#: modules/empresa/empresa/models.py:14 templates/portal/admin/empresa.html:139
+msgid "Logo"
+msgstr "Logo"
 
-msgid "Usuario activo"
-msgstr "Active user"
+#: modules/empresa/empresa/models.py:16 templates/portal/admin/empresa.html:84
+msgid "Descripción"
+msgstr "Description"
 
-msgid "Notas internas"
-msgstr "Internal notes"
+#: modules/erp/erp/models.py:18 templates/portal/erp/client_form.html:22
+#: templates/portal/erp/clients.html:38
+msgid "Nom / Raó social"
+msgstr "Name / Company name"
+
+#: modules/erp/erp/models.py:22 templates/portal/erp/client_form.html:38
+msgid "Adreça"
+msgstr "Address"
+
+#: modules/erp/erp/models.py:23 templates/portal/erp/client_form.html:46
+#: templates/portal/erp/clients.html:42
+#: templates/portal/marketing/prospect_detail.html:136
+#: templates/portal/marketing/prospect_form.html:65
+msgid "Població"
+msgstr "City"
+
+#: modules/erp/erp/models.py:25 templates/portal/admin/territoris.html:176
+#: templates/portal/admin/territoris.html:252
+#: templates/portal/admin/territoris.html:312
+#: templates/portal/erp/client_form.html:50
+#: templates/portal/licitacio_detail.html:36
+#: templates/portal/marketing/prospect_detail.html:141
+#: templates/portal/marketing/prospect_form.html:69
+msgid "Província"
+msgstr "Province"
+
+#: modules/erp/erp/models.py:33 modules/marketing/marketing/models.py:26
+#: templates/portal/erp/albarans.html:39
+#: templates/portal/erp/analitzar_document.html:104
+#: templates/portal/erp/factura_detail.html:25
+#: templates/portal/erp/factura_form.html:22
+#: templates/portal/erp/factures.html:57 templates/portal/erp/pedidos.html:39
+msgid "Client"
+msgstr "Client"
+
+#: modules/erp/erp/models.py:34 templates/portal/base.html:167
+#: templates/portal/erp/clients.html:4 templates/portal/erp/clients.html:8
+#: templates/portal/erp/factures.html:11
+msgid "Clients"
+msgstr "Clients"
+
+#: modules/erp/erp/models.py:43 modules/erp/erp/models.py:96
+#: modules/erp/erp/models.py:136 modules/marketing/marketing/models.py:112
+#: modules/ofertes/ofertes/models.py:11
+msgid "Esborrany"
+msgstr "Draft"
+
+#: modules/erp/erp/models.py:44
+msgid "Confirmat"
+msgstr "Confirmed"
+
+#: modules/erp/erp/models.py:45 modules/marketing/marketing/models.py:114
+#: modules/rag/rag/models.py:73
+#, fuzzy
+#| msgid "En curso"
+msgid "En curs"
+msgstr "In progress"
+
+#: modules/erp/erp/models.py:46
+#, fuzzy
+#| msgid "Completo"
+msgid "Completat"
+msgstr "Complete"
+
+#: modules/erp/erp/models.py:49 modules/erp/erp/models.py:100
+#: modules/erp/erp/models.py:148 templates/portal/erp/albarans.html:38
+#: templates/portal/erp/factures.html:56 templates/portal/erp/pedidos.html:38
+msgid "Número"
+msgstr "Number"
+
+#: modules/erp/erp/models.py:52 modules/erp/erp/models.py:104
+#: templates/portal/documents/document_detail.html:117
+#: templates/portal/erp/albarans.html:40 templates/portal/erp/factures.html:58
+#: templates/portal/erp/pedidos.html:40
+#: templates/portal/marketing/prospect_detail.html:182
+#: templates/portal/ofertes/oferta_list.html:68
+#, fuzzy
+#| msgid "Data/hora"
+msgid "Data"
+msgstr "Date/time"
+
+#: modules/erp/erp/models.py:53
+msgid "Data d'entrega"
+msgstr "Delivery date"
+
+#: modules/erp/erp/models.py:54 templates/portal/erp/pedidos.html:42
+msgid "Ref. client"
+msgstr "Client ref."
+
+#: modules/erp/erp/models.py:62 templates/portal/base.html:184
+#: templates/portal/erp/pedidos.html:4 templates/portal/erp/pedidos.html:8
+#, fuzzy
+#| msgid "Apellidos"
+msgid "Pedidos"
+msgstr "Last name"
+
+#: modules/erp/erp/models.py:75 modules/erp/erp/models.py:121
+#: modules/erp/erp/models.py:232 modules/rrhh/rrhh/models.py:52
+#: templates/portal/admin/rol_form.html:35
+#: templates/portal/calendari/esdeveniment_form.html:69
+#: templates/portal/documents/document_detail.html:64
+#: templates/portal/documents/document_upload.html:69
+#: templates/portal/erp/factura_detail.html:49
+#: templates/portal/ofertes/oferta_detail.html:110
+#, fuzzy
+#| msgid "Descripción"
+msgid "Descripció"
+msgstr "Description"
+
+#: modules/erp/erp/models.py:77 modules/erp/erp/models.py:123
+#: modules/erp/erp/models.py:234
+#, fuzzy
+#| msgid "Preu u."
+msgid "Preu unitari"
+msgstr "Unit price"
+
+#: modules/erp/erp/models.py:78 modules/erp/erp/models.py:235
+msgid "Descompte %"
+msgstr ""
+
+#: modules/erp/erp/models.py:97
+msgid "Emès"
+msgstr "Issued"
+
+#: modules/erp/erp/models.py:98
+msgid "Facturat"
+msgstr "Invoiced"
+
+#: modules/erp/erp/models.py:112 templates/portal/base.html:179
+#: templates/portal/erp/albarans.html:4 templates/portal/erp/albarans.html:8
+msgid "Albarans"
+msgstr "Delivery notes"
+
+#: modules/erp/erp/models.py:137
+msgid "Emesa"
+msgstr "Issued"
+
+#: modules/erp/erp/models.py:138
+msgid "Cobrada"
+msgstr "Paid"
+
+#: modules/erp/erp/models.py:139
+msgid "Vençuda"
+msgstr "Overdue"
+
+#: modules/erp/erp/models.py:140
+msgid "Anul·lada"
+msgstr ""
+
+#: modules/erp/erp/models.py:143
+msgid "Ordinària"
+msgstr ""
+
+#: modules/erp/erp/models.py:144
+msgid "Rectificativa"
+msgstr "Credit note"
+
+#: modules/erp/erp/models.py:145
+msgid "Proforma"
+msgstr "Proforma"
+
+#: modules/erp/erp/models.py:147
+msgid "Sèrie"
+msgstr "Series"
+
+# Users
+#: modules/erp/erp/models.py:149
+#, fuzzy
+#| msgid "Nombre completo"
+msgid "Número complet"
+msgstr "Full name"
+
+#: modules/erp/erp/models.py:158
+#: templates/portal/erp/analitzar_document.html:123
+#: templates/portal/erp/factura_detail.html:31
+#, fuzzy
+#| msgid "Tancar sessió"
+msgid "Data emissió"
+msgstr "Log out"
+
+#: modules/erp/erp/models.py:159
+#: templates/portal/erp/analitzar_document.html:128
+#, fuzzy
+#| msgid "Detall document"
+msgid "Data venciment"
+msgstr "Document detail"
+
+#: modules/erp/erp/models.py:161 templates/portal/erp/factura_detail.html:92
+#, fuzzy
+#| msgid "Responsable"
+msgid "Base imposable"
+msgstr "Responsible"
+
+#: modules/erp/erp/models.py:164 templates/portal/erp/factures.html:62
+#: templates/portal/ofertes/oferta_detail.html:104
+#: templates/portal/ofertes/oferta_detail.html:113
+msgid "Total"
+msgstr "Total"
+
+#: modules/erp/erp/models.py:174
+msgid "Document adjunt (PDF/imatge)"
+msgstr "Attached document (PDF/image)"
+
+#: modules/erp/erp/models.py:178 templates/portal/erp/factura_detail.html:158
+msgid "Dades extretes per IA"
+msgstr "AI-extracted data"
+
+#: modules/erp/erp/models.py:191
+msgid "Factura rectificada"
+msgstr "Rectified invoice"
+
+#: modules/erp/erp/models.py:200 templates/portal/base.html:170
+#: templates/portal/erp/clients.html:11 templates/portal/erp/clients.html:43
+#: templates/portal/erp/factures.html:4 templates/portal/erp/factures.html:8
+#, fuzzy
+#| msgid "Factors de risc"
+msgid "Factures"
+msgstr "Risk factors"
 
 # Statuses
+#: modules/licitaciones/licitaciones/models.py:47
 msgid "Nueva"
 msgstr "New"
 
+#: modules/licitaciones/licitaciones/models.py:48
 msgid "Revisada"
 msgstr "Reviewed"
 
+#: modules/licitaciones/licitaciones/models.py:49
 msgid "Descartada"
 msgstr "Discarded"
 
+#: modules/licitaciones/licitaciones/models.py:50
+#: templates/portal/admin/overview.html:30 templates/portal/dashboard.html:24
+msgid "En preparación"
+msgstr "In preparation"
+
+#: modules/licitaciones/licitaciones/models.py:51
+#: templates/portal/ofertes/oferta_detail.html:260
 msgid "Presentada"
 msgstr "Submitted"
 
+#: modules/licitaciones/licitaciones/models.py:52
 msgid "Adjudicada"
 msgstr "Awarded"
 
+#: modules/licitaciones/licitaciones/models.py:53
 msgid "Desierta"
 msgstr "Unawarded"
 
 # Procedure
+#: modules/licitaciones/licitaciones/models.py:56
 msgid "Abierto"
 msgstr "Open"
 
+#: modules/licitaciones/licitaciones/models.py:57
 msgid "Restringido"
 msgstr "Restricted"
 
+#: modules/licitaciones/licitaciones/models.py:58
 msgid "Negociado"
 msgstr "Negotiated"
 
+#: modules/licitaciones/licitaciones/models.py:59
 msgid "Simplificado"
 msgstr "Simplified"
 
+#: modules/licitaciones/licitaciones/models.py:60
+#: modules/licitaciones/licitaciones/models.py:212
 msgid "Otro"
 msgstr "Other"
 
 # Recommendation
+#: modules/licitaciones/licitaciones/models.py:124
 msgid "Presentar oferta"
 msgstr "Submit offer"
 
+#: modules/licitaciones/licitaciones/models.py:125
 msgid "Descartar"
 msgstr "Discard"
 
+#: modules/licitaciones/licitaciones/models.py:126
 msgid "Estudiar más"
 msgstr "Study further"
 
 # Contact role
+#: modules/licitaciones/licitaciones/models.py:208
 msgid "Subcontratista"
 msgstr "Subcontractor"
 
+#: modules/licitaciones/licitaciones/models.py:209
 msgid "Proveedor"
 msgstr "Supplier"
 
+#: modules/licitaciones/licitaciones/models.py:210
 msgid "Delegado local"
 msgstr "Local representative"
 
+#: modules/licitaciones/licitaciones/models.py:211
 msgid "Técnico / Arquitecto"
 msgstr "Technician / Architect"
 
+# ─── Marketing Automatitzat ────────────────────────────────────────────────────
+#: modules/marketing/marketing/apps.py:9
+#: templates/portal/marketing/dashboard.html:5
+msgid "Marketing Automatitzat"
+msgstr "Automated Marketing"
+
+#: modules/marketing/marketing/models.py:10
+msgid "Construcció"
+msgstr ""
+
+#: modules/marketing/marketing/models.py:11
+msgid "Enginyeria"
+msgstr ""
+
+#: modules/marketing/marketing/models.py:12
+msgid "Promotora"
+msgstr ""
+
+#: modules/marketing/marketing/models.py:13
+#, fuzzy
+#| msgid "Administración"
+msgid "Administració pública"
+msgstr "Administration"
+
+#: modules/marketing/marketing/models.py:17
+msgid "Manual"
+msgstr ""
+
+#: modules/marketing/marketing/models.py:18
+#, fuzzy
+#| msgid "Licitaciones"
+msgid "Licitació (organisme)"
+msgstr "Tenders"
+
+#: modules/marketing/marketing/models.py:19
+#, fuzzy
+#| msgid "Informació"
+msgid "Importació"
+msgstr "Info"
+
+#: modules/marketing/marketing/models.py:20
+#, fuzzy
+#| msgid "Desar preferències"
+msgid "Referència"
+msgstr "Save preferences"
+
+#: modules/marketing/marketing/models.py:23
+#, fuzzy
+#| msgid "Prospects"
+msgid "Prospecció"
+msgstr "Prospects"
+
+#: modules/marketing/marketing/models.py:24
+#, fuzzy
+#| msgid "Contacto"
+msgid "Contactat"
+msgstr "Contact"
+
+#: modules/marketing/marketing/models.py:25
+msgid "Interessat"
+msgstr ""
+
+#: modules/marketing/marketing/models.py:27
+#, fuzzy
+#| msgid "Descartar"
+msgid "Descartat"
+msgstr "Discard"
+
+#: modules/marketing/marketing/models.py:65
+#, fuzzy
+#| msgid "Desar prospect"
+msgid "Empresa prospecte"
+msgstr "Save prospect"
+
+#: modules/marketing/marketing/models.py:66
+#, fuzzy
+#| msgid "Desar prospect"
+msgid "Empreses prospecte"
+msgstr "Save prospect"
+
+#: modules/marketing/marketing/models.py:87
+#, fuzzy
+#| msgid "Ex: Prospecció construcció..."
+msgid "Prospecció inicial"
+msgstr "E.g.: Construction prospecting..."
+
+# Recommendation
+#: modules/marketing/marketing/models.py:89
+#, fuzzy
+#| msgid "Presentar oferta"
+msgid "Presentació empresa"
+msgstr "Submit offer"
+
+#: modules/marketing/marketing/models.py:90
+#, fuzzy
+#| msgid "Ofertes"
+msgid "Oferta de servei"
+msgstr "Bids"
+
+#: modules/marketing/marketing/models.py:104
+#, fuzzy
+#| msgid "Plantilla d'email"
+msgid "Plantilla email"
+msgstr "Email template"
+
+#: modules/marketing/marketing/models.py:113
+msgid "Programada"
+msgstr ""
+
+#: modules/marketing/marketing/models.py:115 modules/rag/rag/models.py:74
+#, fuzzy
+#| msgid "Completo"
+msgid "Completada"
+msgstr "Complete"
+
+#: modules/marketing/marketing/models.py:116
+msgid "Pausada"
+msgstr ""
+
+#: modules/marketing/marketing/models.py:144
+#, fuzzy
+#| msgid "Campanyes de marketing"
+msgid "Campanya marketing"
+msgstr "Marketing campaigns"
+
+#: modules/marketing/marketing/models.py:160
+#, fuzzy
+#| msgid "enviaments"
+msgid "Enviant"
+msgstr "sends"
+
+#: modules/marketing/marketing/models.py:161
+#: templates/portal/erp/factura_detail.html:137
+#, fuzzy
+#| msgid "Enviar ara"
+msgid "Enviat"
+msgstr "Send now"
+
+#: modules/marketing/marketing/models.py:162 modules/rag/rag/models.py:75
+#: templates/portal/calendari/calendari.html:126
+#: templates/portal/rag/consulta.html:255
+msgid "Error"
+msgstr ""
+
+#: modules/marketing/marketing/models.py:163
+msgid "Rebutjat (bounce)"
+msgstr ""
+
+#: modules/marketing/marketing/models.py:189
+#, fuzzy
+#| msgid "enviaments"
+msgid "Enviament email"
+msgstr "sends"
+
+# ─── Ofertes i Pressupostos ────────────────────────────────────────────────────
+#: modules/ofertes/ofertes/apps.py:9
+#: templates/portal/ofertes/oferta_list.html:5
+msgid "Ofertes i Pressupostos"
+msgstr "Bids & Budgets"
+
+#: modules/ofertes/ofertes/models.py:12
+msgid "En revisió"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:13
+#, fuzzy
+#| msgid "Aprovació"
+msgid "Aprovada"
+msgstr "Approval"
+
+#: modules/ofertes/ofertes/models.py:14 modules/ofertes/ofertes/models.py:222
+#, fuzzy
+#| msgid "Enviar ara"
+msgid "Enviada"
+msgstr "Send now"
+
+#: modules/ofertes/ofertes/models.py:15
+msgid "Guanyada"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:16
+msgid "Perduda"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:17
+#, fuzzy
+#| msgid "Entrada"
+msgid "Retirada"
+msgstr "Clock in"
+
+#: modules/ofertes/ofertes/models.py:20
+#, fuzzy
+#| msgid "Baixa"
+msgid "Baix"
+msgstr "Unsubscribe"
+
+#: modules/ofertes/ofertes/models.py:21
+msgid "Mitjà"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:22
+#, fuzzy
+#| msgid "Alta"
+msgid "Alt"
+msgstr "Start date"
+
+#: modules/ofertes/ofertes/models.py:28
+#: templates/portal/ofertes/oferta_detail.html:265
+#: templates/portal/ofertes/oferta_list.html:62
+#, fuzzy
+#| msgid "Via licitació"
+msgid "Licitació"
+msgstr "Via tender"
+
+#: modules/ofertes/ofertes/models.py:32
+#: templates/portal/documents/document_list.html:68
+#: templates/portal/erp/albarans.html:42 templates/portal/erp/factures.html:63
+#: templates/portal/erp/pedidos.html:43
+#: templates/portal/marketing/campanyes_list.html:32
+#: templates/portal/marketing/dashboard.html:53
+#: templates/portal/marketing/plantilles_list.html:30
+#: templates/portal/marketing/prospect_form.html:37
+#: templates/portal/marketing/prospects_list.html:73
+#: templates/portal/ofertes/oferta_list.html:67
+#, fuzzy
+#| msgid "Estado"
+msgid "Estat"
+msgstr "Status"
+
+#: modules/ofertes/ofertes/models.py:36
+#: templates/portal/ofertes/oferta_detail.html:51
+#: templates/portal/ofertes/oferta_form.html:47
+#: templates/portal/ofertes/oferta_list.html:66
+msgid "Responsable"
+msgstr "Responsible"
+
+#: modules/ofertes/ofertes/models.py:40
+#: templates/portal/ofertes/oferta_detail.html:55
+msgid "Revisor"
+msgstr "Reviewer"
+
+#: modules/ofertes/ofertes/models.py:45
+#, fuzzy
+#| msgid "Preu oferta"
+msgid "Preu oferta (€)"
+msgstr "Bid price"
+
+#: modules/ofertes/ofertes/models.py:49
+msgid "Preu òptim calculat (€)"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:53
+#, fuzzy
+#| msgid "Puntuació total est."
+msgid "Puntuació econòmica estimada"
+msgstr "Est. total score"
+
+#: modules/ofertes/ofertes/models.py:57
+#, fuzzy
+#| msgid "Puntuació total est."
+msgid "Puntuació tècnica estimada"
+msgstr "Est. total score"
+
+#: modules/ofertes/ofertes/models.py:61
+#, fuzzy
+#| msgid "Puntuació total est."
+msgid "Puntuació total estimada"
+msgstr "Est. total score"
+
+#: modules/ofertes/ofertes/models.py:66
+#, fuzzy
+#| msgid "Anàlisi de risc"
+msgid "Nivell de risc"
+msgstr "Risk analysis"
+
+#: modules/ofertes/ofertes/models.py:68
+#: templates/portal/ofertes/oferta_detail.html:88
+msgid "Factors de risc"
+msgstr "Risk factors"
+
+#: modules/ofertes/ofertes/models.py:69
+#: templates/portal/ofertes/oferta_detail.html:72
+msgid "Fortaleses"
+msgstr "Strengths"
+
+#: modules/ofertes/ofertes/models.py:70
+#: templates/portal/ofertes/oferta_detail.html:80
+msgid "Debilitats"
+msgstr "Weaknesses"
+
+#: modules/ofertes/ofertes/models.py:72
+#: templates/portal/ofertes/oferta_detail.html:162
+#, fuzzy
+#| msgid "Notas internas"
+msgid "Notes internes"
+msgstr "Internal notes"
+
+#: modules/ofertes/ofertes/models.py:73
+#: templates/portal/ofertes/oferta_detail.html:166
+msgid "Justificació del preu"
+msgstr "Price justification"
+
+#: modules/ofertes/ofertes/models.py:75
+#, fuzzy
+#| msgid "PDF arxivat a S3"
+msgid "PDF oferta S3"
+msgstr "PDF archived in S3"
+
+#: modules/ofertes/ofertes/models.py:76
+msgid "PDF tècnica S3"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:77
+#, fuzzy
+#| msgid "Pla de Seguretat i Salut"
+msgid "PDF pla seguretat S3"
+msgstr "Safety and Health Plan"
+
+#: modules/ofertes/ofertes/models.py:79
+#, fuzzy
+#| msgid "Límit presentació"
+msgid "Data presentació"
+msgstr "Submission deadline"
+
+#: modules/ofertes/ofertes/models.py:80
+#, fuzzy
+#| msgid "Data publicació"
+msgid "Data resolució"
+msgstr "Publication date"
+
+#: modules/ofertes/ofertes/models.py:86
+#: templates/portal/ofertes/oferta_detail.html:4
+#, fuzzy
+#| msgid "Ofertes"
+msgid "Oferta"
+msgstr "Bids"
+
+#: modules/ofertes/ofertes/models.py:87 templates/portal/base.html:159
+#: templates/portal/ofertes/oferta_list.html:4
+#: templates/portal/ofertes/oferta_list.html:55
+msgid "Ofertes"
+msgstr "Bids"
+
+#: modules/ofertes/ofertes/models.py:155
+#: templates/portal/calendari/esdeveniment_form.html:24
+msgid "Títol"
+msgstr "Title"
+
+#: modules/ofertes/ofertes/models.py:165
+#: templates/portal/ofertes/oferta_detail.html:103
+#, fuzzy
+#| msgid "Pressupost base"
+msgid "Pressupost"
+msgstr "Base budget"
+
+#: modules/ofertes/ofertes/models.py:166
+#, fuzzy
+#| msgid "Pressupost base"
+msgid "Pressupostos"
+msgstr "Base budget"
+
+#: modules/ofertes/ofertes/models.py:182
+msgid "Mà d'obra"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:183
+msgid "Materials"
+msgstr ""
+
+# Contact role
+#: modules/ofertes/ofertes/models.py:184
+#, fuzzy
+#| msgid "Subcontratista"
+msgid "Subcontracta"
+msgstr "Subcontractor"
+
+#: modules/ofertes/ofertes/models.py:185
+#, fuzzy
+#| msgid "enviaments"
+msgid "Equipament"
+msgstr "sends"
+
+#: modules/ofertes/ofertes/models.py:186
+msgid "Costos indirectes"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:223
+msgid "Rebuda"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:224
+#, fuzzy
+#| msgid "Accedir"
+msgid "Acceptada"
+msgstr "Sign in"
+
+#: modules/ofertes/ofertes/models.py:225
+msgid "Rebutjada"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:233
+msgid "Partides sol·licitades"
+msgstr ""
+
+# Contact role
+#: modules/ofertes/ofertes/models.py:243
+#, fuzzy
+#| msgid "Subcontratista"
+msgid "Sol·licitud subcontractista"
+msgstr "Subcontractor"
+
+#: modules/ofertes/ofertes/models.py:253
+msgid "Partides obra"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:254
+#, fuzzy
+#| msgid "Contingut generat per IA pendent de revisió."
+msgid "Contingut generat per IA"
+msgstr "AI-generated content pending review."
+
+#: modules/ofertes/ofertes/models.py:255
+msgid "Contingut revisat"
+msgstr ""
+
+#: modules/ofertes/ofertes/models.py:268
+#: templates/portal/ofertes/oferta_detail.html:135
+msgid "Pla de Seguretat i Salut"
+msgstr "Safety and Health Plan"
+
+#: modules/rag/rag/apps.py:9
+msgid "Sistema RAG"
+msgstr ""
+
+#: modules/rag/rag/models.py:28
+#, fuzzy
+#| msgid "Licitació específica"
+msgid "Licitació (PDF plec)"
+msgstr "Specific tender"
+
+#: modules/rag/rag/models.py:29
+#, fuzzy
+#| msgid "Extraccions IA"
+msgid "Extracció IA"
+msgstr "AI extractions"
+
+#: modules/rag/rag/models.py:30
+#, fuzzy
+#| msgid "Documents interns"
+msgid "Document intern"
+msgstr "Internal documents"
+
+# Internal report — detail
+#: modules/rag/rag/models.py:31 templates/portal/informe_detail.html:4
+#: templates/portal/informe_detail.html:5 templates/portal/informe_print.html:5
+msgid "Informe intern"
+msgstr "Internal report"
+
+#: modules/rag/rag/models.py:59
+#, fuzzy
+#| msgid "Nom del document"
+msgid "Embedding document"
+msgstr "Document name"
+
+#: modules/rag/rag/models.py:94
+#, fuzzy
+#| msgid "Consulta IA"
+msgid "Consulta RAG"
+msgstr "AI Assistant"
+
+#: modules/rrhh/rrhh/models.py:12
+#, fuzzy
+#| msgid "Veure licitació"
+msgid "Veure licitaciones"
+msgstr "View tender"
+
+# Dashboard
+#: modules/rrhh/rrhh/models.py:13
+#, fuzzy
+#| msgid "Total licitaciones"
+msgid "Editar licitaciones"
+msgstr "Total tenders"
+
+#: modules/rrhh/rrhh/models.py:14
+#, fuzzy
+#| msgid "Segmentació de prospects"
+msgid "Veure marketing / prospects"
+msgstr "Prospect segmentation"
+
+#: modules/rrhh/rrhh/models.py:15
+#, fuzzy
+#| msgid "Llistat de prospects"
+msgid "Editar marketing / prospects"
+msgstr "Prospects list"
+
+#: modules/rrhh/rrhh/models.py:16
+msgid "Veure ERP (factures, albarans, pedidos)"
+msgstr "View ERP (invoices, delivery notes, orders)"
+
+#: modules/rrhh/rrhh/models.py:17
+#, fuzzy
+#| msgid "Editar"
+msgid "Editar ERP"
+msgstr "Edit"
+
+#: modules/rrhh/rrhh/models.py:18
+#, fuzzy
+#| msgid "Veure totes"
+msgid "Veure RRHH / fitxatges"
+msgstr "View all"
+
+#: modules/rrhh/rrhh/models.py:19
+#, fuzzy
+#| msgid "Pujar document"
+msgid "Veure documents"
+msgstr "Upload document"
+
+#: modules/rrhh/rrhh/models.py:20
+#, fuzzy
+#| msgid "Pujar document"
+msgid "Pujar documents"
+msgstr "Upload document"
+
+#: modules/rrhh/rrhh/models.py:21
+msgid "Usar IA / RAG"
+msgstr "Use AI / RAG"
+
+#: modules/rrhh/rrhh/models.py:22
+#, fuzzy
+#| msgid "Gestión de usuarios"
+msgid "Gestionar usuaris"
+msgstr "User Management"
+
+#: modules/rrhh/rrhh/models.py:23
+msgid "Gestionar rols personalitzats"
+msgstr "Manage custom roles"
+
+#: modules/rrhh/rrhh/models.py:24
+#, fuzzy
+#| msgid "Veure licitació"
+msgid "Veure panell d'administració"
+msgstr "View tender"
+
+#: modules/rrhh/rrhh/models.py:28 templates/portal/base.html:94
+#: templates/portal/licitacions_list.html:4
+#: templates/portal/licitacions_list.html:5
+msgid "Licitaciones"
+msgstr "Tenders"
+
+#: modules/rrhh/rrhh/models.py:31
+#, fuzzy
+#| msgid "Marketing"
+msgid "Marketing / CRM"
+msgstr "Marketing"
+
+#: modules/rrhh/rrhh/models.py:34
+msgid "ERP"
+msgstr ""
+
+# HR timesheets
+#: modules/rrhh/rrhh/models.py:37 templates/portal/admin/rrhh.html:4
+msgid "RRHH"
+msgstr "HR"
+
+#: modules/rrhh/rrhh/models.py:43
+#, fuzzy
+#| msgid "Usar IA / RAG"
+msgid "IA / RAG"
+msgstr "Use AI / RAG"
+
+#: modules/rrhh/rrhh/models.py:46 templates/portal/base.html:231
+#, fuzzy
+#| msgid "Administración"
+msgid "Administració"
+msgstr "Administration"
+
+#: modules/rrhh/rrhh/models.py:51 templates/portal/admin/rol_form.html:30
+#, fuzzy
+#| msgid "Nom del document"
+msgid "Nom del rol"
+msgstr "Document name"
+
+#: modules/rrhh/rrhh/models.py:55
+msgid "Permisos"
+msgstr ""
+
+#: modules/rrhh/rrhh/models.py:62 modules/rrhh/rrhh/models.py:86
+#: templates/portal/admin/user_form.html:66
+msgid "Rol personalitzat"
+msgstr ""
+
+#: modules/rrhh/rrhh/models.py:63 templates/portal/admin/rols.html:4
+#: templates/portal/admin/rols.html:5 templates/portal/admin/rols.html:42
+msgid "Rols personalitzats"
+msgstr "Custom roles"
+
 # User role
+#: modules/rrhh/rrhh/models.py:76
 msgid "Jefe"
 msgstr "Manager"
 
+#: modules/rrhh/rrhh/models.py:77
+#, fuzzy
+#| msgid "Revisor"
+msgid "Supervisor"
+msgstr "Reviewer"
+
+#: modules/rrhh/rrhh/models.py:78 templates/portal/admin/overview.html:73
+#: templates/portal/admin/rrhh.html:41 templates/portal/admin/rrhh.html:87
+msgid "Trabajador"
+msgstr "Worker"
+
+#: modules/rrhh/rrhh/models.py:87
+msgid "Si s'especifica, els permisos es prenen del rol personalitzat."
+msgstr "If specified, permissions come from the custom role."
+
+#: modules/rrhh/rrhh/models.py:146
+msgid "Normal"
+msgstr ""
+
 # Timeclock type
+#: modules/rrhh/rrhh/models.py:147
 msgid "Teletrabajo"
 msgstr "Remote work"
 
+#: modules/rrhh/rrhh/models.py:148
 msgid "Guardia"
 msgstr "On-call"
 
-# Territories — cities
-msgid "Ciutats / Municipis preferits"
-msgstr "Favourite cities / municipalities"
-
-msgid "Licitaciones d'aquests municipis apareixeran als teus territoris"
-msgstr "Tenders from these municipalities will appear in your territories"
-
-msgid "Escriu un municipi..."
-msgstr "Type a municipality..."
-
-msgid "Desar ciutats"
-msgstr "Save cities"
-
-msgid "Encara no hi ha municipis. Escriu un nom i fes clic a Afegir."
-msgstr "No municipalities yet. Type a name and click Add."
-
-# Territories
-msgid "Territoris"
-msgstr "Territories"
-
-msgid "Territoris preferents"
-msgstr "Preferred territories"
-
-msgid "Selecció de territoris"
-msgstr "Territory selection"
-
-msgid "Marca la principal (⭐) i les preferides (♥)"
-msgstr "Mark the main (⭐) and favourites (♥)"
-
-msgid "Fes clic a ⭐ per marcar com a principal, ♥ per afegir a preferits."
-msgstr "Click ⭐ to set as main province, ♥ to add to favourites."
-
-msgid "Província principal"
-msgstr "Main province"
-
-msgid "Preferida"
-msgstr "Favourite"
-
-msgid "Marcar com a principal"
-msgstr "Set as main province"
-
-msgid "Marcar com a preferida"
-msgstr "Add to favourites"
-
-msgid "Desar preferències"
-msgstr "Save preferences"
-
-msgid "Contactes provincials"
-msgstr "Provincial contacts"
-
-msgid "Nou contacte"
-msgstr "New contact"
-
-msgid "Nou contacte provincial"
-msgstr "New provincial contact"
-
-msgid "Filtrar per província:"
-msgstr "Filter by province:"
-
-msgid "Totes"
-msgstr "All"
-
-msgid "Nom"
-msgstr "Name"
-
-msgid "Empresa"
-msgstr "Company"
-
-msgid "Telèfon"
-msgstr "Phone"
-
-msgid "Afegir"
-msgstr "Add"
-
-msgid "Editar contacte"
-msgstr "Edit contact"
-
-msgid "Editar"
-msgstr "Edit"
-
-msgid "Eliminar"
-msgstr "Delete"
-
-msgid "Desar canvis"
-msgstr "Save changes"
-
-msgid "Encara no hi ha contactes. Afegeix el primer contacte provincial."
-msgstr "No contacts yet. Add the first provincial contact."
-
-msgid "Contactes locals"
-msgstr "Local contacts"
-
-msgid "Cap contacte per a aquesta província."
-msgstr "No contacts for this province."
-
-msgid "Els meus territoris"
-msgstr "My territories"
-
-msgid "licitacions"
-msgstr "tenders"
-
-msgid "noves"
-msgstr "new"
-
-msgid "Veure totes"
-msgstr "View all"
-
-msgid "Encara no hi ha licitacions en els teus territoris."
-msgstr "No tenders in your territories yet."
-
-msgid "Territoris:"
-msgstr "Territories:"
-
-# scraping_config.html
-msgid "Configuració de Scraping"
-msgstr "Scraping Configuration"
-
-msgid "Configuració General"
-msgstr "General Settings"
-
-msgid "Nom de la plantilla"
-msgstr "Template name"
-
-msgid "Identificador de la plantilla de scraping"
-msgstr "Scraping template identifier"
-
-msgid "Plantilla activa"
-msgstr "Active template"
-
-msgid "La plantilla activa s'utiliza en el scraping automàtic"
-msgstr "The active template is used in automatic scraping"
-
-msgid "Activa"
-msgstr "Active"
-
-msgid "Inactiva"
-msgstr "Inactive"
-
-msgid "Pàgines màximes per execució"
-msgstr "Max pages per run"
-
-msgid "Límit de pàgines a raspar per cada execució"
-msgstr "Page limit to scrape per execution"
-
-msgid "Filtres d'Importe"
-msgstr "Amount Filters"
-
-msgid "Importe mínimo"
-msgstr "Minimum amount"
-
-msgid "EUR. Deixar buit per a sense límit"
-msgstr "EUR. Leave blank for no limit"
-
-msgid "Importe màxim"
-msgstr "Maximum amount"
-
-msgid "Selecciona les províncies a incloure. Deixar buit = totes"
-msgstr "Select provinces to include. Leave blank = all"
-
-msgid "Municipis"
-msgstr "Municipalities"
-
-msgid "Selecciona els municipis a incloure. Deixar buit = tots"
-msgstr "Select municipalities to include. Leave blank = all"
-
-msgid "Tipus de Contrate"
-msgstr "Contract Types"
-
-msgid "Selecciona els tipus. Deixar buit = tots"
-msgstr "Select types. Leave blank = all"
-
-msgid "Procediments"
-msgstr "Procedures"
-
-msgid "Selecciona els procediments. Deixar buit = tots"
-msgstr "Select procedures. Leave blank = all"
-
-msgid "Codis CPV"
-msgstr "CPV Codes"
-
-msgid "Prefix de codi CPV (ex: 45, 71). Deixar buit = tots"
-msgstr "CPV code prefix (e.g. 45, 71). Leave blank = all"
-
-msgid "Un codi per línia"
-msgstr "One code per line"
-
-msgid "Desar configuració"
-msgstr "Save configuration"
-
-msgid "Solo vigentes"
-msgstr "Active only"
-
-msgid "Municipio/Provincia"
-msgstr "Municipality/Province"
-
 # empresa.html
+#: templates/portal/admin/empresa.html:4 templates/portal/admin/empresa.html:5
+#: templates/portal/admin/empresa.html:60
 msgid "Datos de empresa"
 msgstr "Company details"
 
+#: templates/portal/admin/empresa.html:62
 msgid "Última actualización"
 msgstr "Last updated"
 
+#: templates/portal/admin/empresa.html:76
 msgid "Información general"
 msgstr "General information"
 
+#: templates/portal/admin/empresa.html:79
 msgid "Nombre de empresa"
 msgstr "Company name"
 
-msgid "Descripción"
-msgstr "Description"
-
+#: templates/portal/admin/empresa.html:86
 msgid "Breve descripción de la empresa (opcional)"
 msgstr "Brief company description (optional)"
 
+#: templates/portal/admin/empresa.html:92
 msgid "Localización"
 msgstr "Location"
 
-msgid "Dirección"
-msgstr "Address"
-
-msgid "Ciudad"
-msgstr "City"
-
-msgid "País"
-msgstr "Country"
-
+#: templates/portal/admin/empresa.html:113
+#: templates/portal/admin/empresa.html:181
 msgid "Contacto"
 msgstr "Contact"
 
-msgid "Email de contacto"
-msgstr "Contact email"
-
-msgid "Logo"
-msgstr "Logo"
-
-msgid "Cambiar"
-msgstr "Change"
-
-msgid "PNG, JPG o SVG. Máx. 2 MB. Recomendado: fondo transparente."
-msgstr "PNG, JPG or SVG. Max. 2 MB. Recommended: transparent background."
-
-msgid "Resumen"
-msgstr "Summary"
-
-msgid "Guardar cambios"
-msgstr "Save changes"
-
-msgid "Clic para subir logo"
-msgstr "Click to upload logo"
-
-msgid "Datos de empresa actualizados correctamente."
-msgstr "Company details saved successfully."
-
+#: templates/portal/admin/empresa.html:148
+#: templates/portal/admin/empresa.html:243
 msgid "Haz clic o arrastra tu logo aquí"
 msgstr "Click or drag your logo here"
 
+#: templates/portal/admin/empresa.html:165
+msgid "Cambiar"
+msgstr "Change"
+
+#: templates/portal/admin/empresa.html:168
 msgid "Eliminar logo"
 msgstr "Delete logo"
+
+#: templates/portal/admin/empresa.html:171
+msgid "PNG, JPG o SVG. Máx. 2 MB. Recomendado: fondo transparente."
+msgstr "PNG, JPG or SVG. Max. 2 MB. Recommended: transparent background."
+
+#: templates/portal/admin/empresa.html:175
+msgid "Resumen"
+msgstr "Summary"
+
+#: templates/portal/admin/empresa.html:177
+#: templates/portal/admin/user_form.html:37 templates/portal/meu_perfil.html:20
+msgid "Nombre"
+msgstr "First name"
+
+#: templates/portal/admin/empresa.html:191 templates/portal/meu_perfil.html:59
+msgid "Guardar cambios"
+msgstr "Save changes"
+
+#: templates/portal/admin/empresa.html:193
+#: templates/portal/admin/scraping_config.html:164
+#: templates/portal/admin/user_form.html:104
+#: templates/portal/fichaje_edit.html:41
+#: templates/portal/marketing/prospect_detail.html:163
+msgid "Cancelar"
+msgstr "Cancel"
+
+#: templates/portal/admin/overview.html:4
+msgid "Administración"
+msgstr "Administration"
+
+#: templates/portal/admin/overview.html:5 templates/portal/base.html:235
+msgid "Visión general"
+msgstr "Overview"
+
+# Admin overview
+#: templates/portal/admin/overview.html:12
+msgid "Usuarios activos"
+msgstr "Active users"
+
+#: templates/portal/admin/overview.html:18
+msgid "En la oficina ahora"
+msgstr "In the office now"
+
+#: templates/portal/admin/overview.html:24
+msgid "Licitaciones nuevas"
+msgstr "New tenders"
+
+#: templates/portal/admin/overview.html:38
+msgid "Roles del sistema"
+msgstr "System roles"
+
+#: templates/portal/admin/overview.html:43 templates/portal/admin/users.html:9
+msgid "usuario"
+msgstr "user"
+
+#: templates/portal/admin/overview.html:50
+#, fuzzy
+#| msgid "Nuevo usuario"
+msgid "Nou usuari"
+msgstr "New user"
+
+#: templates/portal/admin/overview.html:55
+msgid "Rols"
+msgstr ""
+
+#: templates/portal/admin/overview.html:66
+msgid "Fichajes de hoy"
+msgstr "Today's timesheets"
+
+#: templates/portal/admin/overview.html:67
+msgid "Ver todo"
+msgstr "View all"
+
+#: templates/portal/admin/overview.html:74 templates/portal/admin/rrhh.html:43
+#: templates/portal/fichaje_edit.html:25 templates/portal/fichar.html:70
+msgid "Entrada"
+msgstr "Clock in"
+
+#: templates/portal/admin/overview.html:75 templates/portal/admin/rrhh.html:44
+#: templates/portal/fichaje_edit.html:30 templates/portal/fichar.html:71
+msgid "Salida"
+msgstr "Clock out"
+
+#: templates/portal/admin/overview.html:76 templates/portal/admin/rrhh.html:45
+#: templates/portal/fichar.html:72
+msgid "Horas"
+msgstr "Hours"
+
+#: templates/portal/admin/overview.html:77 templates/portal/admin/rrhh.html:46
+#: templates/portal/admin/users.html:26 templates/portal/dashboard.html:99
+#: templates/portal/licitacions_list.html:80
+msgid "Estado"
+msgstr "Status"
+
+#: templates/portal/admin/overview.html:91 templates/portal/admin/rrhh.html:63
+msgid "Completo"
+msgstr "Complete"
+
+#: templates/portal/admin/overview.html:92 templates/portal/admin/rrhh.html:60
+#: templates/portal/fichar.html:84
+msgid "En curso"
+msgstr "In progress"
+
+#: templates/portal/admin/overview.html:93 templates/portal/admin/rrhh.html:65
+msgid "Ausente"
+msgstr "Absent"
+
+#: templates/portal/admin/overview.html:97
+msgid "Sin fichajes hoy."
+msgstr "No timesheets today."
+
+#: templates/portal/admin/rol_form.html:32
+msgid "Ex: Comercial, Tècnic, Comptabilitat..."
+msgstr ""
+
+#: templates/portal/admin/rol_form.html:37
+msgid "Opcional"
+msgstr ""
+
+#: templates/portal/admin/rol_form.html:42
+msgid "Permisos per mòdul"
+msgstr ""
+
+#: templates/portal/admin/rol_form.html:45
+#: templates/portal/rag/consulta.html:97
+#, fuzzy
+#| msgid "Tots"
+msgid "Tot"
+msgstr "All"
+
+#: templates/portal/admin/rol_form.html:48
+msgid "Cap"
+msgstr ""
+
+#: templates/portal/admin/rol_form.html:59
+#: templates/portal/marketing/descobrir.html:97
+#: templates/portal/marketing/prospec_intel.html:140
+msgid "Seleccionar tots"
+msgstr "Select all"
+
+#: templates/portal/admin/rol_form.html:85
+#: templates/portal/admin/territoris.html:291
+#: templates/portal/admin/territoris.html:351
+#: templates/portal/calendari/esdeveniment_form.html:78
+#: templates/portal/documents/document_upload.html:83
+#: templates/portal/erp/client_form.html:59
+#: templates/portal/erp/factura_form.html:71
+#: templates/portal/informe_form.html:121
+#: templates/portal/marketing/campanya_form.html:110
+#: templates/portal/marketing/plantilla_form.html:112
+#: templates/portal/marketing/prospect_form.html:90
+#: templates/portal/ofertes/oferta_form.html:65
+msgid "Cancel·lar"
+msgstr "Cancel"
+
+#: templates/portal/admin/rol_form.html:87
+#, fuzzy
+#| msgid "Guardar"
+msgid "Guardar rol"
+msgstr "Save"
+
+#: templates/portal/admin/rols.html:9
+msgid "Defineix rols amb permisos granulars per assignar als usuaris."
+msgstr "Define roles with granular permissions to assign to users."
+
+#: templates/portal/admin/rols.html:16
+#, fuzzy
+#| msgid "Roles del sistema"
+msgid "Rols del sistema (predeterminats)"
+msgstr "System roles"
+
+#: templates/portal/admin/rols.html:25
+msgid "Accés total a tot el sistema"
+msgstr ""
+
+#: templates/portal/admin/rols.html:26
+msgid "Veure i editar tot excepte gestió d'usuaris"
+msgstr ""
+
+#: templates/portal/admin/rols.html:27
+#, fuzzy
+#| msgid "Veure licitació"
+msgid "Veure RRHH, licitaciones i marketing"
+msgstr "View tender"
+
+#: templates/portal/admin/rols.html:28
+msgid "Fitxatge i consultes bàsiques"
+msgstr ""
+
+#: templates/portal/admin/rols.html:32
+#, fuzzy
+#| msgid "en el sistema"
+msgid "Sistema"
+msgstr "in the system"
+
+#: templates/portal/admin/rols.html:33
+msgid "No editable"
+msgstr ""
+
+#: templates/portal/admin/rols.html:55
+#, fuzzy
+#| msgid "Eliminar?"
+msgid "Eliminar aquest rol?"
+msgstr "Delete?"
+
+#: templates/portal/admin/rols.html:82
+#, fuzzy
+#| msgid "usuario"
+msgid "usuari"
+msgstr "user"
+
+#: templates/portal/admin/rols.html:83
+msgid "assignat"
+msgstr ""
+
+#: templates/portal/admin/rols.html:94
+msgid ""
+"No hi ha rols personalitzats. Crea el primer per personalitzar els permisos "
+"dels usuaris."
+msgstr ""
+
+#: templates/portal/admin/rrhh.html:5
+msgid "RRHH — Fichajes"
+msgstr "HR — Timesheets"
+
+#: templates/portal/admin/rrhh.html:12 templates/portal/fichar.html:69
+msgid "Fecha"
+msgstr "Date"
+
+#: templates/portal/admin/rrhh.html:17
+msgid "Hoy"
+msgstr "Today"
+
+#: templates/portal/admin/rrhh.html:21
+msgid "Semana:"
+msgstr "Week:"
+
+#: templates/portal/admin/rrhh.html:34
+msgid "Fichajes"
+msgstr "Timesheets"
+
+#: templates/portal/admin/rrhh.html:42
+#: templates/portal/admin/territoris.html:179
+#: templates/portal/admin/territoris.html:261
+#: templates/portal/admin/territoris.html:321
+#: templates/portal/admin/users.html:23 templates/portal/meu_perfil.html:40
+msgid "Rol"
+msgstr "Role"
+
+#: templates/portal/admin/rrhh.html:64
+msgid "Trabajando"
+msgstr "Working"
+
+#: templates/portal/admin/rrhh.html:70
+msgid "Sin fichajes para esta fecha."
+msgstr "No timesheets for this date."
+
+#: templates/portal/admin/rrhh.html:81
+msgid "Resumen semanal"
+msgstr "Weekly summary"
+
+#: templates/portal/admin/rrhh.html:88
+msgid "Días"
+msgstr "Days"
+
+#: templates/portal/admin/rrhh.html:89
+msgid "Total horas"
+msgstr "Total hours"
+
+#: templates/portal/admin/rrhh.html:100
+msgid "Sin fichajes esta semana."
+msgstr "No timesheets this week."
+
+#: templates/portal/admin/rrhh.html:109
+msgid "Personal activo"
+msgstr "Active staff"
+
+#: templates/portal/admin/rrhh.html:111
+msgid "Gestionar"
+msgstr "Manage"
+
+# scraping_config.html
+#: templates/portal/admin/scraping_config.html:4
+#: templates/portal/admin/scraping_config.html:5
+msgid "Configuració de Scraping"
+msgstr "Scraping Configuration"
+
+#: templates/portal/admin/scraping_config.html:28
+msgid "Configuració General"
+msgstr "General Settings"
+
+#: templates/portal/admin/scraping_config.html:31
+#: templates/portal/marketing/plantilla_form.html:37
+msgid "Nom de la plantilla"
+msgstr "Template name"
+
+#: templates/portal/admin/scraping_config.html:33
+msgid "Identificador de la plantilla de scraping"
+msgstr "Scraping template identifier"
+
+#: templates/portal/admin/scraping_config.html:39
+#: templates/portal/marketing/plantilla_form.html:68
+msgid "Plantilla activa"
+msgstr "Active template"
+
+#: templates/portal/admin/scraping_config.html:41
+#: templates/portal/marketing/plantilles_list.html:44
+#: templates/portal/marketing/prospec_intel.html:223
+msgid "Activa"
+msgstr "Active"
+
+#: templates/portal/admin/scraping_config.html:41
+#: templates/portal/marketing/plantilles_list.html:46
+msgid "Inactiva"
+msgstr "Inactive"
+
+#: templates/portal/admin/scraping_config.html:44
+msgid "La plantilla activa s'utiliza en el scraping automàtic"
+msgstr "The active template is used in automatic scraping"
+
+#: templates/portal/admin/scraping_config.html:50
+msgid "Pàgines màximes per execució"
+msgstr "Max pages per run"
+
+#: templates/portal/admin/scraping_config.html:52
+msgid "Límit de pàgines a raspar per cada execució"
+msgstr "Page limit to scrape per execution"
+
+#: templates/portal/admin/scraping_config.html:59
+msgid "Filtres d'Importe"
+msgstr "Amount Filters"
+
+#: templates/portal/admin/scraping_config.html:64
+msgid "Importe mínimo"
+msgstr "Minimum amount"
+
+#: templates/portal/admin/scraping_config.html:67
+#: templates/portal/admin/scraping_config.html:75
+msgid "EUR. Deixar buit per a sense límit"
+msgstr "EUR. Leave blank for no limit"
+
+#: templates/portal/admin/scraping_config.html:72
+msgid "Importe màxim"
+msgstr "Maximum amount"
+
+# Territories
+#: templates/portal/admin/scraping_config.html:82
+#: templates/portal/base.html:248
+msgid "Territoris"
+msgstr "Territories"
+
+#: templates/portal/admin/scraping_config.html:83
+msgid "Selecciona les províncies a incloure. Deixar buit = totes"
+msgstr "Select provinces to include. Leave blank = all"
+
+#: templates/portal/admin/scraping_config.html:99
+msgid "Municipis"
+msgstr "Municipalities"
+
+#: templates/portal/admin/scraping_config.html:100
+msgid "Selecciona els municipis a incloure. Deixar buit = tots"
+msgstr "Select municipalities to include. Leave blank = all"
+
+#: templates/portal/admin/scraping_config.html:116
+msgid "Tipus de Contrate"
+msgstr "Contract Types"
+
+#: templates/portal/admin/scraping_config.html:117
+msgid "Selecciona els tipus. Deixar buit = tots"
+msgstr "Select types. Leave blank = all"
+
+#: templates/portal/admin/scraping_config.html:133
+msgid "Procediments"
+msgstr "Procedures"
+
+#: templates/portal/admin/scraping_config.html:134
+msgid "Selecciona els procediments. Deixar buit = tots"
+msgstr "Select procedures. Leave blank = all"
+
+#: templates/portal/admin/scraping_config.html:150
+msgid "Codis CPV"
+msgstr "CPV Codes"
+
+#: templates/portal/admin/scraping_config.html:151
+msgid "Prefix de codi CPV (ex: 45, 71). Deixar buit = tots"
+msgstr "CPV code prefix (e.g. 45, 71). Leave blank = all"
+
+#: templates/portal/admin/scraping_config.html:155
+msgid "Un codi per línia"
+msgstr "One code per line"
+
+#: templates/portal/admin/scraping_config.html:161
+msgid "Desar configuració"
+msgstr "Save configuration"
+
+#: templates/portal/admin/territoris.html:4
+#: templates/portal/admin/territoris.html:5
+msgid "Territoris preferents"
+msgstr "Preferred territories"
+
+#: templates/portal/admin/territoris.html:57
+msgid "Selecció de territoris"
+msgstr "Territory selection"
+
+#: templates/portal/admin/territoris.html:58
+msgid "Marca la principal (⭐) i les preferides (♥)"
+msgstr "Mark the main (⭐) and favourites (♥)"
+
+#: templates/portal/admin/territoris.html:61
+#: templates/portal/admin/territoris.html:100
+msgid "Desar preferències"
+msgstr "Save preferences"
+
+#: templates/portal/admin/territoris.html:66
+msgid "Província principal"
+msgstr "Main province"
+
+#: templates/portal/admin/territoris.html:67
+msgid "Preferida"
+msgstr "Favourite"
+
+#: templates/portal/admin/territoris.html:68
+msgid "Fes clic a ⭐ per marcar com a principal, ♥ per afegir a preferits."
+msgstr "Click ⭐ to set as main province, ♥ to add to favourites."
+
+#: templates/portal/admin/territoris.html:84
+msgid "Marcar com a principal"
+msgstr "Set as main province"
+
+#: templates/portal/admin/territoris.html:88
+msgid "Marcar com a preferida"
+msgstr "Add to favourites"
+
+# Territories — cities
+#: templates/portal/admin/territoris.html:110
+msgid "Ciutats / Municipis preferits"
+msgstr "Favourite cities / municipalities"
+
+#: templates/portal/admin/territoris.html:111
+msgid "Licitaciones d'aquests municipis apareixeran als teus territoris"
+msgstr "Tenders from these municipalities will appear in your territories"
+
+#: templates/portal/admin/territoris.html:117
+msgid "Escriu un municipi..."
+msgstr "Type a municipality..."
+
+#: templates/portal/admin/territoris.html:119
+#: templates/portal/admin/territoris.html:292
+#: templates/portal/licitacio_detail.html:255
+msgid "Afegir"
+msgstr "Add"
+
+#: templates/portal/admin/territoris.html:129
+#: templates/portal/admin/territoris.html:219
+#: templates/portal/admin/territoris.html:221
+msgid "Eliminar"
+msgstr "Delete"
+
+#: templates/portal/admin/territoris.html:134
+#: templates/portal/admin/territoris.html:478
+msgid "Encara no hi ha municipis. Escriu un nom i fes clic a Afegir."
+msgstr "No municipalities yet. Type a name and click Add."
+
+#: templates/portal/admin/territoris.html:143
+msgid "Desar ciutats"
+msgstr "Save cities"
+
+#: templates/portal/admin/territoris.html:152
+msgid "Contactes provincials"
+msgstr "Provincial contacts"
+
+#: templates/portal/admin/territoris.html:154
+msgid "Nou contacte"
+msgstr "New contact"
+
+#: templates/portal/admin/territoris.html:161
+msgid "Filtrar per província:"
+msgstr "Filter by province:"
+
+#: templates/portal/admin/territoris.html:163
+#: templates/portal/rag/consulta.html:107
+msgid "Totes"
+msgstr "All"
+
+#: templates/portal/admin/territoris.html:177
+#: templates/portal/admin/territoris.html:269
+#: templates/portal/admin/territoris.html:329
+#: templates/portal/documents/document_list.html:62
+#: templates/portal/marketing/campanyes_list.html:26
+#: templates/portal/marketing/plantilles_list.html:26
+msgid "Nom"
+msgstr "Name"
+
+#: templates/portal/admin/territoris.html:178
+#: templates/portal/admin/territoris.html:273
+#: templates/portal/admin/territoris.html:333 templates/portal/base.html:252
+#: templates/portal/marketing/dashboard.html:50
+#: templates/portal/marketing/prospects_list.html:68
+msgid "Empresa"
+msgstr "Company"
+
+#: templates/portal/admin/territoris.html:180
+#: templates/portal/admin/territoris.html:277
+#: templates/portal/admin/territoris.html:337
+#: templates/portal/erp/client_form.html:34
+#: templates/portal/erp/clients.html:41
+#: templates/portal/marketing/prospect_detail.html:89
+#: templates/portal/marketing/prospect_detail.html:116
+#: templates/portal/marketing/prospect_detail.html:239
+#: templates/portal/marketing/prospect_form.html:49
+msgid "Telèfon"
+msgstr "Phone"
+
+#: templates/portal/admin/territoris.html:181
+#: templates/portal/admin/territoris.html:281
+#: templates/portal/admin/territoris.html:341
+#: templates/portal/admin/user_form.html:47
+#: templates/portal/erp/client_form.html:30
+#: templates/portal/erp/clients.html:40
+#: templates/portal/marketing/descobrir.html:147
+#: templates/portal/marketing/prospect_detail.html:83
+#: templates/portal/marketing/prospect_detail.html:233
+#: templates/portal/meu_perfil.html:28
+msgid "Email"
+msgstr "Email"
+
+#: templates/portal/admin/territoris.html:215
+#: templates/portal/marketing/plantilles_list.html:53
+#: templates/portal/marketing/prospect_detail.html:46
+msgid "Editar"
+msgstr "Edit"
+
+#: templates/portal/admin/territoris.html:234
+msgid "Encara no hi ha contactes. Afegeix el primer contacte provincial."
+msgstr "No contacts yet. Add the first provincial contact."
+
+#: templates/portal/admin/territoris.html:246
+msgid "Nou contacte provincial"
+msgstr "New provincial contact"
+
+#: templates/portal/admin/territoris.html:285
+#: templates/portal/admin/territoris.html:345
+#: templates/portal/erp/analitzar_document.html:169
+#: templates/portal/erp/client_form.html:54
+#: templates/portal/erp/factura_detail.html:78
+#: templates/portal/licitacio_detail.html:102
+#: templates/portal/marketing/prospect_detail.html:97
+#: templates/portal/marketing/prospect_detail.html:153
+#: templates/portal/marketing/prospect_form.html:73
+msgid "Notes"
+msgstr "Notes"
+
+#: templates/portal/admin/territoris.html:306
+msgid "Editar contacte"
+msgstr "Edit contact"
+
+#: templates/portal/admin/territoris.html:352
+#: templates/portal/marketing/plantilla_form.html:110
+msgid "Desar canvis"
+msgstr "Save changes"
+
+#: templates/portal/admin/user_form.html:14
+#: templates/portal/fichaje_edit.html:18
+#: templates/portal/marketing/prospect_detail.html:23
+msgid "Volver"
+msgstr "Back"
+
+#: templates/portal/admin/user_form.html:22
+#: templates/portal/admin/users.html:20 templates/portal/meu_perfil.html:69
+msgid "Usuario"
+msgstr "User"
+
+# admin/user_form.html
+#: templates/portal/admin/user_form.html:29
+msgid "Contraseña"
+msgstr "Password"
+
+#: templates/portal/admin/user_form.html:31
+msgid "vacío = no cambiar"
+msgstr "leave blank to keep current"
+
+#: templates/portal/admin/user_form.html:42 templates/portal/meu_perfil.html:24
+msgid "Apellidos"
+msgstr "Last name"
+
+#: templates/portal/admin/user_form.html:57
+#, fuzzy
+#| msgid "Importe base"
+msgid "Rol base"
+msgstr "Base amount"
+
+#: templates/portal/admin/user_form.html:63
+msgid "S'utilitza si no hi ha rol personalitzat."
+msgstr "Used if no custom role is set."
+
+#: templates/portal/admin/user_form.html:68
+msgid "Cap (usar rol base)"
+msgstr "None (use base role)"
+
+#: templates/portal/admin/user_form.html:74
+msgid "Si s'assigna, els permisos vénen del rol personalitzat."
+msgstr "If assigned, permissions come from the custom role."
+
+#: templates/portal/admin/user_form.html:75
+#, fuzzy
+#| msgid "Gestionar"
+msgid "Gestionar rols"
+msgstr "Manage"
+
+#: templates/portal/admin/user_form.html:79
+#: templates/portal/admin/users.html:24 templates/portal/meu_perfil.html:36
+msgid "Departamento"
+msgstr "Department"
+
+#: templates/portal/admin/user_form.html:84
+msgid "Fecha de alta"
+msgstr "Start date"
+
+#: templates/portal/admin/user_form.html:93
+msgid "Usuario activo"
+msgstr "Active user"
+
+#: templates/portal/admin/user_form.html:97
+msgid "Notas internas"
+msgstr "Internal notes"
+
+#: templates/portal/admin/user_form.html:106
+#: templates/portal/fichaje_edit.html:43
+#: templates/portal/marketing/prospect_detail.html:159
+msgid "Guardar"
+msgstr "Save"
+
+#: templates/portal/admin/users.html:4 templates/portal/admin/users.html:5
+#: templates/portal/base.html:241
+msgid "Gestión de usuarios"
+msgstr "User Management"
+
+#: templates/portal/admin/users.html:9
+msgid "en el sistema"
+msgstr "in the system"
+
+#: templates/portal/admin/users.html:11
+msgid "Nuevo usuario"
+msgstr "New user"
+
+# Users
+#: templates/portal/admin/users.html:21
+msgid "Nombre completo"
+msgstr "Full name"
+
+#: templates/portal/admin/users.html:25 templates/portal/meu_perfil.html:70
+msgid "Alta"
+msgstr "Start date"
+
+#: templates/portal/admin/users.html:45 templates/portal/meu_perfil.html:71
+msgid "Activo"
+msgstr "Active"
+
+#: templates/portal/admin/users.html:47
+msgid "Inactivo"
+msgstr "Inactive"
+
+#: templates/portal/admin/users.html:57
+msgid "Ningún usuario en el sistema."
+msgstr "No users in the system."
+
+# base.html
+#: templates/portal/base.html:85 templates/portal/base.html:116
+#: templates/portal/marketing/campanyes_list.html:13
+msgid "Dashboard"
+msgstr "Dashboard"
+
+# Dashboard
+#: templates/portal/base.html:98
+#, fuzzy
+#| msgid "Total licitaciones"
+msgid "Totes les licitacions"
+msgstr "Total tenders"
+
+# scraping_config.html
+#: templates/portal/base.html:101
+#, fuzzy
+#| msgid "Configuració de Scraping"
+msgid "Config. scraping"
+msgstr "Scraping Configuration"
+
+#: templates/portal/base.html:112 templates/portal/marketing/dashboard.html:4
+msgid "Marketing"
+msgstr "Marketing"
+
+#: templates/portal/base.html:120
+#: templates/portal/marketing/prospects_list.html:4
+#: templates/portal/marketing/prospects_list.html:5
+msgid "Prospects"
+msgstr "Prospects"
+
+#: templates/portal/base.html:125 templates/portal/marketing/descobrir.html:4
+msgid "Descobrir empreses"
+msgstr "Discover companies"
+
+#: templates/portal/base.html:130
+#: templates/portal/marketing/prospec_intel.html:4
+#: templates/portal/marketing/prospec_intel.html:72
+#, fuzzy
+#| msgid "Fecha de alta"
+msgid "Cerca de clients"
+msgstr "Start date"
+
+#: templates/portal/base.html:136
+#: templates/portal/marketing/campanyes_list.html:4
+#: templates/portal/marketing/campanyes_list.html:19
+#: templates/portal/marketing/plantilles_list.html:13
+msgid "Campanyes"
+msgstr "Campaigns"
+
+#: templates/portal/base.html:141
+#: templates/portal/marketing/plantilles_list.html:4
+msgid "Plantilles email"
+msgstr "Email templates"
+
+# ─── Sidebar (new modules) ─────────────────────────────────────────────────────
+#: templates/portal/base.html:154
+msgid "Gestió"
+msgstr "Management"
+
+#: templates/portal/base.html:174
+#, fuzzy
+#| msgid "Arxivar document"
+msgid "Analitzar document IA"
+msgstr "Archive document"
+
+#: templates/portal/base.html:202
+msgid "Personal"
+msgstr "Personal"
+
+#: templates/portal/base.html:207 templates/portal/fichar.html:4
+msgid "Fichaje"
+msgstr "Timeclock"
+
+#: templates/portal/base.html:211 templates/portal/calendari/calendari.html:4
+msgid "Calendari"
+msgstr "Calendar"
+
+#: templates/portal/base.html:222
+#: templates/portal/marketing/campanyes_list.html:30
+msgid "IA"
+msgstr ""
+
+#: templates/portal/base.html:237
+msgid "RRHH / Fichajes"
+msgstr "HR / Timesheets"
+
+#: templates/portal/base.html:245
+msgid "Rols i permisos"
+msgstr "Roles & permissions"
+
+#: templates/portal/base.html:282 templates/portal/meu_perfil.html:4
+#: templates/portal/meu_perfil.html:5
+msgid "Mi perfil"
+msgstr "My profile"
+
+#: templates/portal/base.html:290
+msgid "Tancar sessió"
+msgstr "Log out"
+
+#: templates/portal/calendari/calendari.html:31
+#: templates/portal/calendari/esdeveniment_form.html:4
+#: templates/portal/calendari/esdeveniment_form.html:5
+msgid "Nou esdeveniment"
+msgstr "New event"
+
+#: templates/portal/calendari/calendari.html:43
+msgid "Avui"
+msgstr "Today"
+
+#: templates/portal/calendari/calendari.html:49
+#, fuzzy
+#| msgid "Microsoft Calendar no configurat."
+msgid "Microsoft Calendar connectat correctament!"
+msgstr "Microsoft Calendar not configured."
+
+#: templates/portal/calendari/calendari.html:55
+#, fuzzy
+#| msgid "Microsoft Calendar no configurat."
+msgid "Microsoft Calendar no configurat"
+msgstr "Microsoft Calendar not configured."
+
+#: templates/portal/calendari/calendari.html:56
+msgid "Cal configurar les credencials de l'aplicació Azure al fitxer"
+msgstr ""
+
+#: templates/portal/calendari/calendari.html:61
+#, fuzzy
+#| msgid "Crea la primera ara."
+msgid "Crea l'app a"
+msgstr "Create the first one now."
+
+#: templates/portal/calendari/calendari.html:61
+msgid "i afegeix el permís"
+msgstr ""
+
+#: templates/portal/calendari/calendari.html:65
+msgid "Sincronitzat amb Microsoft Calendar"
+msgstr "Synced with Microsoft Calendar"
+
+#: templates/portal/calendari/calendari.html:70
+msgid "Microsoft Calendar no configurat."
+msgstr "Microsoft Calendar not configured."
+
+#: templates/portal/calendari/calendari.html:71
+msgid "Connectar ara"
+msgstr "Connect now"
+
+#: templates/portal/calendari/calendari.html:81
+msgid "Dl"
+msgstr "Mo"
+
+#: templates/portal/calendari/calendari.html:82
+msgid "Dm"
+msgstr "Tu"
+
+#: templates/portal/calendari/calendari.html:83
+msgid "Dc"
+msgstr "We"
+
+#: templates/portal/calendari/calendari.html:84
+msgid "Dj"
+msgstr "Th"
+
+#: templates/portal/calendari/calendari.html:85
+msgid "Dv"
+msgstr "Fr"
+
+#: templates/portal/calendari/calendari.html:86
+msgid "Ds"
+msgstr "Sa"
+
+#: templates/portal/calendari/calendari.html:87
+msgid "Dg"
+msgstr "Su"
+
+#: templates/portal/calendari/calendari.html:124
+msgid "Sync"
+msgstr "Sync"
+
+#: templates/portal/calendari/calendari.html:132
+msgid "Eliminar?"
+msgstr "Delete?"
+
+#: templates/portal/calendari/calendari.html:142
+msgid "Cap esdeveniment aquest mes."
+msgstr "No events this month."
+
+#: templates/portal/calendari/calendari.html:150
+msgid "Llegenda"
+msgstr "Legend"
+
+#: templates/portal/calendari/esdeveniment_form.html:10
+msgid "Torna al calendari"
+msgstr "Back to calendar"
+
+#: templates/portal/calendari/esdeveniment_form.html:18
+msgid "Dades de l'esdeveniment"
+msgstr "Event details"
+
+#: templates/portal/calendari/esdeveniment_form.html:26
+msgid "Ex: Reunió revisió oferta..."
+msgstr ""
+
+#: templates/portal/calendari/esdeveniment_form.html:31
+msgid "Inici"
+msgstr "Start"
+
+#: templates/portal/calendari/esdeveniment_form.html:35
+msgid "Fi"
+msgstr "End"
+
+#: templates/portal/calendari/esdeveniment_form.html:37
+msgid "Per defecte, +1 hora."
+msgstr "Default: +1 hour."
+
+#: templates/portal/calendari/esdeveniment_form.html:42
+#: templates/portal/documents/document_detail.html:43
+#: templates/portal/documents/document_list.html:64
+#: templates/portal/documents/document_upload.html:59
+#: templates/portal/marketing/plantilla_form.html:43
+#: templates/portal/marketing/plantilles_list.html:27
+msgid "Tipus"
+msgstr "Type"
+
+#: templates/portal/calendari/esdeveniment_form.html:57
+#: templates/portal/ofertes/oferta_form.html:25
+msgid "Licitació associada"
+msgstr "Associated tender"
+
+#: templates/portal/calendari/esdeveniment_form.html:59
+msgid "— Cap (opcional) —"
+msgstr "— None (optional) —"
+
+#: templates/portal/calendari/esdeveniment_form.html:71
+msgid "Notes addicionals..."
+msgstr "Additional notes..."
+
+#: templates/portal/calendari/esdeveniment_form.html:76
+msgid "Desar i sincronitzar"
+msgstr "Save & sync"
+
+#: templates/portal/calendari/esdeveniment_form.html:88
+msgid "Informació"
+msgstr "Info"
+
+#: templates/portal/calendari/esdeveniment_form.html:91
+msgid ""
+"L'esdeveniment es crearà localment i, si teniu Microsoft Calendar "
+"configurat, es sincronitzarà automàticament."
+msgstr ""
+
+#: templates/portal/calendari/esdeveniment_form.html:92
+msgid "Per configurar la sincronització, aneu a:"
+msgstr ""
+
+#: templates/portal/calendari/esdeveniment_form.html:93
+msgid "Connectar Microsoft Calendar"
+msgstr "Connect Microsoft Calendar"
+
+# Dashboard
+#: templates/portal/dashboard.html:12
+msgid "Total licitaciones"
+msgstr "Total tenders"
+
+#: templates/portal/dashboard.html:18
+msgid "Nuevas"
+msgstr "New"
+
+#: templates/portal/dashboard.html:30
+msgid "Presentadas"
+msgstr "Submitted"
+
+#: templates/portal/dashboard.html:36
+msgid "Nuevas esta semana"
+msgstr "New this week"
+
+#: templates/portal/dashboard.html:44
+msgid "Importe total relevante"
+msgstr "Total relevant amount"
+
+#: templates/portal/dashboard.html:53
+msgid "Els meus territoris"
+msgstr "My territories"
+
+#: templates/portal/dashboard.html:60
+msgid "licitacions"
+msgstr "tenders"
+
+#: templates/portal/dashboard.html:62
+msgid "noves"
+msgstr "new"
+
+#: templates/portal/dashboard.html:64
+msgid "Veure totes"
+msgstr "View all"
+
+#: templates/portal/dashboard.html:80
+msgid "Encara no hi ha licitacions en els teus territoris."
+msgstr "No tenders in your territories yet."
+
+#: templates/portal/dashboard.html:89
+msgid "Últimas licitaciones"
+msgstr "Latest tenders"
+
+#: templates/portal/dashboard.html:90
+msgid "Ver todas"
+msgstr "View all"
+
+#: templates/portal/dashboard.html:96 templates/portal/licitacions_list.html:74
+msgid "Expediente"
+msgstr "Reference"
+
+#: templates/portal/dashboard.html:97 templates/portal/licitacions_list.html:75
+msgid "Título"
+msgstr "Title"
+
+#: templates/portal/dashboard.html:98
+msgid "Importe"
+msgstr "Amount"
+
+#: templates/portal/dashboard.html:117
+msgid "Aún no hay licitaciones."
+msgstr "No tenders yet."
+
+#: templates/portal/dashboard.html:128
+msgid "Próximas a vencer"
+msgstr "Expiring soon"
+
+#: templates/portal/dashboard.html:139
+msgid "días"
+msgstr "days"
+
+#: templates/portal/dashboard.html:146
+msgid "Ninguna licitación próxima a vencer."
+msgstr "No tenders expiring soon."
+
+#: templates/portal/documents/document_detail.html:5
+msgid "Detall document"
+msgstr "Document detail"
+
+#: templates/portal/documents/document_detail.html:10
+#: templates/portal/documents/document_upload.html:10
+#: templates/portal/marketing/campanya_form.html:10
+#: templates/portal/marketing/plantilla_form.html:21
+#: templates/portal/marketing/prospect_form.html:10
+#: templates/portal/ofertes/oferta_detail.html:10
+#: templates/portal/ofertes/oferta_form.html:10
+msgid "Torna"
+msgstr "Back"
+
+#: templates/portal/documents/document_detail.html:14
+#: templates/portal/documents/document_detail.html:212
+msgid "Descarregar"
+msgstr "Download"
+
+#: templates/portal/documents/document_detail.html:39
+#: templates/portal/documents/document_list.html:63
+#: templates/portal/documents/document_upload.html:50
+#: templates/portal/licitacio_detail.html:94
+msgid "Categoria"
+msgstr "Category"
+
+#: templates/portal/documents/document_detail.html:47
+#: templates/portal/documents/document_detail.html:114
+#: templates/portal/documents/document_list.html:65
+msgid "Mida"
+msgstr ""
+
+#: templates/portal/documents/document_detail.html:51
+msgid "MIME"
+msgstr ""
+
+#: templates/portal/documents/document_detail.html:55
+#: templates/portal/documents/document_list.html:67
+msgid "Pujat per"
+msgstr ""
+
+#: templates/portal/documents/document_detail.html:59
+#: templates/portal/documents/document_list.html:66
+msgid "Caducitat"
+msgstr "Expiry"
+
+#: templates/portal/documents/document_detail.html:75
+msgid "Integritat ISO 9001/14001"
+msgstr "ISO 9001/14001 integrity"
+
+#: templates/portal/documents/document_detail.html:80
+msgid "SHA-256"
+msgstr ""
+
+#: templates/portal/documents/document_detail.html:84
+msgid "No disponible"
+msgstr "Not available"
+
+#: templates/portal/documents/document_detail.html:92
+msgid "Verificar integritat"
+msgstr "Verify integrity"
+
+#: templates/portal/documents/document_detail.html:104
+#, fuzzy
+#| msgid "Versions anteriors"
+msgid "Versions"
+msgstr "Previous versions"
+
+#: templates/portal/documents/document_detail.html:112
+msgid "Versió"
+msgstr ""
+
+#: templates/portal/documents/document_detail.html:113
+#: templates/portal/documents/document_upload.html:24
+#: templates/portal/erp/analitzar_document.html:54
+msgid "Fitxer"
+msgstr "File"
+
+#: templates/portal/documents/document_detail.html:115
+msgid "SHA-256 (resum)"
+msgstr ""
+
+#: templates/portal/documents/document_detail.html:116
+#, fuzzy
+#| msgid "Creat el"
+msgid "Creat per"
+msgstr "Created on"
+
+#: templates/portal/documents/document_detail.html:123
+msgid "Actual"
+msgstr "Current"
+
+#: templates/portal/documents/document_detail.html:131
+msgid "Cap versió registrada."
+msgstr "No versions recorded."
+
+#: templates/portal/documents/document_detail.html:141
+msgid "Log d'accessos (últims 20)"
+msgstr "Access log (last 20)"
+
+#: templates/portal/documents/document_detail.html:147
+#: templates/portal/login.html:19
+msgid "Usuari"
+msgstr "Username"
+
+#: templates/portal/documents/document_detail.html:148
+#, fuzzy
+#| msgid "Dirección"
+msgid "Acció"
+msgstr "Address"
+
+#: templates/portal/documents/document_detail.html:149
+msgid "IP"
+msgstr ""
+
+#: templates/portal/documents/document_detail.html:150
+msgid "Data/hora"
+msgstr "Date/time"
+
+#: templates/portal/documents/document_detail.html:170
+msgid "Cap accés registrat."
+msgstr "No access recorded."
+
+#: templates/portal/documents/document_detail.html:183
+msgid "Vista prèvia"
+msgstr "Preview"
+
+#: templates/portal/documents/document_detail.html:190
+msgid "URL vàlida 30 min."
+msgstr "URL valid 30 min."
+
+#: templates/portal/documents/document_detail.html:198
+#, fuzzy
+#| msgid "Accions IA"
+msgid "Accions"
+msgstr "AI Actions"
+
+#: templates/portal/documents/document_detail.html:202
+msgid "Arxivar el document?"
+msgstr "Archive this document?"
+
+#: templates/portal/documents/document_detail.html:206
+msgid "Arxivar document"
+msgstr "Archive document"
+
+#: templates/portal/documents/document_detail.html:221
+#: templates/portal/licitacio_detail.html:264
+#: templates/portal/marketing/plantilla_form.html:141
+#: templates/portal/ofertes/oferta_detail.html:247
+msgid "Metadades"
+msgstr "Metadata"
+
+#: templates/portal/documents/document_detail.html:225
+#, fuzzy
+#| msgid "Creat el"
+msgid "Creat"
+msgstr "Created on"
+
+#: templates/portal/documents/document_detail.html:229
+msgid "Retenció"
+msgstr ""
+
+#: templates/portal/documents/document_detail.html:230
+msgid "anys"
+msgstr "years"
+
+#: templates/portal/documents/document_detail.html:233
+msgid "Aprovació"
+msgstr "Approval"
+
+#: templates/portal/documents/document_list.html:10
+#: templates/portal/documents/document_upload.html:4
+#: templates/portal/documents/document_upload.html:5
+#: templates/portal/documents/document_upload.html:81
+#: templates/portal/erp/analitzar_document.html:21
+#: templates/portal/erp/factura_detail.html:184
+msgid "Pujar document"
+msgstr "Upload document"
+
+#: templates/portal/documents/document_list.html:19
+msgid "Cercar per nom..."
+msgstr "Search by name..."
+
+#: templates/portal/documents/document_list.html:23
+msgid "Totes les categories"
+msgstr "All categories"
+
+#: templates/portal/documents/document_list.html:31
+msgid "Tots els tipus"
+msgstr "All types"
+
+#: templates/portal/documents/document_list.html:39
+#: templates/portal/erp/albarans.html:19 templates/portal/erp/factures.html:37
+#: templates/portal/erp/pedidos.html:19
+#: templates/portal/marketing/prospects_list.html:30
+#: templates/portal/ofertes/oferta_list.html:26
+msgid "Tots els estats"
+msgstr "All statuses"
+
+#: templates/portal/documents/document_list.html:46
+#: templates/portal/erp/albarans.html:26 templates/portal/erp/factures.html:44
+#: templates/portal/erp/pedidos.html:26
+#: templates/portal/licitacions_list.html:45
+#: templates/portal/marketing/prospects_list.html:52
+#: templates/portal/ofertes/oferta_list.html:42
+msgid "Filtrar"
+msgstr "Filter"
+
+#: templates/portal/documents/document_list.html:56
+#: templates/portal/marketing/prospects_list.html:62
+msgid "resultats"
+msgstr "results"
+
+#: templates/portal/documents/document_list.html:69
+msgid "ISO"
+msgstr "ISO"
+
+#: templates/portal/documents/document_list.html:98
+msgid "Sense"
+msgstr "None"
+
+#: templates/portal/documents/document_list.html:113
+#, fuzzy
+#| msgid "No disponible"
+msgid "disponible"
+msgstr "Not available"
+
+#: templates/portal/documents/document_list.html:123
+msgid "No s'han trobat documents amb aquests filtres."
+msgstr "No documents found with these filters."
+
+#: templates/portal/documents/document_upload.html:18
+msgid "Nou document"
+msgstr "New document"
+
+#: templates/portal/documents/document_upload.html:28
+msgid "Arrossega un fitxer aquí o"
+msgstr "Drag a file here or"
+
+#: templates/portal/documents/document_upload.html:29
+msgid "clica per seleccionar"
+msgstr "click to select"
+
+#: templates/portal/documents/document_upload.html:31
+msgid "PDF, DOCX, XLSX — Màx. 50 MB"
+msgstr "PDF, DOCX, XLSX — Max 50 MB"
+
+#: templates/portal/documents/document_upload.html:43
+msgid "Nom del document"
+msgstr "Document name"
+
+#: templates/portal/documents/document_upload.html:45
+msgid "Nom descriptiu del document..."
+msgstr "Descriptive document name..."
+
+#: templates/portal/documents/document_upload.html:52
+#, fuzzy
+#| msgid "— Selecciona una plantilla —"
+msgid "— Selecciona —"
+msgstr "— Select a template —"
+
+#: templates/portal/documents/document_upload.html:71
+msgid "Descripció opcional del document..."
+msgstr "Optional document description..."
+
+#: templates/portal/documents/document_upload.html:76
+msgid ""
+"El fitxer es pujarà a S3 amb xifrat AES-256. Es calcularà el hash SHA-256 "
+"per verificar la integritat (ISO 9001/14001)."
+msgstr ""
+
+#: templates/portal/documents/document_upload.html:93
+msgid "Seguretat i compliment ISO"
+msgstr "Security & ISO compliance"
+
+#: templates/portal/documents/document_upload.html:97
+msgid "Xifrat S3 AES-256 server-side"
+msgstr "S3 AES-256 server-side encryption"
+
+#: templates/portal/documents/document_upload.html:98
+msgid "Hash SHA-256 per integritat (ISO 9001)"
+msgstr "SHA-256 hash for integrity (ISO 9001)"
+
+#: templates/portal/documents/document_upload.html:99
+msgid "Versionat automàtic de fitxers"
+msgstr "Automatic file versioning"
+
+#: templates/portal/documents/document_upload.html:100
+msgid "Log immutable d'accessos i descàrregues"
+msgstr "Immutable access & download log"
+
+#: templates/portal/documents/document_upload.html:101
+msgid "Accés per URLs pre-signades (30 min)"
+msgstr "Access via pre-signed URLs (30 min)"
+
+#: templates/portal/documents/document_upload.html:109
+msgid "Categories disponibles"
+msgstr "Available categories"
+
+#: templates/portal/documents/document_upload.html:116
+msgid "a"
+msgstr ""
+
+#: templates/portal/erp/albarans.html:15 templates/portal/erp/pedidos.html:15
+msgid "Número, client..."
+msgstr ""
+
+#: templates/portal/erp/albarans.html:27 templates/portal/erp/clients.html:27
+#: templates/portal/erp/factures.html:45 templates/portal/erp/pedidos.html:27
+#: templates/portal/marketing/descobrir.html:63
+#: templates/portal/marketing/prospec_intel.html:120
+msgid "Netejar"
+msgstr "Clear"
+
+#: templates/portal/erp/albarans.html:55
+#, fuzzy
+#| msgid "Cap accés registrat."
+msgid "Cap albarà trobat."
+msgstr "No access recorded."
+
+#: templates/portal/erp/analitzar_document.html:4
+#: templates/portal/erp/analitzar_document.html:5
+#, fuzzy
+#| msgid "Arxivar document"
+msgid "Analitzar document"
+msgstr "Archive document"
+
+#: templates/portal/erp/analitzar_document.html:24
+#, fuzzy
+#| msgid "Desar i sincronitzar"
+msgid "Revisar i crear"
+msgstr "Save & sync"
+
+#: templates/portal/erp/analitzar_document.html:33
+#, fuzzy
+#| msgid "Pujar document"
+msgid "Pujar document per analitzar"
+msgstr "Upload document"
+
+#: templates/portal/erp/analitzar_document.html:41
+#, fuzzy
+#| msgid "Nom del document"
+msgid "Tipus de document"
+msgstr "Document name"
+
+#: templates/portal/erp/analitzar_document.html:59
+msgid "La IA llegirà el document i omplirà automàticament els camps."
+msgstr ""
+
+#: templates/portal/erp/analitzar_document.html:60
+msgid "Formats admesos: PDF, PNG, JPG, TIFF, BMP, WEBP."
+msgstr ""
+
+#: templates/portal/erp/analitzar_document.html:65
+#: templates/portal/erp/factures.html:14
+msgid "Analitzar amb IA"
+msgstr ""
+
+#: templates/portal/erp/analitzar_document.html:74
+msgid ""
+"La IA extreu automàticament: número, dates, import, IVA, IRPF, client/"
+"proveïdor i concepte. Podràs revisar i modificar tots els camps abans de "
+"crear el registre."
+msgstr ""
+
+#: templates/portal/erp/analitzar_document.html:89
+#, fuzzy
+#| msgid "Dades extretes per IA"
+msgid "Dades extretes de"
+msgstr "AI-extracted data"
+
+#: templates/portal/erp/analitzar_document.html:92
+#: templates/portal/erp/analitzar_document.html:187
+#: templates/portal/erp/client_form.html:10
+#: templates/portal/erp/factura_detail.html:14
+#: templates/portal/erp/factura_form.html:10
+#: templates/portal/informe_detail.html:11
+#: templates/portal/informe_form.html:11 templates/portal/informe_print.html:73
+#: templates/portal/licitacio_detail.html:11
+msgid "Tornar"
+msgstr "Back"
+
+#: templates/portal/erp/analitzar_document.html:106
+#: templates/portal/erp/factura_form.html:24
+#, fuzzy
+#| msgid "Seleccionar tots"
+msgid "Selecciona client"
+msgstr "Select all"
+
+#: templates/portal/erp/analitzar_document.html:114
+msgid "IA detectó"
+msgstr ""
+
+#: templates/portal/erp/analitzar_document.html:117
+#: templates/portal/erp/factura_form.html:30
+#, fuzzy
+#| msgid "Crear nova oferta"
+msgid "Crear nou client"
+msgstr "Create new bid"
+
+#: templates/portal/erp/analitzar_document.html:133
+#, fuzzy
+#| msgid "Província principal"
+msgid "Línia principal"
+msgstr "Main province"
+
+#: templates/portal/erp/analitzar_document.html:136
+#, fuzzy
+#| msgid "Descripción"
+msgid "Concepte / Descripció"
+msgstr "Description"
+
+#: templates/portal/erp/analitzar_document.html:140
+msgid "Descripció del servei o producte"
+msgstr ""
+
+#: templates/portal/erp/analitzar_document.html:143
+#: templates/portal/erp/factura_detail.html:50
+msgid "Quantitat"
+msgstr "Quantity"
+
+#: templates/portal/erp/analitzar_document.html:147
+#: templates/portal/erp/factura_detail.html:51
+#, fuzzy
+#| msgid "Preu u."
+msgid "Preu unit."
+msgstr "Unit price"
+
+#: templates/portal/erp/analitzar_document.html:163
+#: templates/portal/erp/factura_form.html:46
+#, python-format
+msgid "Retenció IRPF (%%)"
+msgstr ""
+
+#: templates/portal/erp/analitzar_document.html:172
+msgid "Forma de pagament, observacions..."
+msgstr ""
+
+#: templates/portal/erp/analitzar_document.html:179
+#: templates/portal/erp/factura_form.html:61
+msgid "Enviar a VerifactuRE (AEAT)"
+msgstr ""
+
+#: templates/portal/erp/analitzar_document.html:190
+#: templates/portal/erp/factura_form.html:73
+#, fuzzy
+#| msgid "Crear oferta"
+msgid "Crear factura"
+msgstr "Create bid"
+
+#: templates/portal/erp/analitzar_document.html:201
+#, fuzzy
+#| msgid "Dades extretes per IA"
+msgid "Dades brutes de la IA"
+msgstr "AI-extracted data"
+
+#: templates/portal/erp/analitzar_document.html:213
+msgid "No s'han pogut extreure dades."
+msgstr ""
+
+#: templates/portal/erp/analitzar_document.html:221
+msgid ""
+"Els camps amb fons verd han estat omplerts automàticament per la IA. Revisa-"
+"los abans de guardar."
+msgstr ""
+
+#: templates/portal/erp/client_form.html:4
+#: templates/portal/erp/client_form.html:8 templates/portal/erp/clients.html:14
+#, fuzzy
+#| msgid "Nou document"
+msgid "Nou client"
+msgstr "New document"
+
+#: templates/portal/erp/client_form.html:42
+msgid "Codi postal"
+msgstr "Postal code"
+
+#: templates/portal/erp/client_form.html:61
+#, fuzzy
+#| msgid "Guardar cambios"
+msgid "Guardar client"
+msgstr "Save changes"
+
+#: templates/portal/erp/clients.html:23
+msgid "Nom, NIF, email..."
+msgstr ""
+
+#: templates/portal/erp/clients.html:26
+msgid "Cercar"
+msgstr ""
+
+#: templates/portal/erp/clients.html:61
+msgid "Cap client trobat."
+msgstr "No clients found."
+
+#: templates/portal/erp/factura_detail.html:21
+#, fuzzy
+#| msgid "Dades de la campanya"
+msgid "Dades de la factura"
+msgstr "Campaign details"
+
+#: templates/portal/erp/factura_detail.html:35
+#: templates/portal/erp/factures.html:59
+#, fuzzy
+#| msgid "enviaments"
+msgid "Venciment"
+msgstr "sends"
+
+#: templates/portal/erp/factura_detail.html:44
+msgid "Línies"
+msgstr ""
+
+#: templates/portal/erp/factura_detail.html:52
+msgid "Desc."
+msgstr ""
+
+#: templates/portal/erp/factura_detail.html:53
+#: templates/portal/erp/factures.html:60
+msgid "Base"
+msgstr ""
+
+#: templates/portal/erp/factura_detail.html:55
+#, fuzzy
+#| msgid "total"
+msgid "Subtotal"
+msgstr "total"
+
+#: templates/portal/erp/factura_detail.html:70
+msgid "Cap línia afegida. Utilitza l'admin de Django per afegir línies."
+msgstr ""
+
+#: templates/portal/erp/factura_detail.html:88
+#, fuzzy
+#| msgid "Econòmic"
+msgid "Resum econòmic"
+msgstr "Economic"
+
+#: templates/portal/erp/factura_detail.html:106
+msgid "TOTAL"
+msgstr ""
+
+#: templates/portal/erp/factura_detail.html:114
+#: templates/portal/licitacio_detail.html:209
+#: templates/portal/marketing/prospect_detail.html:260
+#: templates/portal/ofertes/oferta_detail.html:203
+msgid "Canviar estat"
+msgstr "Change status"
+
+#: templates/portal/erp/factura_detail.html:124
+#, fuzzy
+#| msgid "Actualitzada"
+msgid "Actualitzar"
+msgstr "Updated"
+
+#: templates/portal/erp/factura_detail.html:140
+msgid "Pendent d'enviar a l'AEAT"
+msgstr "Pending submission to AEAT"
+
+#: templates/portal/erp/factura_detail.html:147
+#, fuzzy
+#| msgid "Document arxivat."
+msgid "Document adjunt"
+msgstr "Document archived."
+
+#: templates/portal/erp/factura_detail.html:180
+msgid "Extraure dades amb IA"
+msgstr "Extract data with AI"
+
+#: templates/portal/erp/factura_form.html:4
+#: templates/portal/erp/factura_form.html:8
+#: templates/portal/erp/factures.html:17
+#, fuzzy
+#| msgid "Nova oferta"
+msgid "Nova factura"
+msgstr "New bid"
+
+#: templates/portal/erp/factura_form.html:36
+#, fuzzy
+#| msgid "Tancar sessió"
+msgid "Data d'emissió"
+msgstr "Log out"
+
+#: templates/portal/erp/factura_form.html:40
+#, fuzzy
+#| msgid "Dades de l'esdeveniment"
+msgid "Data de venciment"
+msgstr "Event details"
+
+#: templates/portal/erp/factura_form.html:49
+#, python-format
+msgid "Deixa a 0 si no aplica. Habitualment 15%% per a professionals autònoms."
+msgstr ""
+
+#: templates/portal/erp/factura_form.html:53
+msgid "Notes / condicions de pagament"
+msgstr ""
+
+#: templates/portal/erp/factura_form.html:66
+msgid "Reial Decret 1007/2023. Opcional fins al termini legal obligatori."
+msgstr "Royal Decree 1007/2023. Optional until the mandatory legal deadline."
+
+#: templates/portal/erp/factures.html:25
+#, python-format
+msgid "Total pendent de cobrament: %(total)s €"
+msgstr "Total pending collection: %(total)s €"
+
+#: templates/portal/erp/factures.html:33
+msgid "Núm. factura, client, NIF..."
+msgstr ""
+
+#: templates/portal/erp/factures.html:84
+#, fuzzy
+#| msgid "Pendent"
+msgid "Pendent d\\"
+msgstr "Pending"
+
+#: templates/portal/erp/factures.html:97
+#, fuzzy
+#| msgid "Cap campanya creada."
+msgid "Cap factura trobada."
+msgstr "No campaigns created."
+
+#: templates/portal/erp/pedidos.html:41
+#, fuzzy
+#| msgid "Entrada"
+msgid "Entrega"
+msgstr "Clock in"
+
+#: templates/portal/erp/pedidos.html:57
+msgid "Cap pedido trobat."
+msgstr "No orders found."
+
+# Timesheet edit
+#: templates/portal/fichaje_edit.html:3 templates/portal/fichaje_edit.html:4
+msgid "Editar fichaje"
+msgstr "Edit timesheet"
+
+#: templates/portal/fichaje_edit.html:30
+msgid "dejar vacío si en curso"
+msgstr "leave empty if ongoing"
+
+#: templates/portal/fichaje_edit.html:36
+msgid "Horas registradas:"
+msgstr "Hours registered:"
+
+# Timeclock
+#: templates/portal/fichar.html:5
+msgid "Mi fichaje"
+msgstr "My timeclock"
+
+#: templates/portal/fichar.html:22
+msgid "Hora actual"
+msgstr "Current time"
+
+#: templates/portal/fichar.html:31
+msgid "Registrar entrada"
+msgstr "Clock in"
+
+#: templates/portal/fichar.html:34
+msgid "Aún no has fichado hoy."
+msgstr "You haven't clocked in today."
+
+#: templates/portal/fichar.html:38
+msgid "Entrada registrada a las"
+msgstr "Clocked in at"
+
+#: templates/portal/fichar.html:44
+msgid "Registrar salida"
+msgstr "Clock out"
+
+#: templates/portal/fichar.html:50
+msgid "Jornada completada:"
+msgstr "Day completed:"
+
+#: templates/portal/fichar.html:52
+msgid "horas trabajadas"
+msgstr "hours worked"
+
+#: templates/portal/fichar.html:63
+msgid "Últimos fichajes"
+msgstr "Recent entries"
+
+#: templates/portal/fichar.html:73
+msgid "Tipo"
+msgstr "Type"
+
+#: templates/portal/fichar.html:92
+msgid "Sin fichajes anteriores."
+msgstr "No previous entries."
+
+#: templates/portal/informe_detail.html:18
+msgid "Descargar PDF"
+msgstr "Download PDF"
+
+#: templates/portal/informe_detail.html:21
+msgid "PDF arxivat a S3"
+msgstr "PDF archived in S3"
+
+#: templates/portal/informe_detail.html:22
+msgid "PDF arxivat"
+msgstr "Archived PDF"
+
+#: templates/portal/informe_detail.html:26
+msgid "Nou informe"
+msgstr "New report"
+
+#: templates/portal/informe_detail.html:45
+#: templates/portal/informe_form.html:24 templates/portal/informe_print.html:97
+msgid "Import N/D"
+msgstr "Amount N/A"
+
+#: templates/portal/informe_detail.html:72
+#: templates/portal/informe_form.html:39
+#: templates/portal/informe_print.html:137
+msgid "Anàlisi tècnica"
+msgstr "Technical analysis"
+
+#: templates/portal/informe_detail.html:81
+#: templates/portal/informe_form.html:50
+#: templates/portal/informe_print.html:145
+msgid "Punts forts i febles"
+msgstr "Strengths and weaknesses"
+
+#: templates/portal/informe_detail.html:85
+#: templates/portal/informe_form.html:54
+#: templates/portal/informe_print.html:148
+msgid "Punts forts"
+msgstr "Strengths"
+
+#: templates/portal/informe_detail.html:91
+#: templates/portal/informe_form.html:59
+#: templates/portal/informe_print.html:152
+msgid "Punts febles"
+msgstr "Weaknesses"
+
+#: templates/portal/informe_detail.html:103
+#: templates/portal/informe_print.html:162
+msgid "Observacions"
+msgstr "Observations"
+
+#: templates/portal/informe_detail.html:112
+msgid "Aquest informe no té contingut detallat."
+msgstr "This report has no detailed content."
+
+#: templates/portal/informe_detail.html:120
+msgid "Detalls"
+msgstr "Details"
+
+#: templates/portal/informe_detail.html:124
+msgid "Autor"
+msgstr "Author"
+
+#: templates/portal/informe_detail.html:128
+#: templates/portal/licitacio_detail.html:268
+#: templates/portal/marketing/prospect_detail.html:33
+msgid "Creat el"
+msgstr "Created on"
+
+#: templates/portal/informe_detail.html:132
+#: templates/portal/informe_form.html:87
+#: templates/portal/informe_print.html:103
+msgid "Recomanació"
+msgstr "Recommendation"
+
+#: templates/portal/informe_detail.html:137
+msgid "Puntuació"
+msgstr "Score"
+
+#: templates/portal/informe_detail.html:145
+#: templates/portal/marketing/descobrir.html:247
+msgid "Veure licitació"
+msgstr "View tender"
+
+# Internal report — form
+#: templates/portal/informe_form.html:4 templates/portal/informe_form.html:5
+msgid "Nou informe intern"
+msgstr "New internal report"
+
+#: templates/portal/informe_form.html:43
+msgid ""
+"Descriu els aspectes tècnics clau: requisits, classificació empresarial "
+"necessària, medis humans i materials..."
+msgstr ""
+"Describe the key technical aspects: requirements, required business "
+"classification, human and material resources..."
+
+#: templates/portal/informe_form.html:56
+msgid "Avantatges competitius, experiència prèvia, recursos disponibles..."
+msgstr "Competitive advantages, previous experience, available resources..."
+
+#: templates/portal/informe_form.html:61
+msgid "Limitacions, riscos, requisits que no es compleixen..."
+msgstr "Limitations, risks, requirements not met..."
+
+#: templates/portal/informe_form.html:69
+msgid "Observacions addicionals"
+msgstr "Additional observations"
+
+#: templates/portal/informe_form.html:73
+msgid "Qualsevol altre comentari rellevant, contactes, referències..."
+msgstr "Any other relevant comments, contacts, references..."
+
+#: templates/portal/informe_form.html:82
+#, fuzzy
+#| msgid "Informació"
+msgid "Valoració"
+msgstr "Info"
+
+#: templates/portal/informe_form.html:105
+#: templates/portal/informe_print.html:110
+msgid "Puntuació interna"
+msgstr "Internal score"
+
+#: templates/portal/informe_form.html:111
+msgid "Molt baixa"
+msgstr "Very low"
+
+#: templates/portal/informe_form.html:111
+msgid "Excel·lent"
+msgstr "Excellent"
+
+#: templates/portal/informe_form.html:118
+msgid "Desar informe"
+msgstr "Save report"
+
+#: templates/portal/informe_print.html:74
+msgid "Imprimir / Guardar PDF"
+msgstr "Print / Save as PDF"
+
+#: templates/portal/informe_print.html:75
+msgid "Obre el diàleg d'impressió. Tria 'Desar com a PDF' com a impressora."
+msgstr "Opens the print dialog. Select 'Save as PDF' as the printer."
+
+# Internal report — print
+#: templates/portal/informe_print.html:83
+msgid "Informe intern de licitació"
+msgstr "Internal tender report"
+
+#: templates/portal/informe_print.html:87
+msgid "Generat el"
+msgstr "Generated on"
+
+#: templates/portal/informe_print.html:88
+msgid "Autor:"
+msgstr "Author:"
+
+#: templates/portal/informe_print.html:115
+#: templates/portal/licitacio_detail.html:70
+msgid "Data publicació"
+msgstr "Publication date"
+
+#: templates/portal/informe_print.html:119
+#: templates/portal/licitacio_detail.html:74
+msgid "Límit presentació"
+msgstr "Submission deadline"
+
+#: templates/portal/informe_print.html:124
+#: templates/portal/licitacio_detail.html:62
+msgid "Termini execució"
+msgstr "Execution period"
+
+#: templates/portal/informe_print.html:125
+#: templates/portal/licitacio_detail.html:63
+#: templates/portal/licitacio_detail.html:79
+msgid "dies"
+msgstr "days"
+
+#: templates/portal/informe_print.html:129
+#: templates/portal/licitacio_detail.html:66
+msgid "Procediment"
+msgstr "Procedure"
+
+#: templates/portal/informe_print.html:170
+msgid "Elaborat per"
+msgstr "Prepared by"
+
+#: templates/portal/informe_print.html:175
+msgid "Vist i plau"
+msgstr "Approved by"
+
+#: templates/portal/informe_print.html:182
+msgid "Document generat automàticament"
+msgstr "Automatically generated document"
+
+# Tender detail
+#: templates/portal/licitacio_detail.html:5
+msgid "Detall licitació"
+msgstr "Tender detail"
+
+#: templates/portal/licitacio_detail.html:15
+#: templates/portal/licitacio_detail.html:201
+msgid "Crear informe intern"
+msgstr "Create internal report"
+
+#: templates/portal/licitacio_detail.html:32
+msgid "Organisme"
+msgstr "Organization"
+
+#: templates/portal/licitacio_detail.html:40
+msgid "Municipi"
+msgstr "Municipality"
+
+#: templates/portal/licitacio_detail.html:45
+msgid "Veure a Google Maps"
+msgstr "View on Google Maps"
+
+#: templates/portal/licitacio_detail.html:52
+msgid "Import base (sense IVA)"
+msgstr "Base amount (excl. VAT)"
+
+#: templates/portal/licitacio_detail.html:58
+msgid "Import (amb IVA)"
+msgstr "Amount (incl. VAT)"
+
+#: templates/portal/licitacio_detail.html:90
+msgid "Classificació empresarial"
+msgstr "Business classification"
+
+#: templates/portal/licitacio_detail.html:92
+msgid "Grup"
+msgstr "Group"
+
+#: templates/portal/licitacio_detail.html:93
+msgid "Subgrup"
+msgstr "Subgroup"
+
+#: templates/portal/licitacio_detail.html:112
+msgid "Criteris d'adjudicació"
+msgstr "Award criteria"
+
+#: templates/portal/licitacio_detail.html:118
+msgid "Criteri"
+msgstr "Criterion"
+
+#: templates/portal/licitacio_detail.html:119
+msgid "Punts"
+msgstr "Points"
+
+#: templates/portal/licitacio_detail.html:120
+msgid "Fórmula"
+msgstr "Formula"
+
+#: templates/portal/licitacio_detail.html:128
+msgid "Econòmic"
+msgstr "Economic"
+
+#: templates/portal/licitacio_detail.html:144
+msgid "Plec de condicions"
+msgstr "Tender specifications"
+
+#: templates/portal/licitacio_detail.html:147
+msgid "Amagar"
+msgstr "Hide"
+
+#: templates/portal/licitacio_detail.html:147
+#: templates/portal/licitacio_detail.html:148
+msgid "Veure inline"
+msgstr "View inline"
+
+#: templates/portal/licitacio_detail.html:155
+msgid "Descarregar PDF"
+msgstr "Download PDF"
+
+#: templates/portal/licitacio_detail.html:162
+msgid "PDF disponible a S3 però no es pot generar l'URL en aquest moment."
+msgstr "PDF available in S3 but the URL could not be generated at this time."
+
+#: templates/portal/licitacio_detail.html:172
+msgid "Informes interns"
+msgstr "Internal reports"
+
+#: templates/portal/licitacio_detail.html:174
+msgid "Nou"
+msgstr "New"
+
+#: templates/portal/licitacio_detail.html:199
+msgid "Documenta la teva anàlisi interna d'aquesta licitació"
+msgstr "Document your internal analysis of this tender"
+
+#: templates/portal/licitacio_detail.html:219
+msgid "Desar canvi"
+msgstr "Save change"
+
+#: templates/portal/licitacio_detail.html:229
+msgid "Contactes locals"
+msgstr "Local contacts"
+
+#: templates/portal/licitacio_detail.html:254
+msgid "Cap contacte per a aquesta província."
+msgstr "No contacts for this province."
+
+#: templates/portal/licitacio_detail.html:272
+msgid "Actualitzat el"
+msgstr "Updated on"
+
+#: templates/portal/licitacio_detail.html:276
+msgid "Rellevant"
+msgstr "Relevant"
+
+#: templates/portal/licitacio_detail.html:281
+#: templates/portal/marketing/prospect_detail.html:62
+#: templates/portal/marketing/prospect_detail.html:291
+msgid "Origen"
+msgstr "Source"
+
+#: templates/portal/licitacio_detail.html:283
+msgid "Veure a contratacionesdelestado.es"
+msgstr "View on contratacionesdelestado.es"
+
+# Tenders list
+#: templates/portal/licitacions_list.html:14
+msgid "Buscar por título, expediente..."
+msgstr "Search by title, reference..."
+
+#: templates/portal/licitacions_list.html:18
+msgid "Todos los estados"
+msgstr "All statuses"
+
+#: templates/portal/licitacions_list.html:26
+msgid "Provincia"
+msgstr "Province"
+
+#: templates/portal/licitacions_list.html:40
+msgid "Solo vigentes"
+msgstr "Active only"
+
+#: templates/portal/licitacions_list.html:54
+msgid "Territoris:"
+msgstr "Territories:"
+
+#: templates/portal/licitacions_list.html:68
+msgid "resultados"
+msgstr "results"
+
+#: templates/portal/licitacions_list.html:76
+msgid "Organismo"
+msgstr "Organization"
+
+#: templates/portal/licitacions_list.html:77
+msgid "Municipio/Provincia"
+msgstr "Municipality/Province"
+
+#: templates/portal/licitacions_list.html:78
+msgid "Importe base"
+msgstr "Base amount"
+
+#: templates/portal/licitacions_list.html:79
+msgid "Plazo"
+msgstr "Deadline"
+
+#: templates/portal/licitacions_list.html:125
+msgid "No se han encontrado licitaciones con estos filtros."
+msgstr "No tenders found with these filters."
+
+# login.html
+#: templates/portal/login.html:5
+msgid "Accés"
+msgstr "Sign in"
+
+#: templates/portal/login.html:13
+msgid "Portal de Licitacions"
+msgstr "Tender Portal"
+
+#: templates/portal/login.html:26
+msgid "Contrasenya"
+msgstr "Password"
+
+#: templates/portal/login.html:38
+msgid "Accedir"
+msgstr "Sign in"
+
+#: templates/portal/marketing/campanya_form.html:4
+#: templates/portal/marketing/campanyes_list.html:10
+msgid "Nova campanya"
+msgstr "New campaign"
+
+#: templates/portal/marketing/campanya_form.html:5
+msgid "Nova campanya de marketing"
+msgstr "New marketing campaign"
+
+#: templates/portal/marketing/campanya_form.html:21
+msgid "Dades de la campanya"
+msgstr "Campaign details"
+
+#: templates/portal/marketing/campanya_form.html:25
+msgid "Nom de la campanya"
+msgstr "Campaign name"
+
+#: templates/portal/marketing/campanya_form.html:27
+msgid "Ex: Construcció tardor 2025..."
+msgstr ""
+
+#: templates/portal/marketing/campanya_form.html:30
+#: templates/portal/marketing/descobrir.html:195
+msgid "Plantilla d'email"
+msgstr "Email template"
+
+#: templates/portal/marketing/campanya_form.html:34
+msgid "— Selecciona una plantilla —"
+msgstr "— Select a template —"
+
+#: templates/portal/marketing/campanya_form.html:40
+#: templates/portal/marketing/dashboard.html:88
+msgid "Nova"
+msgstr "New"
+
+#: templates/portal/marketing/campanya_form.html:46
+#, fuzzy
+#| msgid "No hi ha plantilles d'email."
+msgid "No hi ha plantilles d'email actives."
+msgstr "No email templates available."
+
+#: templates/portal/marketing/campanya_form.html:47
+msgid "Crea la primera ara."
+msgstr "Create the first one now."
+
+#: templates/portal/marketing/campanya_form.html:56
+msgid "Millorar emails amb IA (Ollama)"
+msgstr "Improve emails with AI (Ollama)"
+
+#: templates/portal/marketing/campanya_form.html:58
+msgid ""
+"Personalitza el contingut de cada email amb les dades del prospect usant el "
+"model local d'IA."
+msgstr ""
+
+#: templates/portal/marketing/campanya_form.html:66
+msgid "Segmentació de prospects"
+msgstr "Prospect segmentation"
+
+#: templates/portal/marketing/campanya_form.html:70
+msgid "Sectors objectiu"
+msgstr "Target sectors"
+
+#: templates/portal/marketing/campanya_form.html:84
+msgid "Scoring mínim"
+msgstr "Minimum score"
+
+#: templates/portal/marketing/campanya_form.html:91
+msgid "Només s'inclouran prospects amb scoring igual o superior."
+msgstr ""
+
+#: templates/portal/marketing/campanya_form.html:94
+msgid "Província (opcional)"
+msgstr "Province (optional)"
+
+#: templates/portal/marketing/campanya_form.html:95
+#, fuzzy
+#| msgid "Ex: Barcelona, Girona, Tarragona..."
+msgid "Ex: Barcelona, Valencia..."
+msgstr "E.g.: Barcelona, Girona, Tarragona..."
+
+#: templates/portal/marketing/campanya_form.html:103
+msgid ""
+"Només s'enviaran emails als prospects amb consentiment GDPR actiu i sense "
+"baixa voluntària."
+msgstr ""
+
+#: templates/portal/marketing/campanya_form.html:108
+msgid "Crear campanya"
+msgstr "Create campaign"
+
+#: templates/portal/marketing/campanya_form.html:118
+#: templates/portal/marketing/descobrir.html:222
+#: templates/portal/marketing/prospec_intel.html:246
+#: templates/portal/ofertes/oferta_form.html:75
+msgid "Com funciona"
+msgstr "How it works"
+
+#: templates/portal/marketing/campanya_form.html:122
+#, fuzzy
+#| msgid "— Selecciona una plantilla —"
+msgid "Seleccioneu una plantilla d'email base."
+msgstr "— Select a template —"
+
+#: templates/portal/marketing/campanya_form.html:123
+msgid "Definiu la segmentació (sectors, scoring, província)."
+msgstr ""
+
+#: templates/portal/marketing/campanya_form.html:124
+#, fuzzy
+#| msgid ""
+#| "Si activeu la millora amb IA a la campanya, Ollama personalitzarà el "
+#| "contingut automàticament."
+msgid "Activeu la millora amb IA per personalitzar cada email."
+msgstr ""
+"If you enable AI improvement in the campaign, Ollama will personalize the "
+"content automatically."
+
+#: templates/portal/marketing/campanya_form.html:125
+#, fuzzy
+#| msgid "L'oferta es crea en estat Esborrany."
+msgid "Creeu la campanya en estat Esborrany."
+msgstr "The bid is created in Draft status."
+
+#: templates/portal/marketing/campanya_form.html:126
+#, fuzzy
+#| msgid "Dades de la campanya"
+msgid "Llanceu-la des del llistat de campanyes."
+msgstr "Campaign details"
+
+#: templates/portal/marketing/campanyes_list.html:5
+msgid "Campanyes de marketing"
+msgstr "Marketing campaigns"
+
+#: templates/portal/marketing/campanyes_list.html:20
+#: templates/portal/marketing/plantilles_list.html:20
+msgid "total"
+msgstr "total"
+
+#: templates/portal/marketing/campanyes_list.html:27
+#, fuzzy
+#| msgid "Plantilles"
+msgid "Plantilla"
+msgstr "Templates"
+
+#: templates/portal/marketing/campanyes_list.html:28
+#, fuzzy
+#| msgid "enviaments"
+msgid "Enviaments"
+msgstr "sends"
+
+#: templates/portal/marketing/campanyes_list.html:29
+#, fuzzy
+#| msgid "Obert"
+msgid "Oberts"
+msgstr "Opened"
+
+#: templates/portal/marketing/campanyes_list.html:31
+#: templates/portal/marketing/plantilla_form.html:149
+#: templates/portal/ofertes/oferta_detail.html:251
+msgid "Creada"
+msgstr "Created"
+
+#: templates/portal/marketing/campanyes_list.html:52
+msgid "Millora amb IA activada"
+msgstr "AI improvement enabled"
+
+#: templates/portal/marketing/campanyes_list.html:72
+msgid "Llançar la campanya?"
+msgstr "Launch campaign?"
+
+#: templates/portal/marketing/campanyes_list.html:75
+msgid "Llançar"
+msgstr "Launch"
+
+#: templates/portal/marketing/campanyes_list.html:85
+msgid "Cap campanya creada. Crea la primera!"
+msgstr "No campaigns yet. Create the first one!"
+
+#: templates/portal/marketing/dashboard.html:12
+msgid "Total prospects"
+msgstr "Total prospects"
+
+#: templates/portal/marketing/dashboard.html:18
+msgid "Amb consentiment GDPR"
+msgstr "With GDPR consent"
+
+#: templates/portal/marketing/dashboard.html:24
+msgid "Campanyes actives"
+msgstr "Active campaigns"
+
+#: templates/portal/marketing/dashboard.html:31
+#: templates/portal/marketing/prospect_form.html:4
+#: templates/portal/marketing/prospect_form.html:5
+#: templates/portal/marketing/prospects_list.html:10
+msgid "Nou prospect"
+msgstr "New prospect"
+
+#: templates/portal/marketing/dashboard.html:34
+msgid "Accions ràpides"
+msgstr "Quick actions"
+
+#: templates/portal/marketing/dashboard.html:43
+msgid "Top prospects per scoring"
+msgstr "Top prospects by score"
+
+#: templates/portal/marketing/dashboard.html:44
+msgid "Veure tots"
+msgstr "View all"
+
+#: templates/portal/marketing/dashboard.html:51
+#: templates/portal/marketing/descobrir.html:40
+#: templates/portal/marketing/prospec_intel.html:97
+#: templates/portal/marketing/prospect_detail.html:58
+#: templates/portal/marketing/prospect_form.html:29
+#: templates/portal/marketing/prospects_list.html:70
+msgid "Sector"
+msgstr ""
+
+#: templates/portal/marketing/dashboard.html:52
+#: templates/portal/marketing/prospect_detail.html:215
+#: templates/portal/marketing/prospects_list.html:71
+msgid "Scoring"
+msgstr "Score"
+
+#: templates/portal/marketing/dashboard.html:75
+msgid "Cap prospect registrat."
+msgstr "No prospects registered."
+
+#: templates/portal/marketing/dashboard.html:86
+msgid "Darreres campanyes"
+msgstr "Latest campaigns"
+
+#: templates/portal/marketing/dashboard.html:100
+msgid "enviaments"
+msgstr "sends"
+
+#: templates/portal/marketing/dashboard.html:103
+msgid "oberts"
+msgstr "opens"
+
+#: templates/portal/marketing/dashboard.html:120
+msgid "Cap campanya creada."
+msgstr "No campaigns created."
+
+# ─── Descobrir empreses ────────────────────────────────────────────────────────
+#: templates/portal/marketing/descobrir.html:5
+msgid "Descobrir empreses potencials"
+msgstr "Discover potential companies"
+
+#: templates/portal/marketing/descobrir.html:23
+#: templates/portal/marketing/prospec_intel.html:80
+msgid "Criteris de cerca"
+msgstr "Search criteria"
+
+#: templates/portal/marketing/descobrir.html:32
+#: templates/portal/marketing/prospec_intel.html:89
+msgid "Ubicació"
+msgstr "Location"
+
+#: templates/portal/marketing/descobrir.html:35
+msgid "Ex: Barcelona, Girona, Tarragona..."
+msgstr "E.g.: Barcelona, Girona, Tarragona..."
+
+#: templates/portal/marketing/descobrir.html:36
+msgid "Província, municipi o zona geogràfica."
+msgstr "Province, municipality or geographic area."
+
+#: templates/portal/marketing/descobrir.html:43
+msgid "Tots"
+msgstr "All"
+
+#: templates/portal/marketing/descobrir.html:51
+#: templates/portal/marketing/prospec_intel.html:108
+msgid "Paraules clau"
+msgstr "Keywords"
+
+#: templates/portal/marketing/descobrir.html:54
+msgid "Ex: obra pública, rehabilitació, instal·lacions..."
+msgstr "E.g.: public works, renovation, installations..."
+
+#: templates/portal/marketing/descobrir.html:55
+msgid "Filtra per tipus de licitació o activitat."
+msgstr "Filter by tender type or activity."
+
+#: templates/portal/marketing/descobrir.html:60
+msgid "Cercar empreses"
+msgstr "Search companies"
+
+#: templates/portal/marketing/descobrir.html:79
+msgid "Anàlisi IA"
+msgstr "AI Analysis"
+
+#: templates/portal/marketing/descobrir.html:91
+msgid "Empreses trobades"
+msgstr "Companies found"
+
+#: templates/portal/marketing/descobrir.html:122
+#: templates/portal/marketing/descobrir.html:129
+#: templates/portal/marketing/prospec_intel.html:164
+#: templates/portal/marketing/prospec_intel.html:177
+msgid "Ja és prospect"
+msgstr "Already a prospect"
+
+#: templates/portal/marketing/descobrir.html:132
+msgid "Via licitació"
+msgstr "Via tender"
+
+#: templates/portal/marketing/descobrir.html:161
+#: templates/portal/marketing/prospec_intel.html:199
+msgid "Afegir seleccionats com a prospects"
+msgstr "Add selected as prospects"
+
+#: templates/portal/marketing/descobrir.html:170
+msgid ""
+"Cap empresa trobada amb aquests criteris. Prova a canviar la ubicació o les "
+"paraules clau."
+msgstr ""
+"No companies found with these criteria. Try changing the location or "
+"keywords."
+
+#: templates/portal/marketing/descobrir.html:181
+msgid "Enviar email directe"
+msgstr "Send direct email"
+
+#: templates/portal/marketing/descobrir.html:189
+msgid "Empresa destinatària"
+msgstr "Recipient company"
+
+#: templates/portal/marketing/descobrir.html:191
+msgid "Selecciona una empresa..."
+msgstr "Select a company..."
+
+#: templates/portal/marketing/descobrir.html:204
+msgid "L'email s'envia immediatament amb les dades del prospect substituïdes."
+msgstr "The email is sent immediately with prospect data substituted."
+
+#: templates/portal/marketing/descobrir.html:207
+msgid "Enviar ara"
+msgstr "Send now"
+
+#: templates/portal/marketing/descobrir.html:213
+msgid "No hi ha plantilles d'email."
+msgstr "No email templates available."
+
+#: templates/portal/marketing/descobrir.html:214
+msgid "Crea'n una."
+msgstr "Create one."
+
+#: templates/portal/marketing/descobrir.html:226
+msgid "Introdueix una ubicació i paraules clau."
+msgstr "Enter a location and keywords."
+
+#: templates/portal/marketing/descobrir.html:227
+msgid ""
+"El sistema busca a les licitacions actives i la IA analitza el potencial."
+msgstr "The system searches active tenders and AI analyses the potential."
+
+#: templates/portal/marketing/descobrir.html:228
+#: templates/portal/marketing/prospec_intel.html:253
+msgid "Selecciona les empreses i afegeix-les com a prospects."
+msgstr "Select the companies and add them as prospects."
+
+#: templates/portal/marketing/descobrir.html:229
+msgid "O envia un email directe a qualsevol empresa de la llista."
+msgstr "Or send a direct email to any company in the list."
+
+#: templates/portal/marketing/descobrir.html:230
+msgid "Gestiona les respostes des de la secció Prospects."
+msgstr "Manage responses from the Prospects section."
+
+#: templates/portal/marketing/descobrir.html:249
+#, fuzzy
+#| msgid "Tancar sessió"
+msgid "Tancar"
+msgstr "Log out"
+
+#: templates/portal/marketing/descobrir.html:287
+msgid "EXPEDIENT"
+msgstr ""
+
+#: templates/portal/marketing/descobrir.html:288
+msgid "ORGANISME"
+msgstr ""
+
+#: templates/portal/marketing/descobrir.html:289
+msgid "IMPORT BASE"
+msgstr ""
+
+#: templates/portal/marketing/descobrir.html:290
+msgid "TERMINI"
+msgstr ""
+
+#: templates/portal/marketing/descobrir.html:291
+msgid "LOCALITAT"
+msgstr ""
+
+#: templates/portal/marketing/plantilla_form.html:4
+msgid "Editar plantilla"
+msgstr "Edit template"
+
+#: templates/portal/marketing/plantilla_form.html:4
+#: templates/portal/marketing/plantilles_list.html:10
+msgid "Nova plantilla"
+msgstr "New template"
+
+#: templates/portal/marketing/plantilla_form.html:7
+msgid "Editar plantilla d'email"
+msgstr "Edit email template"
+
+#: templates/portal/marketing/plantilla_form.html:7
+msgid "Nova plantilla d'email"
+msgstr "New email template"
+
+#: templates/portal/marketing/plantilla_form.html:32
+#, fuzzy
+#| msgid "Configuració General"
+msgid "Configuració"
+msgstr "General Settings"
+
+#: templates/portal/marketing/plantilla_form.html:40
+msgid "Ex: Prospecció construcció..."
+msgstr "E.g.: Construction prospecting..."
+
+#: templates/portal/marketing/plantilla_form.html:51
+#: templates/portal/marketing/plantilles_list.html:28
+msgid "Idioma"
+msgstr ""
+
+#: templates/portal/marketing/plantilla_form.html:59
+msgid "Assumpte de l'email"
+msgstr "Email subject"
+
+#: templates/portal/marketing/plantilla_form.html:62
+#, python-brace-format
+msgid "Ex: Presentació de {empresa_nom} — Solucions de construcció..."
+msgstr "E.g.: Presentation from {empresa_nom} — Construction solutions..."
+
+#: templates/portal/marketing/plantilla_form.html:77
+msgid "Cos del missatge (text)"
+msgstr "Message body (text)"
+
+#: templates/portal/marketing/plantilla_form.html:81
+msgid "Previsualitzar"
+msgstr "Preview"
+
+#: templates/portal/marketing/plantilla_form.html:87
+msgid "Variables disponibles (clica per inserir):"
+msgstr "Available variables (click to insert):"
+
+#: templates/portal/marketing/plantilla_form.html:99
+#, python-brace-format
+msgid "Benvolgut/da {persona_contacte},..."
+msgstr "Dear {persona_contacte},..."
+
+#: templates/portal/marketing/plantilla_form.html:101
+msgid "Previsualització"
+msgstr "Preview"
+
+#: templates/portal/marketing/plantilla_form.html:110
+msgid "Crear plantilla"
+msgstr "Create template"
+
+#: templates/portal/marketing/plantilla_form.html:120
+msgid "Com usar les variables"
+msgstr "How to use variables"
+
+#: templates/portal/marketing/plantilla_form.html:123
+msgid ""
+"Insereix variables entre claus que seran substituïdes per les dades del "
+"prospect:"
+msgstr "Insert variables in braces that will be replaced with prospect data:"
+
+#: templates/portal/marketing/plantilla_form.html:125
+#: templates/portal/marketing/prospect_form.html:25
+msgid "Nom de l'empresa"
+msgstr "Company name"
+
+#: templates/portal/marketing/plantilla_form.html:126
+msgid "Nom del contacte"
+msgstr "Contact name"
+
+#: templates/portal/marketing/plantilla_form.html:127
+#, fuzzy
+#| msgid "Nom de l'empresa"
+msgid "Sector de l'empresa"
+msgstr "Company name"
+
+#: templates/portal/marketing/plantilla_form.html:128
+#: templates/portal/marketing/prospect_detail.html:66
+msgid "Localitat"
+msgstr "City"
+
+#: templates/portal/marketing/plantilla_form.html:129
+msgid "Nom de la nostra empresa"
+msgstr "Our company name"
+
+#: templates/portal/marketing/plantilla_form.html:133
+msgid ""
+"Si activeu la millora amb IA a la campanya, Ollama personalitzarà el "
+"contingut automàticament."
+msgstr ""
+"If you enable AI improvement in the campaign, Ollama will personalize the "
+"content automatically."
+
+#: templates/portal/marketing/plantilla_form.html:145
+#, fuzzy
+#| msgid "Creada"
+msgid "Creada per"
+msgstr "Created"
+
+#: templates/portal/marketing/plantilla_form.html:153
+#: templates/portal/marketing/plantilles_list.html:31
+#: templates/portal/ofertes/oferta_detail.html:255
+msgid "Actualitzada"
+msgstr "Updated"
+
+#: templates/portal/marketing/plantilles_list.html:5
+msgid "Plantilles d'email"
+msgstr "Email templates"
+
+#: templates/portal/marketing/plantilles_list.html:19
+msgid "Plantilles"
+msgstr "Templates"
+
+#: templates/portal/marketing/plantilles_list.html:29
+msgid "Assumpte"
+msgstr "Subject"
+
+#: templates/portal/marketing/plantilles_list.html:61
+msgid "No hi ha plantilles. Crea la primera!"
+msgstr "No templates yet. Create the first one!"
+
+# ─── Descobrir empreses ────────────────────────────────────────────────────────
+#: templates/portal/marketing/prospec_intel.html:5
+#, fuzzy
+#| msgid "Descobrir empreses potencials"
+msgid "Cerca de clients potencials"
+msgstr "Discover potential companies"
+
+#: templates/portal/marketing/prospec_intel.html:44
+#, fuzzy
+#| msgid "Cercar empreses"
+msgid "Buscant empreses..."
+msgstr "Search companies"
+
+#: templates/portal/marketing/prospec_intel.html:46
+msgid "Consultant OpenStreetMap per a"
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:47
+msgid "Pot trigar 10-20 segons."
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:52
+msgid "La pàgina s'actualitzarà automàticament."
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:73
+msgid ""
+"Busca empreses reals properes a la ubicació indicada (oficines, tallers, "
+"empreses) per enviar-los comunicacions comercials. No utilitza la base de "
+"dades de licitacions."
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:92
+msgid "Ex: Carlet, Valencia, Alicante..."
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:93
+msgid "Municipi o província. La cerca es fa en un radi de 10 km."
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:100
+#: templates/portal/marketing/prospects_list.html:38
+msgid "Tots els sectors"
+msgstr "All sectors"
+
+#: templates/portal/marketing/prospec_intel.html:111
+#, fuzzy
+#| msgid "Ex: obra pública, rehabilitació, instal·lacions..."
+msgid "Ex: construcció, fusteria, instal·lacions..."
+msgstr "E.g.: public works, renovation, installations..."
+
+#: templates/portal/marketing/prospec_intel.html:112
+#, fuzzy
+#| msgid "Filtra per tipus de licitació o activitat."
+msgid "Filtra per nom d'empresa o activitat."
+msgstr "Filter by tender type or activity."
+
+#: templates/portal/marketing/prospec_intel.html:117
+#, fuzzy
+#| msgid "Cercar empreses"
+msgid "Cercar empreses properes"
+msgstr "Search companies"
+
+#: templates/portal/marketing/prospec_intel.html:134
+#, fuzzy
+#| msgid "Empreses trobades"
+msgid "Empreses trobades prop de"
+msgstr "Companies found"
+
+#: templates/portal/marketing/prospec_intel.html:148
+#, fuzzy
+#| msgid "No s'han trobat prospects amb aquests filtres."
+msgid "No s'han trobat empreses a OpenStreetMap prop de"
+msgstr "No prospects found with these filters."
+
+#: templates/portal/marketing/prospec_intel.html:149
+msgid ""
+"Prova amb una altra ubicació (ex: la capital de la comarca o província)."
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:202
+#, fuzzy
+#| msgid "Selecciona les empreses i afegeix-les com a prospects."
+msgid "Selecciona les empreses que t'interessen"
+msgstr "Select the companies and add them as prospects."
+
+#: templates/portal/marketing/prospec_intel.html:214
+#, fuzzy
+#| msgid "Campanyes actives"
+msgid "Fonts actives"
+msgstr "Active campaigns"
+
+#: templates/portal/marketing/prospec_intel.html:221
+msgid "Oficines, tallers i empreses reals per zona"
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:229
+msgid "Pròximament (API key)"
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:231
+#: templates/portal/marketing/prospec_intel.html:239
+msgid "Pròxim"
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:237
+msgid "Directori empreses Spain (pròximament)"
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:250
+#, fuzzy
+#| msgid "Introdueix una ubicació i paraules clau."
+msgid "Introdueix la ubicació (municipi, zona o ciutat)."
+msgstr "Enter a location and keywords."
+
+#: templates/portal/marketing/prospec_intel.html:251
+msgid "El sistema cerca empreses reals a OpenStreetMap en un radi de 10 km."
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:252
+msgid "Filtra per sector per trobar el públic objectiu."
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:254
+msgid "Envia-les campanyes de marketing des de la secció Campanyes."
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:265
+#, fuzzy
+#| msgid "Cercar empreses"
+msgid "Cerca empreses properes"
+msgstr "Search companies"
+
+#: templates/portal/marketing/prospec_intel.html:267
+msgid ""
+"Introdueix una ubicació per trobar empreses i negocis propers als quals "
+"enviar les teves comunicacions comercials."
+msgstr ""
+
+#: templates/portal/marketing/prospec_intel.html:270
+msgid "Font: OpenStreetMap · Radi 10 km · Sense cost"
+msgstr ""
+
+#: templates/portal/marketing/prospect_detail.html:4
+#, fuzzy
+#| msgid "Prospects"
+msgid "Prospect"
+msgstr "Prospects"
+
+#: templates/portal/marketing/prospect_detail.html:5
+msgid "Detall prospect"
+msgstr "Prospect detail"
+
+#: templates/portal/marketing/prospect_detail.html:29
+#: templates/portal/marketing/prospects_list.html:103
+msgid "Baixa voluntària"
+msgstr "Unsubscribed"
+
+#: templates/portal/marketing/prospect_detail.html:31
+#: templates/portal/marketing/prospects_list.html:48
+#: templates/portal/marketing/prospects_list.html:105
+msgid "Sense consentiment"
+msgstr "Without consent"
+
+#: templates/portal/marketing/prospect_detail.html:70
+msgid "Assignat a"
+msgstr ""
+
+#: templates/portal/marketing/prospect_detail.html:76
+#: templates/portal/marketing/prospects_list.html:69
+#, fuzzy
+#| msgid "Contacto"
+msgid "Contacte"
+msgstr "Contact"
+
+# Sidebar
+#: templates/portal/marketing/prospect_detail.html:111
+#: templates/portal/marketing/prospect_form.html:45
+#, fuzzy
+#| msgid "Principal"
+msgid "Email principal"
+msgstr "Main"
+
+#: templates/portal/marketing/prospect_detail.html:121
+#: templates/portal/marketing/prospect_detail.html:242
+#: templates/portal/marketing/prospect_form.html:53
+msgid "Web"
+msgstr ""
+
+#: templates/portal/marketing/prospect_detail.html:126
+#: templates/portal/marketing/prospect_detail.html:236
+#: templates/portal/marketing/prospect_form.html:57
+msgid "Persona de contacte"
+msgstr "Contact person"
+
+#: templates/portal/marketing/prospect_detail.html:131
+#: templates/portal/marketing/prospect_form.html:61
+msgid "Càrrec"
+msgstr "Position"
+
+#: templates/portal/marketing/prospect_detail.html:146
+#, fuzzy
+#| msgid "Amb consentiment GDPR"
+msgid "Consentiment GDPR"
+msgstr "With GDPR consent"
+
+#: templates/portal/marketing/prospect_detail.html:148
+#: templates/portal/marketing/prospect_detail.html:288
+#: templates/portal/meu_perfil.html:71
+#, fuzzy
+#| msgid "Nou"
+msgid "No"
+msgstr "New"
+
+#: templates/portal/marketing/prospect_detail.html:149
+#: templates/portal/meu_perfil.html:71
+msgid "Sí"
+msgstr ""
+
+#: templates/portal/marketing/prospect_detail.html:175
+msgid "Emails enviats"
+msgstr "Emails sent"
+
+#: templates/portal/marketing/prospect_detail.html:181
+#, fuzzy
+#| msgid "Campanyes"
+msgid "Campanya"
+msgstr "Campaigns"
+
+#: templates/portal/marketing/prospect_detail.html:183
+msgid "Obert"
+msgstr "Opened"
+
+#: templates/portal/marketing/prospect_detail.html:184
+msgid "Clic"
+msgstr "Clicked"
+
+#: templates/portal/marketing/prospect_detail.html:225
+msgid "Alt potencial"
+msgstr ""
+
+#: templates/portal/marketing/prospect_detail.html:226
+msgid "Potencial moderat"
+msgstr ""
+
+#: templates/portal/marketing/prospect_detail.html:227
+msgid "Dades incompletes"
+msgstr ""
+
+#: templates/portal/marketing/prospect_detail.html:231
+#, fuzzy
+#| msgid "Recalcular scoring"
+msgid "Per millorar el scoring:"
+msgstr "Recalculate score"
+
+#: templates/portal/marketing/prospect_detail.html:251
+msgid "Recalcular scoring"
+msgstr "Recalculate score"
+
+#: templates/portal/marketing/prospect_detail.html:271
+#: templates/portal/ofertes/oferta_detail.html:215
+msgid "Aplicar"
+msgstr "Apply"
+
+#: templates/portal/marketing/prospect_detail.html:279
+#: templates/portal/marketing/prospects_list.html:72
+msgid "GDPR"
+msgstr "GDPR"
+
+#: templates/portal/marketing/prospect_detail.html:283
+msgid "Consentiment"
+msgstr "Consent"
+
+#: templates/portal/marketing/prospect_detail.html:287
+msgid "Baixa"
+msgstr "Unsubscribe"
+
+# empresa.html
+#: templates/portal/marketing/prospect_form.html:18
+#, fuzzy
+#| msgid "Datos de empresa"
+msgid "Dades de l'empresa"
+msgstr "Company details"
+
+# Users
+#: templates/portal/marketing/prospect_form.html:26
+#, fuzzy
+#| msgid "Nombre completo"
+msgid "Nom complet de l\\"
+msgstr "Full name"
+
+#: templates/portal/marketing/prospect_form.html:58
+#, fuzzy
+#| msgid "Notes addicionals..."
+msgid "Nom i cognoms..."
+msgstr "Additional notes..."
+
+#: templates/portal/marketing/prospect_form.html:62
+msgid "Director, Cap de compres..."
+msgstr ""
+
+#: templates/portal/marketing/prospect_form.html:74
+msgid "Observacions sobre el prospect..."
+msgstr ""
+
+#: templates/portal/marketing/prospect_form.html:80
+msgid "Consentiment GDPR confirmat"
+msgstr "GDPR consent confirmed"
+
+#: templates/portal/marketing/prospect_form.html:82
+msgid ""
+"Marqueu aquesta casella si l'empresa ha donat consentiment explícit per "
+"rebre comunicacions comercials."
+msgstr ""
+
+#: templates/portal/marketing/prospect_form.html:88
+msgid "Desar prospect"
+msgstr "Save prospect"
+
+#: templates/portal/marketing/prospects_list.html:15
+msgid "Importar des de licitacions"
+msgstr "Import from tenders"
+
+#: templates/portal/marketing/prospects_list.html:18
+msgid ""
+"Detecta automàticament organismes de licitacions com a prospects potencials."
+msgstr "Automatically detects tender organisations as potential prospects."
+
+#: templates/portal/marketing/prospects_list.html:26
+#, fuzzy
+#| msgid "Cercar empreses"
+msgid "Cercar empresa..."
+msgstr "Search companies"
+
+#: templates/portal/marketing/prospects_list.html:46
+msgid "Tot (GDPR)"
+msgstr "All (GDPR)"
+
+#: templates/portal/marketing/prospects_list.html:47
+msgid "Amb consentiment"
+msgstr "With consent"
+
+#: templates/portal/marketing/prospects_list.html:61
+msgid "Llistat de prospects"
+msgstr "Prospects list"
+
+#: templates/portal/marketing/prospects_list.html:101
+msgid "Consentiment actiu"
+msgstr "Active consent"
+
+#: templates/portal/marketing/prospects_list.html:114
+msgid "No s'han trobat prospects amb aquests filtres."
+msgstr "No prospects found with these filters."
+
+# empresa.html
+#: templates/portal/meu_perfil.html:13
+#, fuzzy
+#| msgid "Datos de empresa"
+msgid "Datos personales"
+msgstr "Company details"
+
+# admin/user_form.html
+#: templates/portal/meu_perfil.html:45
+#, fuzzy
+#| msgid "Contraseña"
+msgid "Cambiar contraseña"
+msgstr "Password"
+
+# admin/user_form.html
+#: templates/portal/meu_perfil.html:48
+#, fuzzy
+#| msgid "Contraseña"
+msgid "Nueva contraseña"
+msgstr "Password"
+
+#: templates/portal/meu_perfil.html:50
+#, fuzzy
+#| msgid "vacío = no cambiar"
+msgid "Dejar en blanco para no cambiar"
+msgstr "leave blank to keep current"
+
+# admin/user_form.html
+#: templates/portal/meu_perfil.html:53
+#, fuzzy
+#| msgid "Contraseña"
+msgid "Confirmar contraseña"
+msgstr "Password"
+
+#: templates/portal/ofertes/oferta_detail.html:5
+msgid "Detall oferta"
+msgstr "Bid detail"
+
+#: templates/portal/ofertes/oferta_detail.html:13
+#: templates/portal/ofertes/oferta_list.html:65
+msgid "Risc"
+msgstr "Risk"
+
+#: templates/portal/ofertes/oferta_detail.html:29
+msgid "Pressupost base"
+msgstr "Base budget"
+
+#: templates/portal/ofertes/oferta_detail.html:33
+#: templates/portal/ofertes/oferta_list.html:63
+msgid "Preu oferta"
+msgstr "Bid price"
+
+#: templates/portal/ofertes/oferta_detail.html:39
+#, fuzzy
+#| msgid "Preu òptim"
+msgid "Preu òptim calculat"
+msgstr "Optimal price"
+
+#: templates/portal/ofertes/oferta_detail.html:42
+msgid "No calculat"
+msgstr "Not calculated"
+
+#: templates/portal/ofertes/oferta_detail.html:46
+msgid "Puntuació total est."
+msgstr "Est. total score"
+
+#: templates/portal/ofertes/oferta_detail.html:66
+msgid "Anàlisi de risc"
+msgstr "Risk analysis"
+
+#: templates/portal/ofertes/oferta_detail.html:111
+msgid "Ut."
+msgstr "Qty"
+
+#: templates/portal/ofertes/oferta_detail.html:112
+msgid "Preu u."
+msgstr "Unit price"
+
+#: templates/portal/ofertes/oferta_detail.html:142
+msgid "Contingut generat per IA pendent de revisió."
+msgstr "AI-generated content pending review."
+
+#: templates/portal/ofertes/oferta_detail.html:146
+msgid "Contingut del pla encara no generat."
+msgstr "Plan content not yet generated."
+
+#: templates/portal/ofertes/oferta_detail.html:155
+msgid "Notes i justificació"
+msgstr "Notes & justification"
+
+#: templates/portal/ofertes/oferta_detail.html:170
+msgid "Desar"
+msgstr "Save"
+
+#: templates/portal/ofertes/oferta_detail.html:180
+msgid "Versions anteriors"
+msgstr "Previous versions"
+
+#: templates/portal/ofertes/oferta_detail.html:224
+msgid "Accions IA"
+msgstr "AI Actions"
+
+#: templates/portal/ofertes/oferta_detail.html:231
+msgid "Calcular preu òptim"
+msgstr "Calculate optimal price"
+
+#: templates/portal/ofertes/oferta_detail.html:238
+msgid "Generar Pla Seguretat (IA)"
+msgstr "Generate Safety Plan (AI)"
+
+#: templates/portal/ofertes/oferta_detail.html:267
+msgid "Veure"
+msgstr "View"
+
+#: templates/portal/ofertes/oferta_form.html:4
+#: templates/portal/ofertes/oferta_form.html:5
+#: templates/portal/ofertes/oferta_list.html:11
+msgid "Nova oferta"
+msgstr "New bid"
+
+#: templates/portal/ofertes/oferta_form.html:18
+msgid "Crear nova oferta"
+msgstr "Create new bid"
+
+#: templates/portal/ofertes/oferta_form.html:29
+msgid "— Selecciona una licitació —"
+msgstr "— Select a tender —"
+
+#: templates/portal/ofertes/oferta_form.html:37
+msgid ""
+"Només es mostren licitacions sense oferta assignada en estat 'En preparació' "
+"o 'Revisada'."
+msgstr ""
+
+#: templates/portal/ofertes/oferta_form.html:41
+msgid ""
+"No hi ha licitacions disponibles per crear oferta. Canvieu l'estat d'una "
+"licitació a 'En preparació'."
+msgstr ""
+
+#: templates/portal/ofertes/oferta_form.html:49
+msgid "— Sense assignar —"
+msgstr "— Unassigned —"
+
+#: templates/portal/ofertes/oferta_form.html:58
+msgid ""
+"L'oferta es crearà en estat 'Esborrany'. Podreu calcular el preu òptim i "
+"generar el Pla de Seguretat i Salut (PSS) amb IA des del detall."
+msgstr ""
+"The bid will be created in 'Draft' status. You can calculate the optimal "
+"price and generate the Health & Safety Plan (HSP) using AI from the detail "
+"page."
+
+#: templates/portal/ofertes/oferta_form.html:63
+msgid "Crear oferta"
+msgstr "Create bid"
+
+#: templates/portal/ofertes/oferta_form.html:79
+msgid "Seleccioneu la licitació i el responsable."
+msgstr "Select the tender and the responsible person."
+
+#: templates/portal/ofertes/oferta_form.html:80
+msgid "L'oferta es crea en estat Esborrany."
+msgstr "The bid is created in Draft status."
+
+#: templates/portal/ofertes/oferta_form.html:81
+msgid "Calculeu el preu òptim amb la fórmula de baixa temerària."
+msgstr "Calculate the optimal price using the abnormal bid formula."
+
+#: templates/portal/ofertes/oferta_form.html:82
+msgid "Genereu el Pla de Seguretat i Salut amb IA."
+msgstr "Generate the Health & Safety Plan using AI."
+
+#: templates/portal/ofertes/oferta_form.html:83
+msgid "Canvieu l'estat a 'Aprovada' i després a 'Enviada'."
+msgstr "Change status to 'Approved' then to 'Submitted'."
+
+#: templates/portal/ofertes/oferta_list.html:22
+msgid "Cercar per títol de licitació..."
+msgstr "Search by tender title..."
+
+#: templates/portal/ofertes/oferta_list.html:34
+msgid "Tot el risc"
+msgstr "All risks"
+
+#: templates/portal/ofertes/oferta_list.html:56
+msgid "registres"
+msgstr "records"
+
+#: templates/portal/ofertes/oferta_list.html:64
+msgid "Preu òptim"
+msgstr "Optimal price"
+
+#: templates/portal/ofertes/oferta_list.html:113
+msgid "No s'han trobat ofertes amb aquests filtres."
+msgstr "No bids found with these filters."
+
+#: templates/portal/rag/consulta.html:4
+msgid "Consulta IA"
+msgstr "AI Assistant"
+
+# ─── Sistema RAG ───────────────────────────────────────────────────────────────
+#: templates/portal/rag/consulta.html:5
+msgid "Consulta Intel·ligent (RAG)"
+msgstr "Intelligent Assistant (RAG)"
+
+#: templates/portal/rag/consulta.html:35
+msgid "Consulta sobre licitacions i documents"
+msgstr "Query tenders and documents"
+
+#: templates/portal/rag/consulta.html:36
+msgid "Ollama actiu"
+msgstr "Ollama active"
+
+#: templates/portal/rag/consulta.html:43
+msgid ""
+"Hola! Soc el teu assistent IA. Puc respondre preguntes sobre documents "
+"indexats i sobre les dades en temps real de l'aplicació: licitacions, "
+"prospects, factures, ofertes i més. Prova a preguntar-me qualsevol cosa."
+msgstr ""
+
+#: templates/portal/rag/consulta.html:58
+msgid "Qualitat de la resposta:"
+msgstr "Response quality:"
+
+#: templates/portal/rag/consulta.html:65
+msgid "Gràcies!"
+msgstr "Thank you!"
+
+#: templates/portal/rag/consulta.html:76
+msgid "Escriu la teva pregunta... (Intro per enviar, Maj+Intro per nova línia)"
+msgstr "Type your question... (Enter to send, Shift+Enter for new line)"
+
+#: templates/portal/rag/consulta.html:90
+msgid "Filtres avançats"
+msgstr "Advanced filters"
+
+#: templates/portal/rag/consulta.html:95
+#, fuzzy
+#| msgid "Fonts"
+msgid "Font"
+msgstr "Sources"
+
+#: templates/portal/rag/consulta.html:98
+msgid "PDFs de licitacions"
+msgstr "Tender PDFs"
+
+#: templates/portal/rag/consulta.html:99
+msgid "Extraccions IA"
+msgstr "AI extractions"
+
+#: templates/portal/rag/consulta.html:100
+msgid "Documents interns"
+msgstr "Internal documents"
+
+#: templates/portal/rag/consulta.html:105
+msgid "Licitació específica"
+msgstr "Specific tender"
+
+#: templates/portal/rag/consulta.html:115
+msgid "Top K resultats"
+msgstr "Top K results"
+
+#: templates/portal/rag/consulta.html:133
+msgid "Historial de consultes"
+msgstr "Query history"
+
+#: templates/portal/rag/consulta.html:162
+msgid "Encara no hi ha consultes."
+msgstr "No queries yet."
+
+#: templates/portal/rag/consulta.html:170
+msgid "Exemples de preguntes"
+msgstr "Example questions"
+
+#: templates/portal/rag/consulta.html:211
+msgid "Fonts"
+msgstr "Sources"
+
+#: templates/portal/rag/consulta.html:249
+msgid "Sense resposta."
+msgstr "No response."
+
+#: templates/portal/rag/consulta.html:255
+msgid "Inesperat"
+msgstr ""
+
+#: templates/portal/rag/consulta.html:259
+msgid "Error de xarxa. Comprova la connexió."
+msgstr "Network error. Check your connection."
+
+#: templates/portal/rag/consulta.html:297
+msgid "Ara"
+msgstr "Now"

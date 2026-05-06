@@ -1,0 +1,99 @@
+{% extends 'portal/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Rols personalitzats" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}{% trans "Rols personalitzats" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <p class="text-muted mb-0 small">{% trans "Defineix rols amb permisos granulars per assignar als usuaris." %}</p>
+  <a href="{% url 'portal:rol_create' %}" class="btn btn-primary btn-sm">
+    <i class="bi bi-shield-plus me-1"></i>{% trans "Nou rol" %}
+  </a>
+</div>
+
+{% if rols_base %}
+<h6 class="fw-semibold text-muted mb-2"><i class="bi bi-shield-lock me-2"></i>{% trans "Rols del sistema (predeterminats)" %}</h6>
+<div class="row g-2 mb-4">
+  {% for val, label in rols_base %}
+  <div class="col-sm-6 col-lg-3">
+    <div class="card border-0 bg-light h-100">
+      <div class="card-body py-2 px-3">
+        <span class="badge badge-{{ val }} mb-1">{{ val }}</span>
+        <div class="fw-semibold small">{{ label }}</div>
+        <div class="text-muted" style="font-size:.75rem;">
+          {% if val == "ADMIN" %}{% trans "Accés total a tot el sistema" %}
+          {% elif val == "JEFE" %}{% trans "Veure i editar tot excepte gestió d'usuaris" %}
+          {% elif val == "SUPERVISOR" %}{% trans "Veure RRHH, licitaciones i marketing" %}
+          {% else %}{% trans "Fitxatge i consultes bàsiques" %}
+          {% endif %}
+        </div>
+        <div class="mt-1">
+          <span class="badge bg-secondary" style="font-size:.68rem;">{% trans "Sistema" %}</span>
+          <small class="text-muted ms-1">{% trans "No editable" %}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<h6 class="fw-semibold text-muted mb-2"><i class="bi bi-shield-check me-2"></i>{% trans "Rols personalitzats" %}</h6>
+<div class="row g-3">
+  {% for item in rols %}
+  {% with rol=item.rol %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <strong><i class="bi bi-shield me-2 text-primary"></i>{{ rol.nom }}</strong>
+        <div class="d-flex gap-1">
+          <a href="{% url 'portal:rol_edit' rol.pk %}" class="btn btn-sm btn-outline-secondary py-0">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <form method="post" action="{% url 'portal:rol_delete' rol.pk %}"
+                onsubmit="return confirm('{% trans "Eliminar aquest rol?" %}')">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-danger py-0">
+              <i class="bi bi-trash"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="card-body p-2">
+        {% if rol.descripcio %}<p class="text-muted small px-2 mb-2">{{ rol.descripcio }}</p>{% endif %}
+        <div class="px-2">
+          {% for perm in item.permisos %}
+          <div class="d-flex align-items-center gap-1 small py-1 border-bottom">
+            {% if perm.actiu %}
+              <i class="bi bi-check-circle-fill text-success flex-shrink-0"></i>
+              <span>{{ perm.label }}</span>
+            {% else %}
+              <i class="bi bi-circle text-muted flex-shrink-0"></i>
+              <span class="text-muted">{{ perm.label }}</span>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        <div class="px-2 pt-2">
+          <small class="text-muted">
+            <i class="bi bi-people me-1"></i>
+            {{ rol.userprofile_set.count }}
+            {% trans "usuari" %}{{ rol.userprofile_set.count|pluralize:"s" }}
+            {% trans "assignat" %}{{ rol.userprofile_set.count|pluralize:"s" }}
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endwith %}
+  {% empty %}
+  <div class="col-12">
+    <div class="alert alert-info">
+      <i class="bi bi-info-circle me-2"></i>
+      {% trans "No hi ha rols personalitzats. Crea el primer per personalitzar els permisos dels usuaris." %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

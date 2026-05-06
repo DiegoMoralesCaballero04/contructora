@@ -1,0 +1,275 @@
+{% extends "portal/base.html" %}
+{% load i18n humanize %}
+
+{% block title %}{% trans "Oferta" %} — {{ oferta.licitacio.titol|truncatechars:40 }}{% endblock %}
+{% block page_title %}<i class="bi bi-receipt-cutoff me-2"></i>{% trans "Detall oferta" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-3">
+  <a href="{% url 'portal:ofertes_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Torna" %}
+  </a>
+  <span class="badge rounded-pill badge-{{ oferta.estat }} ms-1">{{ oferta.get_estat_display }}</span>
+  <span class="badge rounded-pill badge-{{ oferta.nivell_risc }}">{% trans "Risc" %}: {{ oferta.get_nivell_risc_display }}</span>
+</div>
+
+<div class="row g-3">
+
+  {# Columna principal #}
+  <div class="col-lg-8">
+
+    {# Capçalera #}
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <h5 class="fw-semibold mb-1" style="color:var(--primary);">{{ oferta.licitacio.titol }}</h5>
+        <small class="text-muted font-monospace">{{ oferta.licitacio.expediente_id }}</small>
+        <hr class="my-2">
+        <div class="row g-3 mt-1">
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Pressupost base" %}</div>
+            <div class="fw-bold" style="font-size:1.3rem;color:var(--primary);">{{ oferta.licitacio.importe_base|intcomma }} €</div>
+          </div>
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Preu oferta" %}</div>
+            {% if oferta.preu_oferta %}
+            <div class="fw-bold fs-5">{{ oferta.preu_oferta|intcomma }} €</div>
+            {% else %}<div class="text-muted">{% trans "Pendent" %}</div>{% endif %}
+          </div>
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Preu òptim calculat" %}</div>
+            {% if oferta.preu_optim_calculat %}
+            <div class="fw-bold fs-5 text-success">{{ oferta.preu_optim_calculat|intcomma }} €</div>
+            {% else %}<div class="text-muted">{% trans "No calculat" %}</div>{% endif %}
+          </div>
+          {% if oferta.puntuacio_total %}
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Puntuació total est." %}</div>
+            <div class="fw-bold">{{ oferta.puntuacio_total }}/100</div>
+          </div>
+          {% endif %}
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Responsable" %}</div>
+            <div>{{ oferta.responsable.get_full_name|default:oferta.responsable.username|default:"—" }}</div>
+          </div>
+          <div class="col-sm-4">
+            <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#6c757d;">{% trans "Revisor" %}</div>
+            <div>{{ oferta.revisor.get_full_name|default:oferta.revisor.username|default:"—" }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Anàlisi de risc #}
+    {% if oferta.factors_risc or oferta.fortaleses or oferta.debilitats %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-shield-exclamation me-1"></i>{% trans "Anàlisi de risc" %}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          {% if oferta.fortaleses %}
+          <div class="col-sm-4">
+            <div class="mb-1 fw-semibold" style="color:#28a745;font-size:.85rem;"><i class="bi bi-check-circle me-1"></i>{% trans "Fortaleses" %}</div>
+            <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+              {% for f in oferta.fortaleses %}<li>• {{ f }}</li>{% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+          {% if oferta.debilitats %}
+          <div class="col-sm-4">
+            <div class="mb-1 fw-semibold" style="color:#dc3545;font-size:.85rem;"><i class="bi bi-x-circle me-1"></i>{% trans "Debilitats" %}</div>
+            <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+              {% for d in oferta.debilitats %}<li>• {{ d }}</li>{% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+          {% if oferta.factors_risc %}
+          <div class="col-sm-4">
+            <div class="mb-1 fw-semibold" style="color:#fd7e14;font-size:.85rem;"><i class="bi bi-exclamation-triangle me-1"></i>{% trans "Factors de risc" %}</div>
+            <ul class="list-unstyled mb-0" style="font-size:.88rem;">
+              {% for r in oferta.factors_risc %}<li>• {{ r }}</li>{% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {# Pressupost #}
+    {% if pressupost %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white d-flex align-items-center justify-content-between py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-calculator me-1"></i>{% trans "Pressupost" %}</h6>
+        <span class="fw-bold" style="color:var(--primary);">{% trans "Total" %}: {{ pressupost.cost_total|intcomma }} €</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm mb-0" style="font-size:.88rem;">
+          <thead class="table-light">
+            <tr>
+              <th>{% trans "Descripció" %}</th>
+              <th class="text-end">{% trans "Ut." %}</th>
+              <th class="text-end">{% trans "Preu u." %}</th>
+              <th class="text-end">{% trans "Total" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for linia in pressupost.linies.all %}
+            <tr>
+              <td>{{ linia.descripcio }}</td>
+              <td class="text-end">{{ linia.quantitat }}</td>
+              <td class="text-end">{{ linia.cost_unitari|intcomma }} €</td>
+              <td class="text-end fw-semibold">{{ linia.cost_total|intcomma }} €</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    {# Pla de Seguretat #}
+    {% if pla %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-shield-check me-1"></i>{% trans "Pla de Seguretat i Salut" %}</h6>
+      </div>
+      <div class="card-body">
+        {% if pla.contingut_revisat %}
+        <pre style="white-space:pre-wrap;font-size:.88rem;font-family:inherit;max-height:300px;overflow-y:auto;">{{ pla.contingut_revisat }}</pre>
+        {% elif pla.contingut_ia %}
+        <div class="alert alert-info py-2 mb-2" style="font-size:.85rem;">
+          <i class="bi bi-robot me-1"></i>{% trans "Contingut generat per IA pendent de revisió." %}
+        </div>
+        <pre style="white-space:pre-wrap;font-size:.88rem;font-family:inherit;max-height:300px;overflow-y:auto;">{{ pla.contingut_ia }}</pre>
+        {% else %}
+        <p class="text-muted mb-0">{% trans "Contingut del pla encara no generat." %}</p>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    {# Notes internes #}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-pencil-square me-1"></i>{% trans "Notes i justificació" %}</h6>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="desar_notes">
+          <div class="mb-2">
+            <label class="form-label" style="font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:#6c757d;">{% trans "Notes internes" %}</label>
+            <textarea name="notes_internes" rows="3" class="form-control form-control-sm">{{ oferta.notes_internes }}</textarea>
+          </div>
+          <div class="mb-2">
+            <label class="form-label" style="font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:#6c757d;">{% trans "Justificació del preu" %}</label>
+            <textarea name="justificacio_preu" rows="3" class="form-control form-control-sm">{{ oferta.justificacio_preu }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-sm btn-primary">
+            <i class="bi bi-save me-1"></i>{% trans "Desar" %}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    {# Versions #}
+    {% if versions %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-clock-history me-1"></i>{% trans "Versions anteriors" %}</h6>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for v in versions %}
+        <li class="list-group-item py-2" style="font-size:.88rem;">
+          <div class="d-flex justify-content-between">
+            <span><i class="bi bi-tag me-1"></i><strong>v{{ v.numero_versio }}</strong></span>
+            <small class="text-muted">{{ v.creada_en|date:"d/m/Y H:i" }} — {{ v.creada_per.get_full_name|default:v.creada_per.username|default:"—" }}</small>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+  </div>
+
+  {# Columna lateral #}
+  <div class="col-lg-4">
+
+    {# Canvi d'estat #}
+    <div class="card shadow-sm mb-3" style="border-left:4px solid var(--primary);">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-arrow-repeat me-1"></i>{% trans "Canviar estat" %}</h6>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="canviar_estat">
+          <select name="estat" class="form-select form-select-sm mb-2">
+            {% for val, label in estats %}
+            <option value="{{ val }}" {% if oferta.estat == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn btn-sm btn-primary w-100">
+            <i class="bi bi-check2 me-1"></i>{% trans "Aplicar" %}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    {# Accions IA #}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-robot me-1"></i>{% trans "Accions IA" %}</h6>
+      </div>
+      <div class="card-body d-grid gap-2">
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="calcular_preu">
+          <button type="submit" class="btn btn-sm btn-outline-primary w-100">
+            <i class="bi bi-calculator me-1"></i>{% trans "Calcular preu òptim" %}
+          </button>
+        </form>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="generar_pss">
+          <button type="submit" class="btn btn-sm btn-outline-secondary w-100">
+            <i class="bi bi-shield-plus me-1"></i>{% trans "Generar Pla Seguretat (IA)" %}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    {# Metadades #}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-info-circle me-1"></i>{% trans "Metadades" %}</h6>
+      </div>
+      <div class="card-body" style="font-size:.88rem;">
+        <div class="d-flex justify-content-between border-bottom pb-1 mb-1">
+          <span class="text-muted">{% trans "Creada" %}</span>
+          <span>{{ oferta.creada_en|date:"d/m/Y H:i" }}</span>
+        </div>
+        <div class="d-flex justify-content-between border-bottom pb-1 mb-1">
+          <span class="text-muted">{% trans "Actualitzada" %}</span>
+          <span>{{ oferta.actualitzada_en|date:"d/m/Y H:i"|default:"—" }}</span>
+        </div>
+        {% if oferta.data_presentacio %}
+        <div class="d-flex justify-content-between border-bottom pb-1 mb-1">
+          <span class="text-muted">{% trans "Presentada" %}</span>
+          <span>{{ oferta.data_presentacio|date:"d/m/Y" }}</span>
+        </div>
+        {% endif %}
+        <div class="d-flex justify-content-between">
+          <span class="text-muted">{% trans "Licitació" %}</span>
+          <a href="{% url 'portal:licitacio_detail' oferta.licitacio.pk %}" style="font-size:.82rem;">
+            <i class="bi bi-box-arrow-up-right me-1"></i>{% trans "Veure" %}
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

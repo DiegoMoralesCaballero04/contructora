@@ -1,0 +1,93 @@
+{% extends "portal/base.html" %}
+{% load i18n humanize %}
+
+{% block title %}{% trans "Campanyes" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}<i class="bi bi-send me-2"></i>{% trans "Campanyes de marketing" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex gap-2 mb-3">
+  <a href="{% url 'portal:campanya_create' %}" class="btn btn-sm btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>{% trans "Nova campanya" %}
+  </a>
+  <a href="{% url 'portal:marketing_dashboard' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Dashboard" %}
+  </a>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header bg-white d-flex align-items-center justify-content-between py-2">
+    <h6 class="mb-0 fw-semibold"><i class="bi bi-list-ul me-1"></i>{% trans "Campanyes" %}</h6>
+    <small class="text-muted">{{ campanyes|length }} {% trans "total" %}</small>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover table-sm mb-0" style="font-size:.9rem;">
+      <thead class="table-light">
+        <tr>
+          <th>{% trans "Nom" %}</th>
+          <th>{% trans "Plantilla" %}</th>
+          <th class="text-center">{% trans "Enviaments" %}</th>
+          <th class="text-center">{% trans "Oberts" %}</th>
+          <th class="text-center">{% trans "IA" %}</th>
+          <th>{% trans "Creada" %}</th>
+          <th>{% trans "Estat" %}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in campanyes %}
+        <tr>
+          <td>
+            <div class="fw-semibold">{{ c.nom|truncatechars:40 }}</div>
+            {% if c.segmentacio.provincia %}<small class="text-muted">{{ c.segmentacio.provincia }}</small>{% endif %}
+          </td>
+          <td><small class="text-muted">{{ c.plantilla.nom|default:"—"|truncatechars:25 }}</small></td>
+          <td class="text-center">{{ c.total_enviats|default:"—" }}</td>
+          <td class="text-center">
+            {% if c.total_obertures %}
+            <span class="text-success fw-semibold">{{ c.total_obertures }}</span>
+            {% else %}—{% endif %}
+          </td>
+          <td class="text-center">
+            {% if c.millorar_amb_ia %}
+            <i class="bi bi-robot text-primary" title="{% trans 'Millora amb IA activada' %}"></i>
+            {% else %}
+            <i class="bi bi-dash text-muted"></i>
+            {% endif %}
+          </td>
+          <td><small class="text-muted">{{ c.creada_en|date:"d/m/Y" }}</small></td>
+          <td>
+            <span class="badge rounded-pill
+              {% if c.estat == 'EN_CURS' %}bg-success
+              {% elif c.estat == 'ESBORRANY' %}bg-secondary
+              {% elif c.estat == 'COMPLETADA' %}bg-primary
+              {% elif c.estat == 'PROGRAMADA' %}bg-info
+              {% elif c.estat == 'PAUSADA' %}bg-warning text-dark
+              {% else %}bg-secondary{% endif %}">
+              {{ c.get_estat_display }}
+            </span>
+          </td>
+          <td class="text-end">
+            {% if c.estat == 'ESBORRANY' %}
+            <form method="post" action="/api/v1/campanyes/{{ c.pk }}/executar/" class="d-inline"
+                  onsubmit="return confirm('{% trans "Llançar la campanya?" %}');">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-xs btn-success" style="font-size:.78rem;padding:.15rem .5rem;">
+                <i class="bi bi-play-fill me-1"></i>{% trans "Llançar" %}
+              </button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="8" class="text-center text-muted py-4">
+            <i class="bi bi-send-x fs-3 d-block mb-2"></i>
+            {% trans "Cap campanya creada. Crea la primera!" %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

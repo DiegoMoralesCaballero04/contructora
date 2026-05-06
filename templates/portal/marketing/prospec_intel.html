@@ -1,0 +1,354 @@
+{% extends "portal/base.html" %}
+{% load i18n humanize %}
+
+{% block title %}{% trans "Cerca de clients" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}<i class="bi bi-people-fill me-2"></i>{% trans "Cerca de clients potencials" %}{% endblock %}
+
+{% block extra_head %}
+<style>
+  #loading-overlay {
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,.45);z-index:9999;
+    display:none;align-items:center;justify-content:center;
+  }
+  #loading-overlay.visible { display:flex; }
+  .loading-card {
+    background:#fff;border-radius:12px;padding:2rem 2.5rem;
+    text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.25);
+    max-width:320px;
+  }
+  .loading-card .spinner-border { width:3rem;height:3rem;color:var(--primary); }
+  .loading-card .progress { height:4px;margin-top:1rem;border-radius:2px; }
+</style>
+<style>
+  .resultat-card { background:#fff; border:1px solid #dee2e6; border-radius:8px; padding:.85rem 1rem; margin-bottom:.6rem; transition:.12s; }
+  .resultat-card:hover:not(.ja-prospect) { border-color:var(--accent); box-shadow:0 2px 8px rgba(0,0,0,.08); }
+  .resultat-card.selected { border-color:var(--primary); background:#f0f4f8; }
+  .resultat-card.ja-prospect { background:#f8f9fa; border-color:#e9ecef; }
+  .check-btn { width:22px;height:22px;border:2px solid #dee2e6;border-radius:4px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:.1s; }
+  .check-btn.checked { background:var(--primary);border-color:var(--primary);color:#fff; }
+  .font-badge { font-size:.68rem;padding:.1rem .4rem;background:#e8f4ff;color:#1a3a5c;border-radius:3px;border:1px solid #c8d9ea; }
+  .info-row { display:flex;gap:1rem;flex-wrap:wrap;font-size:.82rem;color:#6c757d;margin-top:.3rem; }
+  .info-row span { display:flex;align-items:center;gap:.25rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if task_pending %}
+{# ── Estat de càrrega async ── #}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5 text-center">
+    <div class="card shadow-sm p-4">
+      <div class="spinner-border mb-3 mx-auto" style="width:3.5rem;height:3.5rem;color:var(--primary);" role="status"></div>
+      <h5 class="fw-semibold mb-1">{% trans "Buscant empreses..." %}</h5>
+      <p class="text-muted mb-3" style="font-size:.9rem;">
+        {% trans "Consultant OpenStreetMap per a" %} <strong>{{ ubicacio }}</strong>.<br>
+        {% trans "Pot trigar 10-20 segons." %}
+      </p>
+      <div class="progress mb-3" style="height:6px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" id="loading-bar" style="width:40%"></div>
+      </div>
+      <small class="text-muted">{% trans "La pàgina s'actualitzarà automàticament." %}</small>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  const bar = document.getElementById('loading-bar');
+  let pct = 40;
+  setInterval(() => {
+    pct = Math.min(pct + (pct < 70 ? 3 : 1), 92);
+    bar.style.width = pct + '%';
+  }, 1000);
+  setTimeout(() => { window.location.reload(); }, 4000);
+})();
+</script>
+{% else %}
+
+<div class="alert alert-primary d-flex gap-3 py-2 mb-3" style="font-size:.88rem;">
+  <i class="bi bi-info-circle-fill fs-5 flex-shrink-0 mt-1"></i>
+  <div>
+    <strong>{% trans "Cerca de clients" %}</strong> —
+    {% trans "Busca empreses reals properes a la ubicació indicada (oficines, tallers, empreses) per enviar-los comunicacions comercials. No utilitza la base de dades de licitacions." %}
+  </div>
+</div>
+
+{# Formulari #}
+<div class="card shadow-sm mb-3">
+  <div class="card-header bg-white py-2">
+    <h6 class="mb-0 fw-semibold"><i class="bi bi-sliders2 me-1"></i>{% trans "Criteris de cerca" %}</h6>
+  </div>
+  <div class="card-body">
+    <form method="post" id="cerca-form">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="cercar">
+      <div class="row g-3">
+        <div class="col-sm-4">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-geo-alt me-1"></i>{% trans "Ubicació" %} <span class="text-danger">*</span>
+          </label>
+          <input type="text" name="ubicacio" value="{{ ubicacio|default:'' }}" class="form-control"
+                 placeholder="{% trans 'Ex: Carlet, Valencia, Alicante...' %}" required>
+          <div class="form-text">{% trans "Municipi o província. La cerca es fa en un radi de 10 km." %}</div>
+        </div>
+        <div class="col-sm-3">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-building me-1"></i>{% trans "Sector" %}
+          </label>
+          <select name="sector" class="form-select">
+            <option value="">{% trans "Tots els sectors" %}</option>
+            {% for val, label in sectors %}
+            <option value="{{ val }}" {% if sector_filtre == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-sm-5">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-chat-quote me-1"></i>{% trans "Paraules clau" %}
+          </label>
+          <input type="text" name="paraules_clau" value="{{ paraules_clau|default:'' }}" class="form-control"
+                 placeholder="{% trans 'Ex: construcció, fusteria, instal·lacions...' %}">
+          <div class="form-text">{% trans "Filtra per nom d'empresa o activitat." %}</div>
+        </div>
+      </div>
+      <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-search me-1"></i>{% trans "Cercar empreses properes" %}
+        </button>
+        <a href="{% url 'portal:prospec_intel' %}" class="btn btn-outline-secondary">
+          <i class="bi bi-x-lg me-1"></i>{% trans "Netejar" %}
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% if resultats is not None %}
+<div class="row g-3">
+  {# Resultats #}
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white d-flex align-items-center justify-content-between py-2">
+        <h6 class="mb-0 fw-semibold">
+          <i class="bi bi-building-check me-1"></i>{% trans "Empreses trobades prop de" %} <em>{{ ubicacio }}</em>
+          <span class="badge bg-secondary ms-1">{{ resultats|length }}</span>
+        </h6>
+        {% if resultats %}
+        <button type="button" class="btn btn-xs btn-outline-secondary" style="font-size:.78rem;padding:.15rem .5rem;"
+                onclick="toggleAll()">
+          <i class="bi bi-check2-all me-1"></i>{% trans "Seleccionar tots" %}
+        </button>
+        {% endif %}
+      </div>
+      <div class="card-body p-2">
+        {% if not resultats %}
+        <div class="text-center text-muted py-4">
+          <i class="bi bi-building-x fs-3 d-block mb-2"></i>
+          <div>{% trans "No s'han trobat empreses a OpenStreetMap prop de" %} <strong>{{ ubicacio }}</strong>.</div>
+          <small class="d-block mt-1">{% trans "Prova amb una altra ubicació (ex: la capital de la comarca o província)." %}</small>
+        </div>
+        {% else %}
+        <form method="post" id="afegir-form">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="afegir_prospects">
+          <input type="hidden" name="seleccionats" id="seleccionats-json" value="[]">
+
+          <div id="resultats-list">
+            {% for r in resultats %}
+            <div class="resultat-card {% if r.ja_es_prospect %}ja-prospect{% endif %}"
+                 id="card-{{ forloop.counter }}">
+              <div class="d-flex align-items-start gap-3">
+                {% if r.ja_es_prospect %}
+                <div style="width:22px;flex-shrink:0;margin-top:2px;" class="text-center">
+                  <i class="bi bi-bookmark-check-fill text-muted" title="{% trans 'Ja és prospect' %}" style="font-size:.9rem;"></i>
+                </div>
+                {% else %}
+                <div class="check-btn mt-1 flex-shrink-0" id="chk-{{ forloop.counter }}"
+                     onclick="toggleSelect({{ forloop.counter }})">
+                  <i class="bi bi-check2" style="font-size:.8rem;display:none;"></i>
+                </div>
+                {% endif %}
+
+                <div class="flex-grow-1" style="min-width:0;">
+                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="fw-semibold {% if r.ja_es_prospect %}text-muted{% endif %}">{{ r.nom|truncatechars:55 }}</span>
+                    {% if r.ja_es_prospect %}
+                    <span class="badge bg-light text-secondary border" style="font-size:.65rem;">{% trans "Ja és prospect" %}</span>
+                    {% endif %}
+                    {% if r.osm_tipus %}
+                    <span class="font-badge">{{ r.osm_tipus }}</span>
+                    {% endif %}
+                  </div>
+                  <div class="info-row">
+                    {% if r.poblacio %}<span><i class="bi bi-geo-alt"></i>{{ r.poblacio }}</span>{% endif %}
+                    {% if r.telefon %}<span><i class="bi bi-telephone"></i>{{ r.telefon }}</span>{% endif %}
+                    {% if r.email %}<span><i class="bi bi-envelope"></i>{{ r.email }}</span>{% endif %}
+                    {% if r.web %}<span><i class="bi bi-globe2"></i><a href="{{ r.web }}" target="_blank" rel="noopener" class="text-truncate" style="max-width:180px;color:inherit;">{{ r.web|truncatechars:30 }}</a></span>{% endif %}
+                    {% if r.adreça %}<span><i class="bi bi-map"></i>{{ r.adreça }}</span>{% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <div class="d-flex gap-2 mt-3 p-2 border-top align-items-center">
+            <button type="button" class="btn btn-primary" onclick="submitAfegir()"
+                    id="btn-afegir" disabled>
+              <i class="bi bi-plus-lg me-1"></i>{% trans "Afegir seleccionats com a prospects" %}
+              <span id="count-sel" class="badge bg-white text-primary ms-1">0</span>
+            </button>
+            <small class="text-muted">{% trans "Selecciona les empreses que t'interessen" %}</small>
+          </div>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {# Panell dret #}
+  <div class="col-lg-4">
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-plugin me-1"></i>{% trans "Fonts actives" %}</h6>
+      </div>
+      <div class="card-body p-2" style="font-size:.85rem;">
+        <div class="d-flex align-items-center gap-2 p-2 rounded mb-1" style="background:#e8f5e9;">
+          <i class="bi bi-map text-success fs-5"></i>
+          <div>
+            <div class="fw-semibold">OpenStreetMap</div>
+            <small class="text-muted">{% trans "Oficines, tallers i empreses reals per zona" %}</small>
+          </div>
+          <span class="badge bg-success ms-auto">{% trans "Activa" %}</span>
+        </div>
+        <div class="d-flex align-items-center gap-2 p-2 rounded opacity-50" style="background:#f8f9fa;">
+          <i class="bi bi-google text-secondary fs-5"></i>
+          <div>
+            <div class="fw-semibold">Google Places</div>
+            <small class="text-muted">{% trans "Pròximament (API key)" %}</small>
+          </div>
+          <span class="badge bg-secondary ms-auto">{% trans "Pròxim" %}</span>
+        </div>
+        <div class="d-flex align-items-center gap-2 p-2 rounded opacity-50" style="background:#f8f9fa;">
+          <i class="bi bi-database text-secondary fs-5"></i>
+          <div>
+            <div class="fw-semibold">AXESOR / SABI</div>
+            <small class="text-muted">{% trans "Directori empreses Spain (pròximament)" %}</small>
+          </div>
+          <span class="badge bg-secondary ms-auto">{% trans "Pròxim" %}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-lightbulb me-1"></i>{% trans "Com funciona" %}</h6>
+      </div>
+      <div class="card-body" style="font-size:.86rem;">
+        <ol class="ps-3 mb-0">
+          <li class="mb-2">{% trans "Introdueix la ubicació (municipi, zona o ciutat)." %}</li>
+          <li class="mb-2">{% trans "El sistema cerca empreses reals a OpenStreetMap en un radi de 10 km." %}</li>
+          <li class="mb-2">{% trans "Filtra per sector per trobar el públic objectiu." %}</li>
+          <li class="mb-2">{% trans "Selecciona les empreses i afegeix-les com a prospects." %}</li>
+          <li>{% trans "Envia-les campanyes de marketing des de la secció Campanyes." %}</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+{# Estat inicial - sense cerca #}
+<div class="row justify-content-center mt-4">
+  <div class="col-md-6 text-center">
+    <i class="bi bi-search" style="font-size:3rem;color:var(--accent);"></i>
+    <h5 class="mt-3 fw-semibold">{% trans "Cerca empreses properes" %}</h5>
+    <p class="text-muted">
+      {% trans "Introdueix una ubicació per trobar empreses i negocis propers als quals enviar les teves comunicacions comercials." %}
+    </p>
+    <p class="text-muted" style="font-size:.88rem;">
+      <i class="bi bi-map me-1"></i>{% trans "Font: OpenStreetMap · Radi 10 km · Sense cost" %}
+    </p>
+  </div>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if not task_pending %}
+<script>
+
+const resultatsData = [
+  {% for r in resultats %}
+  {
+    nom: "{{ r.nom|escapejs }}",
+    sector: "{{ r.sector|escapejs }}",
+    poblacio: "{{ r.poblacio|escapejs }}",
+    provincia: "{{ r.provincia|escapejs }}",
+    email: "{{ r.email|escapejs }}",
+    web: "{{ r.web|escapejs }}",
+    telefon: "{{ r.telefon|escapejs }}",
+    notes: "{{ r.notes|escapejs }}",
+    de_licitacio: false,
+    ja_es_prospect: {{ r.ja_es_prospect|yesno:"true,false" }},
+  }{% if not forloop.last %},{% endif %}
+  {% endfor %}
+];
+
+const selected = new Set();
+
+function toggleSelect(idx) {
+  const card = document.getElementById('card-' + idx);
+  const chk = document.getElementById('chk-' + idx);
+  const icon = chk ? chk.querySelector('i') : null;
+  if (selected.has(idx)) {
+    selected.delete(idx);
+    card.classList.remove('selected');
+    if (chk) chk.classList.remove('checked');
+    if (icon) icon.style.display = 'none';
+  } else {
+    selected.add(idx);
+    card.classList.add('selected');
+    if (chk) chk.classList.add('checked');
+    if (icon) icon.style.display = '';
+  }
+  updateCount();
+}
+
+function updateCount() {
+  const n = selected.size;
+  document.getElementById('count-sel').textContent = n;
+  document.getElementById('btn-afegir').disabled = n === 0;
+}
+
+function toggleAll() {
+  const allIdx = resultatsData.map((r, i) => i + 1).filter(i => !resultatsData[i-1].ja_es_prospect);
+  const allSel = allIdx.every(i => selected.has(i));
+  allIdx.forEach(i => {
+    const card = document.getElementById('card-' + i);
+    const chk = document.getElementById('chk-' + i);
+    const icon = chk ? chk.querySelector('i') : null;
+    if (allSel) {
+      selected.delete(i);
+      card.classList.remove('selected');
+      if (chk) chk.classList.remove('checked');
+      if (icon) icon.style.display = 'none';
+    } else {
+      selected.add(i);
+      card.classList.add('selected');
+      if (chk) chk.classList.add('checked');
+      if (icon) icon.style.display = '';
+    }
+  });
+  updateCount();
+}
+
+function submitAfegir() {
+  const selArr = Array.from(selected).map(i => resultatsData[i - 1]).filter(Boolean);
+  document.getElementById('seleccionats-json').value = JSON.stringify(selArr);
+  document.getElementById('afegir-form').submit();
+}
+</script>
+{% endif %}
+{% endblock %}

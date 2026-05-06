@@ -21,11 +21,12 @@ services:
         condition: service_started
     restart: unless-stopped
     command: >
-      sh -c "python manage.py migrate --noinput &&
+      sh -c "mkdir -p /app/media/erp/factures &&
+             python manage.py migrate --noinput &&
              python manage.py compilemessages --ignore=.venv &&
              python manage.py collectstatic --noinput &&
              python manage.py init_roles &&
-             gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --reload"
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 90 --reload"
 
   # ── Celery Worker ─────────────────────────────────────────────
   celery-worker:
@@ -138,6 +139,7 @@ services:
       - '80:80'
     volumes:
       - ./staticfiles:/app/staticfiles:ro
+      - ./media:/app/media:ro
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - django

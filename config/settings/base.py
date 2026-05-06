@@ -42,6 +42,12 @@ _OPTIONAL_MODULES = [
     'modules.licitaciones.alertas',
     'modules.rrhh.rrhh',
     'modules.empresa.empresa',
+    'modules.ofertes.ofertes',
+    'modules.calendari.calendari',
+    'modules.marketing.marketing',
+    'modules.documents.documents',
+    'modules.rag.rag',
+    'modules.erp.erp',
 ]
 
 for _mod in _OPTIONAL_MODULES:
@@ -106,6 +112,13 @@ MONGO_PASSWORD = env('MONGO_PASSWORD', default='')
 REDIS_URL = env('REDIS_URL', default='redis://localhost:6379/0')
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = 'django-db'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': REDIS_URL.replace('/0', '/1'),
+    }
+}
 CELERY_CACHE_BACKEND = 'default'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -127,6 +140,7 @@ AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 # ── Ollama ────────────────────────────────────────────────────────
 OLLAMA_BASE_URL = env('OLLAMA_BASE_URL', default='http://localhost:11434')
 OLLAMA_MODEL = env('OLLAMA_MODEL', default='llama3.2:3b')
+OLLAMA_EMBED_MODEL = env('OLLAMA_EMBED_MODEL', default='llama3.2:3b')
 
 # ── Telegram ──────────────────────────────────────────────────────
 TELEGRAM_BOT_TOKEN = env('TELEGRAM_BOT_TOKEN', default='')
@@ -139,6 +153,13 @@ EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
 EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='noreply@construtech-ia.local')
+
+# ── Microsoft Graph (Calendari) ───────────────────────────────────
+MS_CLIENT_ID = env('MS_CLIENT_ID', default='')
+MS_CLIENT_SECRET = env('MS_CLIENT_SECRET', default='')
+MS_TENANT_ID = env('MS_TENANT_ID', default='common')
+MS_REDIRECT_URI = env('MS_REDIRECT_URI', default='http://localhost:8000/api/calendari/oauth/callback/')
+SITE_URL = env('SITE_URL', default='http://localhost:8000')
 
 # ── API ───────────────────────────────────────────────────────────
 API_KEY = env('API_KEY', default='construtech-api-key')

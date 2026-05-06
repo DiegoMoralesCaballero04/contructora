@@ -1,0 +1,89 @@
+{% extends "portal/base.html" %}
+{% load i18n humanize %}
+
+{% block title %}{% trans "Nova oferta" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}<i class="bi bi-receipt-cutoff me-2"></i>{% trans "Nova oferta" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-3">
+  <a href="{% url 'portal:ofertes_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Torna" %}
+  </a>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-plus-circle me-1"></i>{% trans "Crear nova oferta" %}</h6>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">
+              {% trans "Licitació associada" %} <span class="text-danger">*</span>
+            </label>
+            {% if licitacions_disponibles %}
+            <select name="licitacio_id" class="form-select" required>
+              <option value="">{% trans "— Selecciona una licitació —" %}</option>
+              {% for lit in licitacions_disponibles %}
+              <option value="{{ lit.pk }}">
+                [{{ lit.expediente_id|truncatechars:20 }}] {{ lit.titol|truncatechars:70 }}
+                {% if lit.importe_base %}— {{ lit.importe_base|intcomma }} €{% endif %}
+              </option>
+              {% endfor %}
+            </select>
+            <div class="form-text">{% trans "Només es mostren licitacions sense oferta assignada en estat 'En preparació' o 'Revisada'." %}</div>
+            {% else %}
+            <div class="alert alert-warning py-2" style="font-size:.88rem;">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              {% trans "No hi ha licitacions disponibles per crear oferta. Canvieu l'estat d'una licitació a 'En preparació'." %}
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">{% trans "Responsable" %}</label>
+            <select name="responsable_id" class="form-select">
+              <option value="">{% trans "— Sense assignar —" %}</option>
+              {% for u in users %}
+              <option value="{{ u.pk }}">{{ u.get_full_name|default:u.username }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="alert alert-info py-2 mb-3" style="font-size:.86rem;">
+            <i class="bi bi-info-circle me-1"></i>
+            {% trans "L'oferta es crearà en estat 'Esborrany'. Podreu calcular el preu òptim i generar el Pla de Seguretat i Salut (PSS) amb IA des del detall." %}
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary" {% if not licitacions_disponibles %}disabled{% endif %}>
+              <i class="bi bi-plus-lg me-1"></i>{% trans "Crear oferta" %}
+            </button>
+            <a href="{% url 'portal:ofertes_list' %}" class="btn btn-outline-secondary">{% trans "Cancel·lar" %}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card shadow-sm" style="border-left:4px solid var(--accent);">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-lightbulb me-1"></i>{% trans "Com funciona" %}</h6>
+      </div>
+      <div class="card-body" style="font-size:.88rem;">
+        <ol class="ps-3 mb-0">
+          <li class="mb-2">{% trans "Seleccioneu la licitació i el responsable." %}</li>
+          <li class="mb-2">{% trans "L'oferta es crea en estat Esborrany." %}</li>
+          <li class="mb-2">{% trans "Calculeu el preu òptim amb la fórmula de baixa temerària." %}</li>
+          <li class="mb-2">{% trans "Genereu el Pla de Seguretat i Salut amb IA." %}</li>
+          <li>{% trans "Canvieu l'estat a 'Aprovada' i després a 'Enviada'." %}</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

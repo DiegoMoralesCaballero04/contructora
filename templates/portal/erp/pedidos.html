@@ -1,0 +1,63 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Pedidos" %} — CONSTRUTECH-IA{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="mb-0 fw-bold"><i class="bi bi-cart me-2 text-warning"></i>{% trans "Pedidos" %}</h5>
+</div>
+
+<div class="card border-0 shadow-sm mb-3">
+  <div class="card-body py-2">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-sm-5">
+        <input type="text" name="q" value="{{ filtres.q|default:'' }}" class="form-control form-control-sm" placeholder="{% trans 'Número, client...' %}">
+      </div>
+      <div class="col-sm-3">
+        <select name="estat" class="form-select form-select-sm">
+          <option value="">{% trans "Tots els estats" %}</option>
+          {% for val, label in estats %}
+          <option value="{{ val }}" {% if filtres.estat == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-sm-auto">
+        <button type="submit" class="btn btn-primary btn-sm">{% trans "Filtrar" %}</button>
+        <a href="{% url 'portal:erp_pedidos' %}" class="btn btn-outline-secondary btn-sm">{% trans "Netejar" %}</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>{% trans "Número" %}</th>
+          <th>{% trans "Client" %}</th>
+          <th>{% trans "Data" %}</th>
+          <th>{% trans "Entrega" %}</th>
+          <th>{% trans "Ref. client" %}</th>
+          <th>{% trans "Estat" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in pedidos %}
+        <tr>
+          <td><strong>{{ p.numero }}</strong></td>
+          <td>{{ p.client.nom }}</td>
+          <td>{{ p.data|date:"d/m/Y" }}</td>
+          <td>{% if p.data_entrega %}{{ p.data_entrega|date:"d/m/Y" }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+          <td>{{ p.referencia_client|default:"—" }}</td>
+          <td><span class="badge badge-{{ p.estat }}">{{ p.get_estat_display }}</span></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center text-muted py-4">{% trans "Cap pedido trobat." %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "portal/base.html" %}
+{% load i18n humanize %}
+
+{% block title %}{% trans "Ofertes" %} — CONSTRUTECH-IA{% endblock %}
+{% block page_title %}<i class="bi bi-receipt-cutoff me-2"></i>{% trans "Ofertes i Pressupostos" %}{% endblock %}
+
+{% block content %}
+<div class="row g-2 mb-3">
+  <div class="col-sm-auto">
+    <a href="{% url 'portal:oferta_create' %}" class="btn btn-sm btn-primary">
+      <i class="bi bi-plus-lg me-1"></i>{% trans "Nova oferta" %}
+    </a>
+  </div>
+</div>
+
+{# Filtres #}
+<div class="card shadow-sm mb-3">
+  <div class="card-body py-2">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-sm-4">
+        <input type="text" name="q" value="{{ filtres.q }}" class="form-control form-control-sm"
+               placeholder="{% trans 'Cercar per títol de licitació...' %}">
+      </div>
+      <div class="col-sm-2">
+        <select name="estat" class="form-select form-select-sm">
+          <option value="">{% trans "Tots els estats" %}</option>
+          {% for val, label in estats %}
+          <option value="{{ val }}" {% if filtres.estat == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <select name="risc" class="form-select form-select-sm">
+          <option value="">{% trans "Tot el risc" %}</option>
+          {% for val, label in riscs %}
+          <option value="{{ val }}" {% if filtres.risc == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-sm btn-primary">
+          <i class="bi bi-search me-1"></i>{% trans "Filtrar" %}
+        </button>
+        <a href="{% url 'portal:ofertes_list' %}" class="btn btn-sm btn-outline-secondary ms-1">
+          <i class="bi bi-x-lg"></i>
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{# Taula #}
+<div class="card shadow-sm">
+  <div class="card-header bg-white d-flex align-items-center justify-content-between py-2">
+    <h6 class="mb-0 fw-semibold"><i class="bi bi-list-ul me-1"></i>{% trans "Ofertes" %}</h6>
+    <small class="text-muted">{{ ofertes|length }} {% trans "registres" %}</small>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover table-sm mb-0" style="font-size:.9rem;">
+      <thead class="table-light">
+        <tr>
+          <th>{% trans "Licitació" %}</th>
+          <th>{% trans "Preu oferta" %}</th>
+          <th>{% trans "Preu òptim" %}</th>
+          <th>{% trans "Risc" %}</th>
+          <th>{% trans "Responsable" %}</th>
+          <th>{% trans "Estat" %}</th>
+          <th>{% trans "Data" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for oferta in ofertes %}
+        <tr style="cursor:pointer;" onclick="window.location='{% url 'portal:oferta_detail' oferta.pk %}'">
+          <td>
+            <div class="fw-semibold" style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+              {{ oferta.licitacio.titol|truncatechars:55 }}
+            </div>
+            <small class="text-muted font-monospace">{{ oferta.licitacio.expediente_id|truncatechars:20 }}</small>
+          </td>
+          <td>
+            {% if oferta.preu_oferta %}
+            <span class="fw-semibold" style="color:var(--primary);">{{ oferta.preu_oferta|intcomma }} €</span>
+            {% else %}
+            <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if oferta.preu_optim_calculat %}
+            <span class="text-success">{{ oferta.preu_optim_calculat|intcomma }} €</span>
+            {% else %}
+            <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td>
+            <span class="badge rounded-pill badge-{{ oferta.nivell_risc }}">{{ oferta.get_nivell_risc_display }}</span>
+          </td>
+          <td>
+            {% if oferta.responsable %}
+            {{ oferta.responsable.get_full_name|default:oferta.responsable.username }}
+            {% else %}
+            <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td>
+            <span class="badge rounded-pill badge-{{ oferta.estat }}">{{ oferta.get_estat_display }}</span>
+          </td>
+          <td><small class="text-muted">{{ oferta.creada_en|date:"d/m/Y" }}</small></td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-center text-muted py-4">
+            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+            {% trans "No s'han trobat ofertes amb aquests filtres." %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

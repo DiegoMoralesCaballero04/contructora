@@ -1,0 +1,298 @@
+{% extends "portal/base.html" %}
+{% load i18n humanize %}
+
+{% block title %}{{ prospect.nom|truncatechars:30 }} — {% trans "Prospect" %}{% endblock %}
+{% block page_title %}<i class="bi bi-building me-2"></i>{% trans "Detall prospect" %}{% endblock %}
+
+{% block extra_head %}
+<style>
+  .score-ring { width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;border:4px solid; }
+  .score-ring.high { border-color:#28a745;color:#28a745; }
+  .score-ring.mid  { border-color:#fd7e14;color:#fd7e14; }
+  .score-ring.low  { border-color:#dc3545;color:#dc3545; }
+  .info-label { font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:#6c757d;margin-bottom:.1rem; }
+  .completar-item { display:flex;align-items:center;gap:.5rem;padding:.3rem .5rem;border-radius:4px;font-size:.83rem; }
+  .completar-item.ok { background:#e8f5e9;color:#2e7d32; }
+  .completar-item.missing { background:#fff3e0;color:#e65100; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
+  <a href="{% url 'portal:prospects_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>{% trans "Volver" %}
+  </a>
+  <span class="badge rounded-pill badge-{{ prospect.estat }}">{{ prospect.get_estat_display }}</span>
+  {% if prospect.consentiment_gdpr and not prospect.baixa_voluntaria %}
+  <span class="badge bg-success"><i class="bi bi-shield-check me-1"></i>GDPR OK</span>
+  {% elif prospect.baixa_voluntaria %}
+  <span class="badge bg-danger"><i class="bi bi-shield-x me-1"></i>{% trans "Baixa voluntària" %}</span>
+  {% else %}
+  <span class="badge bg-warning text-dark"><i class="bi bi-shield me-1"></i>{% trans "Sense consentiment" %}</span>
+  {% endif %}
+  <small class="text-muted ms-auto">{% trans "Creat el" %} {{ prospect.creada_en|date:"d/m/Y" }}</small>
+</div>
+
+<div class="row g-3">
+  {# ── Columna principal ── #}
+  <div class="col-lg-8">
+
+    {# Dades principals #}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-building me-1"></i>{{ prospect.nom }}</h6>
+        <button class="btn btn-sm btn-outline-primary" type="button"
+                data-bs-toggle="collapse" data-bs-target="#edit-form">
+          <i class="bi bi-pencil me-1"></i>{% trans "Editar" %}
+        </button>
+      </div>
+      <div class="card-body">
+        {% if prospect.web %}
+        <a href="{{ prospect.web }}" target="_blank" rel="noopener" class="text-muted d-block mb-2" style="font-size:.88rem;">
+          <i class="bi bi-link-45deg me-1"></i>{{ prospect.web|truncatechars:60 }}
+        </a>
+        {% endif %}
+
+        <div class="row g-3">
+          <div class="col-sm-3 col-6">
+            <div class="info-label">{% trans "Sector" %}</div>
+            <div>{{ prospect.get_sector_display }}</div>
+          </div>
+          <div class="col-sm-3 col-6">
+            <div class="info-label">{% trans "Origen" %}</div>
+            <div>{{ prospect.get_origen_display }}</div>
+          </div>
+          <div class="col-sm-3 col-6">
+            <div class="info-label">{% trans "Localitat" %}</div>
+            <div>{{ prospect.poblacio|default:"—" }}{% if prospect.provincia %}<small class="text-muted">, {{ prospect.provincia }}</small>{% endif %}</div>
+          </div>
+          <div class="col-sm-3 col-6">
+            <div class="info-label">{% trans "Assignat a" %}</div>
+            <div>{{ prospect.assignat_a|default:"—" }}</div>
+          </div>
+
+          {% if prospect.persona_contacte %}
+          <div class="col-sm-4 col-6">
+            <div class="info-label">{% trans "Contacte" %}</div>
+            <div>{{ prospect.persona_contacte }}</div>
+            {% if prospect.carrec_contacte %}<small class="text-muted">{{ prospect.carrec_contacte }}</small>{% endif %}
+          </div>
+          {% endif %}
+          {% if prospect.email_principal %}
+          <div class="col-sm-4 col-6">
+            <div class="info-label">{% trans "Email" %}</div>
+            <a href="mailto:{{ prospect.email_principal }}" style="font-size:.88rem;">{{ prospect.email_principal }}</a>
+          </div>
+          {% endif %}
+          {% if prospect.telefon %}
+          <div class="col-sm-4 col-6">
+            <div class="info-label">{% trans "Telèfon" %}</div>
+            <a href="tel:{{ prospect.telefon }}" style="font-size:.88rem;">{{ prospect.telefon }}</a>
+          </div>
+          {% endif %}
+        </div>
+
+        {% if prospect.notes %}
+        <div class="mt-3 pt-2 border-top">
+          <div class="info-label mb-1">{% trans "Notes" %}</div>
+          <pre style="white-space:pre-wrap;font-size:.88rem;font-family:inherit;margin:0;">{{ prospect.notes }}</pre>
+        </div>
+        {% endif %}
+      </div>
+
+      {# Formulari d'edició col·lapsable #}
+      <div class="collapse" id="edit-form">
+        <div class="card-body border-top bg-light">
+          <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="editar">
+            <div class="row g-2">
+              <div class="col-sm-6">
+                <label class="form-label form-label-sm">{% trans "Email principal" %}</label>
+                <input type="email" name="email_principal" class="form-control form-control-sm"
+                       value="{{ prospect.email_principal }}">
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label form-label-sm">{% trans "Telèfon" %}</label>
+                <input type="text" name="telefon" class="form-control form-control-sm"
+                       value="{{ prospect.telefon }}">
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label form-label-sm">{% trans "Web" %}</label>
+                <input type="url" name="web" class="form-control form-control-sm"
+                       value="{{ prospect.web }}">
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label form-label-sm">{% trans "Persona de contacte" %}</label>
+                <input type="text" name="persona_contacte" class="form-control form-control-sm"
+                       value="{{ prospect.persona_contacte }}">
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label form-label-sm">{% trans "Càrrec" %}</label>
+                <input type="text" name="carrec_contacte" class="form-control form-control-sm"
+                       value="{{ prospect.carrec_contacte }}">
+              </div>
+              <div class="col-sm-3">
+                <label class="form-label form-label-sm">{% trans "Població" %}</label>
+                <input type="text" name="poblacio" class="form-control form-control-sm"
+                       value="{{ prospect.poblacio }}">
+              </div>
+              <div class="col-sm-3">
+                <label class="form-label form-label-sm">{% trans "Província" %}</label>
+                <input type="text" name="provincia" class="form-control form-control-sm"
+                       value="{{ prospect.provincia }}">
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label form-label-sm">{% trans "Consentiment GDPR" %}</label>
+                <select name="consentiment_gdpr" class="form-select form-select-sm">
+                  <option value="0" {% if not prospect.consentiment_gdpr %}selected{% endif %}>{% trans "No" %}</option>
+                  <option value="1" {% if prospect.consentiment_gdpr %}selected{% endif %}>{% trans "Sí" %}</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label form-label-sm">{% trans "Notes" %}</label>
+                <textarea name="notes" class="form-control form-control-sm" rows="2">{{ prospect.notes }}</textarea>
+              </div>
+            </div>
+            <div class="d-flex gap-2 mt-2">
+              <button type="submit" class="btn btn-sm btn-primary">
+                <i class="bi bi-check2 me-1"></i>{% trans "Guardar" %}
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-secondary"
+                      data-bs-toggle="collapse" data-bs-target="#edit-form">
+                {% trans "Cancelar" %}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    {# Historial d'enviaments #}
+    {% if enviaments %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-envelope me-1"></i>{% trans "Emails enviats" %}</h6>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm mb-0" style="font-size:.88rem;">
+          <thead class="table-light">
+            <tr>
+              <th>{% trans "Campanya" %}</th>
+              <th>{% trans "Data" %}</th>
+              <th class="text-center">{% trans "Obert" %}</th>
+              <th class="text-center">{% trans "Clic" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for env in enviaments %}
+            <tr>
+              <td>{{ env.campanya.nom|truncatechars:35 }}</td>
+              <td><small>{{ env.enviat_en|date:"d/m/Y H:i" }}</small></td>
+              <td class="text-center">
+                {% if env.obert_en %}<i class="bi bi-eye-fill text-success"></i>
+                {% else %}<i class="bi bi-eye text-muted"></i>{% endif %}
+              </td>
+              <td class="text-center">
+                {% if env.clicat_en %}<i class="bi bi-cursor-fill text-success"></i>
+                {% else %}<i class="bi bi-cursor text-muted"></i>{% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  {# ── Columna lateral ── #}
+  <div class="col-lg-4">
+
+    {# Scoring #}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-graph-up me-1"></i>{% trans "Scoring" %}</h6>
+      </div>
+      <div class="card-body">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="score-ring {% if prospect.scoring >= 7 %}high{% elif prospect.scoring >= 4 %}mid{% else %}low{% endif %}">
+            {{ prospect.scoring|floatformat:1 }}
+          </div>
+          <div>
+            <div class="fw-semibold">{{ prospect.scoring|floatformat:1 }}/10</div>
+            <small class="text-muted">
+              {% if prospect.scoring >= 7 %}{% trans "Alt potencial" %}
+              {% elif prospect.scoring >= 4 %}{% trans "Potencial moderat" %}
+              {% else %}{% trans "Dades incompletes" %}{% endif %}
+            </small>
+          </div>
+        </div>
+        <div style="font-size:.8rem;font-weight:600;color:#6c757d;margin-bottom:.4rem;">{% trans "Per millorar el scoring:" %}</div>
+        <div class="completar-item {% if prospect.email_principal %}ok{% else %}missing{% endif %}">
+          <i class="bi bi-{% if prospect.email_principal %}check-circle-fill{% else %}exclamation-circle{% endif %}"></i>{% trans "Email" %}
+        </div>
+        <div class="completar-item {% if prospect.persona_contacte %}ok{% else %}missing{% endif %}">
+          <i class="bi bi-{% if prospect.persona_contacte %}check-circle-fill{% else %}exclamation-circle{% endif %}"></i>{% trans "Persona de contacte" %}
+        </div>
+        <div class="completar-item {% if prospect.telefon %}ok{% else %}missing{% endif %}">
+          <i class="bi bi-{% if prospect.telefon %}check-circle-fill{% else %}exclamation-circle{% endif %}"></i>{% trans "Telèfon" %}
+        </div>
+        <div class="completar-item {% if prospect.web %}ok{% else %}missing{% endif %}">
+          <i class="bi bi-{% if prospect.web %}check-circle-fill{% else %}exclamation-circle{% endif %}"></i>{% trans "Web" %}
+        </div>
+        <div class="completar-item {% if prospect.consentiment_gdpr %}ok{% else %}missing{% endif %}">
+          <i class="bi bi-{% if prospect.consentiment_gdpr %}check-circle-fill{% else %}exclamation-circle{% endif %}"></i>GDPR
+        </div>
+        <form method="post" class="mt-2">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="recalcular_scoring">
+          <button type="submit" class="btn btn-sm btn-outline-primary w-100">
+            <i class="bi bi-arrow-clockwise me-1"></i>{% trans "Recalcular scoring" %}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    {# Canviar estat #}
+    <div class="card shadow-sm mb-3" style="border-left:4px solid var(--primary);">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-arrow-repeat me-1"></i>{% trans "Canviar estat" %}</h6>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="canviar_estat">
+          <select name="estat" class="form-select form-select-sm mb-2">
+            {% for val, label in estats %}
+            <option value="{{ val }}" {% if prospect.estat == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn btn-sm btn-primary w-100">{% trans "Aplicar" %}</button>
+        </form>
+      </div>
+    </div>
+
+    {# GDPR #}
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-2">
+        <h6 class="mb-0 fw-semibold"><i class="bi bi-shield me-1"></i>{% trans "GDPR" %}</h6>
+      </div>
+      <div class="card-body" style="font-size:.88rem;">
+        <div class="d-flex justify-content-between border-bottom pb-1 mb-1">
+          <span class="text-muted">{% trans "Consentiment" %}</span>
+          <span>{% if prospect.consentiment_gdpr %}{{ prospect.data_consentiment|date:"d/m/Y"|default:"Sí" }}{% else %}—{% endif %}</span>
+        </div>
+        <div class="d-flex justify-content-between border-bottom pb-1 mb-1">
+          <span class="text-muted">{% trans "Baixa" %}</span>
+          <span>{% if prospect.baixa_voluntaria %}{{ prospect.data_baixa|date:"d/m/Y" }}{% else %}{% trans "No" %}{% endif %}</span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span class="text-muted">{% trans "Origen" %}</span>
+          <span>{{ prospect.get_origen_display }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

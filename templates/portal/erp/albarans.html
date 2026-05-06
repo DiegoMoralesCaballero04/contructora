@@ -1,0 +1,61 @@
+{% extends "portal/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Albarans" %} — CONSTRUTECH-IA{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="mb-0 fw-bold"><i class="bi bi-truck me-2 text-warning"></i>{% trans "Albarans" %}</h5>
+</div>
+
+<div class="card border-0 shadow-sm mb-3">
+  <div class="card-body py-2">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-sm-5">
+        <input type="text" name="q" value="{{ filtres.q|default:'' }}" class="form-control form-control-sm" placeholder="{% trans 'Número, client...' %}">
+      </div>
+      <div class="col-sm-3">
+        <select name="estat" class="form-select form-select-sm">
+          <option value="">{% trans "Tots els estats" %}</option>
+          {% for val, label in estats %}
+          <option value="{{ val }}" {% if filtres.estat == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-sm-auto">
+        <button type="submit" class="btn btn-primary btn-sm">{% trans "Filtrar" %}</button>
+        <a href="{% url 'portal:erp_albarans' %}" class="btn btn-outline-secondary btn-sm">{% trans "Netejar" %}</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>{% trans "Número" %}</th>
+          <th>{% trans "Client" %}</th>
+          <th>{% trans "Data" %}</th>
+          <th>{% trans "Pedido" %}</th>
+          <th>{% trans "Estat" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in albarans %}
+        <tr>
+          <td><strong>{{ a.numero }}</strong></td>
+          <td>{{ a.client.nom }}</td>
+          <td>{{ a.data|date:"d/m/Y" }}</td>
+          <td>{% if a.pedido %}{{ a.pedido.numero }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+          <td><span class="badge badge-{{ a.estat }}">{{ a.get_estat_display }}</span></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center text-muted py-4">{% trans "Cap albarà trobat." %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
